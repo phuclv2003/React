@@ -1,0 +1,16 @@
+.arrow-down-icon:hover svg {
+  transform: none;
+  transition: all 0.5s ease-in-out;
+}
+
+.arrow-down-icon svg {
+  transform: rotate(180deg); 
+}
+.menu-container .ant-menu-horizontal {
+  border-bottom: none;
+}
+.footerLocation svg{
+  width: 24px;
+  color: white;
+}
+
