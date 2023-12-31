@@ -5,7 +5,6 @@ import LayoutBase from "./layout/base";
 import DashBoard from "./page/admin/dashboard";
 import Home from "./page/base/home";
 import PageNotFound from "./page/pageNotFound";
-
 function App() {
   return (
     <BrowserRouter>
