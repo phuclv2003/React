@@ -13,4 +13,11 @@
   width: 24px;
   color: white;
 }
-
+.slidePrev svg{
+  rotate: -90deg;
+  color: white;
+}
+.slideNext svg{
+  color: white;
+  rotate: 90deg;
+}
