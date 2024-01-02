@@ -4,20 +4,24 @@
 }
 
 .arrow-down-icon svg {
-  transform: rotate(180deg); 
+  transform: rotate(180deg);
 }
+
 .menu-container .ant-menu-horizontal {
   border-bottom: none;
 }
-.footerLocation svg{
+
+.footerLocation svg {
   width: 24px;
   color: white;
 }
-.slidePrev svg{
+
+.slidePrev svg {
   rotate: -90deg;
   color: white;
 }
-.slideNext svg{
+
+.slideNext svg {
   color: white;
   rotate: 90deg;
 }
