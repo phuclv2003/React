@@ -139,7 +139,7 @@ const HeaderBase: FC = () => {
                   <UserIcon />
                 </div>
                 <div className="text-white font-medium text-[16px] ml-2">
-                  Đăng nhập
+                  <Link to={"/login"}>Đăng nhập</Link>
                 </div>
               </div>
               <div className="flex items-center bg-[#1250dc] relative shrink-0 md:ml-auto rounded-[42px] w-[134px] h-[48px] justify-center cursor-pointer">
