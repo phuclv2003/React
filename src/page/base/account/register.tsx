@@ -1,9 +1,32 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useFormik } from "formik";
+import { RegisterSchema, TRegister } from '../../../schema/auth';
 
 type Props = {}
 
 const Register = (props: Props) => {
+
+  const formik = useFormik<TRegister>({
+    initialValues: {
+      mail_address: '',
+      password: '',
+      account_name: '',
+      birthday: new Date(),
+      tel: '',
+      user_type: "user"
+    },
+    validationSchema: RegisterSchema,
+    onSubmit: async (values: any) => {
+      try {
+        console.log(values);
+      } catch (error) {
+        console.error('Lỗi', error);
+      }
+    },
+  });
+
+  const formattedBirthday = formik.values.birthday.toISOString().slice(0, 10);
   return (
     <>
       <div className="bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -24,6 +47,8 @@ const Register = (props: Props) => {
                   <input
                     id="account_name"
                     name="account_name"
+                    onChange={formik.handleChange}
+                    value={formik.values.account_name}
                     type="text"
                     required
                     className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -40,6 +65,8 @@ const Register = (props: Props) => {
                   <input
                     id="birthday"
                     name="birthday"
+                    onChange={formik.handleChange}
+                    value={formattedBirthday}
                     type="date"
                     required
                     className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -56,6 +83,8 @@ const Register = (props: Props) => {
                     id="tel"
                     name="tel"
                     type="tel"
+                    onChange={formik.handleChange}
+                    value={formik.values.tel}
                     required
                     className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Nhập số điện thoại của bạn"
@@ -72,6 +101,8 @@ const Register = (props: Props) => {
                     id="mail_address"
                     name="mail_address"
                     type="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.mail_address}
                     required
                     className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Nhập địa chỉ email của bạn"
@@ -88,6 +119,8 @@ const Register = (props: Props) => {
                     id="password"
                     name="password"
                     type="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
                     required
                     className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     placeholder="Nhập mật khẩu của bạn"

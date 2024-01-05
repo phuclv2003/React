@@ -1,7 +1,30 @@
-import { url } from "node:inspector";
+import { message } from "antd";
+import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import { LoginSchema, TLogin } from "../../../schema/auth";
+import { useLoginMutation } from "../../../services/auth";
 
 const Login = () => {
+    const [loginForm] = useLoginMutation();
+    const formik = useFormik<TLogin>({
+        initialValues: {
+            mail_address: '',
+            password: '',
+        },
+        validationSchema: LoginSchema,
+        onSubmit: async (values: any) => {
+            try {
+                const response = await loginForm(values);
+                if ("error" in response) {
+                    message.error("Tài khoản mật khẩu không chính xác");
+                } else {
+                    message.success("Đăng nhập thành công");
+                }
+            } catch (error) {
+                console.error('Lỗi', error);
+            }
+        },
+    });
     return (
         <>
             <div className=" bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -14,13 +37,16 @@ const Login = () => {
 
                 <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
                     <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                        <form className="space-y-6" action="#">
+                        <form className="space-y-6" onSubmit={formik.handleSubmit} >
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">
-                                Địa chỉ email
+                                    Địa chỉ email
                                 </label>
                                 <div className="mt-1">
-                                    <input id="email" name="email" type="email" required
+                                    <input type="email" id="mail_address"
+                                        name="mail_address"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.mail_address}
                                         className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                         placeholder="Nhập địa chỉ email của bạn" />
                                 </div>
@@ -31,7 +57,11 @@ const Login = () => {
                                     Mật khẩu
                                 </label>
                                 <div className="mt-1">
-                                    <input id="password" name="password" type="password" required
+                                    <input id="password"
+                                        name="password"
+                                        type="password"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.password}
                                         className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                         placeholder="Nhập mật khẩu của bạn" />
                                 </div>
@@ -48,8 +78,7 @@ const Login = () => {
                             <div>
                                 <button type="submit"
                                     className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-
-                                    Sign in
+                                    Đăng nhập
                                 </button>
                             </div>
                         </form>
@@ -61,7 +90,7 @@ const Login = () => {
                                 </div>
                                 <div className="relative flex justify-center text-sm">
                                     <span className="px-2 bg-gray-100 text-gray-500">
-                                    Hoặc tiếp tục với
+                                        Hoặc tiếp tục với
                                     </span>
                                 </div>
                             </div>
