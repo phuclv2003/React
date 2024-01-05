@@ -15,6 +15,7 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import authApi, { authReducer } from "../services/auth";
 
 const persistConfig = {
   key: "root",
@@ -23,7 +24,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  // [authApi.reducerPath]: authReducer,
+  [authApi.reducerPath]: authReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -36,7 +37,7 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }).concat(
-      // authApi.middleware,
+      authApi.middleware,
     ),
 });
 
