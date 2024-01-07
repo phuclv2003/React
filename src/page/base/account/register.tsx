@@ -1,32 +1,55 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
-import { RegisterSchema, TRegister } from '../../../schema/auth';
+import { RegisterSchema, TRegister } from "../../../schema/auth";
+import {
+  useRegisterMutation,
+  useValidateEmailMutation,
+} from "../../../services/auth";
+import dayjs from "dayjs";
+import { message } from "antd";
 
-type Props = {}
+const Register = () => {
+  const location = useLocation();
 
-const Register = (props: Props) => {
+  const [registerForm] = useRegisterMutation();
+  const [validateEmail] = useValidateEmailMutation();
 
   const formik = useFormik<TRegister>({
     initialValues: {
-      mail_address: '',
-      password: '',
-      account_name: '',
-      birthday: new Date(),
-      tel: '',
-      user_type: "user"
+      mail_address: location.state?.mail_address ?? "",
+      password: location.state?.password ?? "",
+      account_name: "",
+      birthday: "",
+      tel: "",
+      user_type: "user",
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values: any) => {
       try {
-        console.log(values);
+        const resValidate = await validateEmail({
+          mail_address: values.mail_address,
+        });
+        if ("data" in resValidate) {
+          const accountNew = {
+            ...values,
+            birthday: dayjs(values.birthday).format("YYYY-MM-DDTHH:mm:ssZ"),
+          };
+          const res = await registerForm(accountNew);
+          if ("data" in res) {
+            message.success("Đăng ký thành công");
+            await localStorage.setItem("token", res.data.access_token);
+            await localStorage.setItem("tokenRefresh", res.data.refresh_token);
+          }
+        } else {
+          message.error("Email address already exists");
+        }
       } catch (error) {
-        console.error('Lỗi', error);
+        message.error("Lỗi");
       }
     },
   });
 
-  const formattedBirthday = formik.values.birthday.toISOString().slice(0, 10);
   return (
     <>
       <div className="bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -38,7 +61,7 @@ const Register = (props: Props) => {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action="#">
+            <form className="space-y-6" onSubmit={formik.handleSubmit}>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Tên tài khoản
@@ -66,7 +89,6 @@ const Register = (props: Props) => {
                     id="birthday"
                     name="birthday"
                     onChange={formik.handleChange}
-                    value={formattedBirthday}
                     type="date"
                     required
                     className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -147,7 +169,7 @@ const Register = (props: Props) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
