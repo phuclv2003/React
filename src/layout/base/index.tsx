@@ -7,7 +7,9 @@ const LayoutBase: FC = () => {
   return (
     <>
       <HeaderBase />
-      <Outlet />
+      <div className="bg-[#edf0f3] pb-9">
+        <Outlet />
+      </div>
       <FooterBase />
     </>
   );

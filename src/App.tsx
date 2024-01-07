@@ -7,6 +7,8 @@ import Home from "./page/base/home";
 import PageNotFound from "./page/pageNotFound";
 import Login from "./page/base/account/login";
 import Register from "./page/base/account/register";
+import Profile from "./page/base/account/profile";
+import EditProfile from "./page/base/account/editProfile";
 function App() {
   return (
     <BrowserRouter>
@@ -15,7 +17,9 @@ function App() {
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          {/* <Route path="add" element={<AddStatusAdmin />} /> */}
+          <Route path="profile" element={<Profile />} > 
+            <Route path="editProfile" index element={<EditProfile />} />
+          </Route>
         </Route>
         <Route path="/admin" element={<LayoutAdmin />}>
           <Route index element={<DashBoard />} />

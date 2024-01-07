@@ -3,9 +3,11 @@ import {
   RegisterRequest,
   TLogin,
   TRegister,
+  TResLoginSchema,
   ValidateEmail,
   ValidateEmailRequest,
 } from "../schema/auth";
+
 
 const authApi = createApi({
   reducerPath: "auth",
@@ -15,7 +17,7 @@ const authApi = createApi({
   }),
   endpoints(builder) {
     return {
-      login: builder.mutation<RegisterRequest, Partial<TLogin>>({
+      login: builder.mutation<TResLoginSchema, Partial<TLogin>>({
         query: (user) => {
           return {
             url: "login",

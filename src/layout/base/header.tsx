@@ -1,4 +1,4 @@
-import { Menu } from "antd";
+import { Menu, Popover } from "antd";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/common.css";
@@ -6,11 +6,14 @@ import { menu } from "../../assets/data/data";
 import header_desktop from "../../assets/images/header_desktop_a4bfadd206.webp";
 import megaphone from "../../assets/images/megaphone_b8025908d5.webp";
 import ArrowDownIcon from "../../assets/svg/arrowDownIcon";
+import LogOutIcon from "../../assets/svg/logOut";
+import OrderIcon from "../../assets/svg/order";
 import PhoneIcon from "../../assets/svg/phoneIcon";
 import SearchIcon from "../../assets/svg/searchIcon";
 import ShoppingCartIcon from "../../assets/svg/shoppingCart";
 import UserIcon from "../../assets/svg/user";
-
+import UserHover from "../../assets/svg/userHover";
+import { useGetProfileQuery } from "../../services/account";
 const items = menu.map((mainMenuItem) => {
   if (!mainMenuItem.subMenu) {
     return {
@@ -54,7 +57,41 @@ const items = menu.map((mainMenuItem) => {
   };
 });
 
+
 const HeaderBase: FC = () => {
+  const { data: user } = useGetProfileQuery();
+  const logout = async () => {
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem("token");
+    await new Promise(resolve => setTimeout(resolve, 0));
+  };
+  const someFunction = async () => {
+    await logout();
+    window.location.reload();
+  };
+  const content = (
+    <div className="m-0 p-0">
+      <div className="flex items-center gap-x-2 my-4 cursor-pointer">
+        <UserHover />
+        <div>Thông tin cá nhân</div>
+      </div>
+      <div className="flex items-center gap-x-2 my-4 cursor-pointer">
+        <OrderIcon />
+        <div>Đơn hàng của tôi</div>
+      </div>
+      <div
+        className="flex items-center gap-x-2 my-4 cursor-pointer"
+        onClick={() => {
+          someFunction();
+        }}
+      >
+        <div>
+          <LogOutIcon />
+        </div>
+        <div>Đăng xuất</div>
+      </div>
+    </div>
+  );
   return (
     <>
       <header
@@ -83,7 +120,7 @@ const HeaderBase: FC = () => {
           </div>
         </div>
         <div className="relative">
-          <div className="container mx-auto grid grid-cols-[40px_1fr_40px] grid-rows-[40px] content-center pt-1.5 pb-2 md:grid-cols-[200px_1fr_270px] md:grid-rows-[56px] md:pt-4 md:pb-[44px]">
+          <div className="container mx-auto grid grid-cols-[40px_1fr_90px] grid-rows-[40px] content-center pt-1.5 pb-2 md:grid-cols-[200px_1fr_300px] md:grid-rows-[56px] md:pt-4 md:pb-[44px]">
             <div>
               <img
                 src="https://cms-prod.s3-sgn09.fptcloud.com/smalls/logo_web_a11ae0bbab.svg"
@@ -133,15 +170,29 @@ const HeaderBase: FC = () => {
                 </ul>
               </div>
             </div>
-            <div className="flex h-full items-center justify-between ml-2">
-              <div className="flex items-center cursor-pointer justify-center">
-                <div>
-                  <UserIcon />
+            <div className="flex h-full items-center justify-between">
+              {!user ? (
+                <div className="flex items-center cursor-pointer justify-center">
+                  <div>
+                    <UserIcon />
+                  </div>
+                  <div className="text-white font-medium text-[16px] ml-2">
+                    <Link to={"/login"}>Đăng nhập</Link>
+                  </div>
                 </div>
-                <div className="text-white font-medium text-[16px] ml-2">
-                  <Link to={"/login"}>Đăng nhập</Link>
-                </div>
-              </div>
+              ) : (
+                <Popover placement="bottom" content={content}
+                  className="flex items-center cursor-pointer justify-center"
+                >
+                  <div>
+                    <UserIcon />
+                  </div>
+                  <div className="text-white font-medium text-[16px] ml-2">
+                    <Link to={"/profile/editProfile"}>{user.account_name}</Link>
+                  </div>
+                </Popover>
+              )}
+
               <div className="flex items-center bg-[#1250dc] relative shrink-0 md:ml-auto rounded-[42px] w-[134px] h-[48px] justify-center cursor-pointer">
                 <div>
                   <ShoppingCartIcon />
@@ -155,7 +206,7 @@ const HeaderBase: FC = () => {
         </div>
       </header>
       <nav className=" flex justify-center border-b-[1px] w-full border-[rgba(5, 5, 5, 0.06)]">
-        <div  className="menu-container">
+        <div className="menu-container">
           <Menu mode="horizontal" items={items} />
         </div>
       </nav>

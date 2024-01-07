@@ -11,6 +11,15 @@ export const LoginSchema = yup.object().shape({
     .required("Vui lòng nhập đúng mật khẩu."),
 });
 
+export const ResLoginSchema = yup.object().shape({
+  access_token: yup
+    .string().required(),
+  refresh_token: yup
+    .string().required(),
+  token_type: yup
+    .string().required(),
+});
+
 export const RegisterSchema = yup.object().shape({
   mail_address: yup
     .string()
@@ -27,6 +36,8 @@ export const RegisterSchema = yup.object().shape({
 });
 
 export type TLogin = yup.InferType<typeof LoginSchema>;
+export type TResLoginSchema = yup.InferType<typeof ResLoginSchema>;
+
 export type TRegister = yup.InferType<typeof RegisterSchema>;
 
 const registerRequestSchema = yup.object({
