@@ -8,8 +8,12 @@ import product from "../../../assets/images/product.webp";
 import cupIcon from "../../../assets/images/cupIcon.webp";
 import BannerProducts from "../../../assets/svg/sanPhamBannerHome";
 import CarouselComponent from "./carousel";
+import { useGetAllProductsQuery } from "../../../services/products";
 
 const Home: React.FC = () => {
+  const { data: dataProduct } = useGetAllProductsQuery({ page_size: 6, page: 1, sort_by: JSON.stringify({ created_at: "ASC" }) });
+  console.log(dataProduct);
+
   return (
     <>
       <div className="bg-[#f8f9fd]">
@@ -76,48 +80,48 @@ const Home: React.FC = () => {
               </p>
             </div>
             <div className="grid grid-cols-6 gap-5 pb-7">
-              <div className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer">
-                <div className="p-3">
-                  <div className="px-1 text-center md:px-4">
-                    <img className="w-full" src={product} alt="product" />
-                  </div>
-                  <div>
-                    <h3 className="text-body2 font-semibold">
-                      Viên uống Léana Ocavill hỗ trợ cân bằng nội tiết tố (60
-                      viên)
-                    </h3>
-                    <div className="mt-1">
-                      <span className="text-body2 font-semibold text-[#1250dc]">
-                        544.000đ
-                      </span>
-                      <span className="text-caption font-medium text-[#1250dc] text-[12px]">
-                        {" "}
-                        / Hộp
-                      </span>
-                      <div className="text-caption font-normal line-through text-[12px]">
-                        680.000đ
+              {dataProduct?.data?.map((item: any) => (
+                <div className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer">
+                  <div className="p-3">
+                    <div className="px-1 text-center md:px-4">
+                      <img className="w-full" src={item.image} alt="product" />
+                    </div>
+                    <div>
+                      <h3 className="text-body2 font-semibold">
+                        {item.name}
+                      </h3>
+                      <div className="mt-1">
+                        <span className="text-body2 font-semibold text-[#1250dc] ">
+                          {new Intl.NumberFormat("vi-VN").format(item.price)}
+                          <span> đ</span>
+                        </span>
+                        <span className="text-caption font-medium text-[#1250dc] text-[12px] pl-1">
+                          /
+                          <span className="pl-1">{item.unit}</span>
+                        </span>
+                      </div>
+                      <div className="m-auto flex pt-1 mt-6">
+                        <div className="w-fit rounded-xl bg-[#edf0f3] px-2 py-1">
+                          <p className="w-fit text-caption font-medium text-[#4a4f63] line-clamp-2 text-[12px]">
+                          {item.unit}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                    <div className="m-auto flex pt-1 mt-6">
-                      <div className="w-fit rounded-xl bg-[#edf0f3] px-2 py-1">
-                        <p className="w-fit text-caption font-medium text-[#4a4f63] line-clamp-2 text-[12px]">
-                          Hộp 60 Viên
-                        </p>
-                      </div>
-                    </div>
+                  </div>
+                  <div className="px-2 py-0.5 md:py-1 absolute z-10 bg-gradient-to-tl from-[#cd1a0c] to-[#ff5246] -top-[1px] -left-[1px] rounded-tl-xl rounded-br-xl">
+                    <span
+                      className="block text-caption font-semibold text-white"
+                      style={{
+                        textShadow: "rgba(0, 0, 0, 0.25) 0.5px 0.5px 0px",
+                      }}
+                    >
+                      -24%
+                    </span>
                   </div>
                 </div>
-                <div className="px-2 py-0.5 md:py-1 absolute z-10 bg-gradient-to-tl from-[#cd1a0c] to-[#ff5246] -top-[1px] -left-[1px] rounded-tl-xl rounded-br-xl">
-                  <span
-                    className="block text-caption font-semibold text-white"
-                    style={{
-                      textShadow: "rgba(0, 0, 0, 0.25) 0.5px 0.5px 0px",
-                    }}
-                  >
-                    -24%
-                  </span>
-                </div>
-              </div>
+              ))}
+
             </div>
           </div>
         </div>
