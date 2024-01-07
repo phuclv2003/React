@@ -10,14 +10,14 @@ const BannerProducts: FC = () => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M321.001 11.2734C317.542 -0.456778 311.281 0.00242089 311.281 0.00242089H288.382V11.2734H321.001Z"
         fill="url(#paint0_linear_2172_789867)"
       />
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M0.997673 11.2734C4.45635 -0.456778 10.7178 0.00242089 10.7178 0.00242089H33.6162V11.2734H0.997673Z"
         fill="url(#paint1_linear_2172_789867)"
       />
@@ -34,8 +34,8 @@ const BannerProducts: FC = () => {
           y2="11.2734"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#CA8031" />
-          <stop offset="1" stop-color="#E77E0E" />
+          <stop stopColor="#CA8031" />
+          <stop offset="1" stopColor="#E77E0E" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2172_789867"
@@ -45,8 +45,8 @@ const BannerProducts: FC = () => {
           y2="11.2734"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#CA8031" />
-          <stop offset="1" stop-color="#E77E0E" />
+          <stop stopColor="#CA8031" />
+          <stop offset="1" stopColor="#E77E0E" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_2172_789867"
@@ -56,8 +56,8 @@ const BannerProducts: FC = () => {
           y2="41"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E9B043" />
-          <stop offset="1" stop-color="#D1550C" />
+          <stop stopColor="#E9B043" />
+          <stop offset="1" stopColor="#D1550C" />
         </linearGradient>
       </defs>
     </svg>
