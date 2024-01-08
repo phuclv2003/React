@@ -18,6 +18,7 @@ import storage from "redux-persist/lib/storage";
 import authApi, { authReducer } from "../services/auth";
 import accountApi, { accountReducer } from "../services/account";
 import productsApi, { productsReducer } from "../services/products";
+import NewsApi, { NewsReducer } from "../services/new";
 
 const persistConfig = {
   key: "root",
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   [authApi.reducerPath]: authReducer,
   [accountApi.reducerPath]: accountReducer,
   [productsApi.reducerPath]: productsReducer,
+  [NewsApi.reducerPath]: NewsReducer,
 
 });
 
@@ -45,6 +47,7 @@ export const store = configureStore({
       authApi.middleware,
       accountApi.middleware,
       productsApi.middleware,
+      NewsApi.middleware,
     ),
 });
 

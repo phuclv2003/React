@@ -2,18 +2,24 @@ import React from "react";
 import "../../../assets/css/common.css";
 import banner from "../../../assets/images/banner.webp";
 import muaThuoc from "../../../assets/images/can_mua_thuoc_40x40_3x_59367d7177.webp";
+import cupIcon from "../../../assets/images/cupIcon.webp";
 import timNha from "../../../assets/images/tim_nha_thuoc_gan_day_40x40_3x_a116d4c818.webp";
 import tuVan from "../../../assets/images/tu_van_voi_duoc_sy_40x40_3x_aaa988a1a2.webp";
-import product from "../../../assets/images/product.webp";
-import cupIcon from "../../../assets/images/cupIcon.webp";
 import BannerProducts from "../../../assets/svg/sanPhamBannerHome";
-import CarouselComponent from "./carousel";
 import { useGetAllProductsQuery } from "../../../services/products";
+import CarouselComponent from "./carousel";
+import { useGetNewsQuery } from "../../../services/new";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
   const { data: dataProduct } = useGetAllProductsQuery({ page_size: 6, page: 1, sort_by: JSON.stringify({ created_at: "ASC" }) });
-  console.log(dataProduct);
+  const { data: dataNews } = useGetNewsQuery({ page_size: 4, page: 1, sort_by: JSON.stringify({ created_at: "DESC" }) });
 
+   const detailNews = (id: number) => {
+    navigate(`/news/${id}`);
+  }
+  
   return (
     <>
       <div className="bg-[#f8f9fd]">
@@ -81,7 +87,7 @@ const Home: React.FC = () => {
             </div>
             <div className="grid grid-cols-6 gap-5 pb-7">
               {dataProduct?.data?.map((item: any) => (
-                <div className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer">
+                <div key={item.id} className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer">
                   <div className="p-3">
                     <div className="px-1 text-center md:px-4">
                       <img className="w-full" src={item.image} alt="product" />
@@ -103,7 +109,7 @@ const Home: React.FC = () => {
                       <div className="m-auto flex pt-1 mt-6">
                         <div className="w-fit rounded-xl bg-[#edf0f3] px-2 py-1">
                           <p className="w-fit text-caption font-medium text-[#4a4f63] line-clamp-2 text-[12px]">
-                          {item.unit}
+                            {item.unit}
                           </p>
                         </div>
                       </div>
@@ -161,54 +167,51 @@ const Home: React.FC = () => {
               </h2>
             </div>
             <div className="grid grid-cols-4 gap-5">
-              <div
-                className="flex h-full w-full flex-col rounded-[8px] bg-white transition-all md:rounded-xl md:p-[16px] cursor-pointer"
-                style={{
-                  boxShadow:
-                    "rgba(0, 39, 102, 0.08) 0px 0px 24px -4px, rgba(0, 39, 102, 0.03) 0px 0px 8px -4px",
-                }}
-              >
-                <div>
-                  <div className="overflow-hidden rounded-t-[8px] rounded-b-[0px] md:rounded-[8px]">
-                    <img
-                      className="w-full"
-                      src="https://cdn.nhathuoclongchau.com.vn/unsafe/257x152/https://cms-prod.s3-sgn09.fptcloud.com/155_sot_xuat_huyet_dengue_1952_62b9_large_3758770373.jpg"
-                      alt=""
-                    />
+              {dataNews?.data?.map((item: any) => (
+                <div
+                onClick={() => detailNews(item.id)}
+                  key={item.id}
+                  className="flex h-full w-full flex-col rounded-[8px] bg-white transition-all md:rounded-xl md:p-[16px] cursor-pointer"
+                  style={{
+                    boxShadow:
+                      "rgba(0, 39, 102, 0.08) 0px 0px 24px -4px, rgba(0, 39, 102, 0.03) 0px 0px 8px -4px",
+                  }}
+                >
+                  <div className="h-1/2">
+                    <div className="overflow-hidden rounded-t-[8px] h-full rounded-b-[0px] md:rounded-[8px]">
+                      <img
+                        className="w-full h-full"
+                        src={item.image}
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-1 h-full grow flex-col p-[12px] md:p-0 md:pt-[20px]">
+                    <h3 className="leading-[24px] tracking-[0.005em] text-[18px] font-bold text-[#020b27] md:tracking-[0.0025em]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-[8px] mb-[24px] text-gray-7 line-clamp-3 md:mb-[20px] text-[15px] font-medium">
+                      {item.describe}
+                    </p>
+                    <span className="flex items-center text-[14px] font-medium text-[#1250dc]">
+                      Tìm hiểu thêm
+                      <span className="estore-icon ml-[4px] text-[20px] css-wi4pw5">
+                        <svg
+                          className="w-5"
+                          viewBox="0 0 25 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9.25383 4.29289C8.86331 4.68342 8.86331 5.31658 9.25383 5.70711L15.5467 12L9.25383 18.2929C8.86331 18.6834 8.86331 19.3166 9.25383 19.7071C9.64436 20.0976 10.2775 20.0976 10.668 19.7071L17.668 12.7071C18.0586 12.3166 18.0586 11.6834 17.668 11.2929L10.668 4.29289C10.2775 3.90237 9.64435 3.90237 9.25383 4.29289Z"
+                            fill="currentColor"
+                          ></path>
+                        </svg>
+                      </span>
+                    </span>
                   </div>
                 </div>
-                <div className="flex h-full grow flex-col p-[12px] md:p-0 md:pt-[20px]">
-                  <h3 className="leading-[24px] tracking-[0.005em] text-[18px] font-bold text-[#020b27] md:tracking-[0.0025em]">
-                    Sốt xuất huyết Dengue
-                  </h3>
-                  <p className="mt-[8px] mb-[24px] text-gray-7 line-clamp-3 md:mb-[20px] text-[15px] font-medium">
-                    Sốt xuất huyết Dengue là một bệnh truyền nhiễm do muỗi Aedes
-                    truyền từ người sang người, thường xảy ra ở các khu vực
-                    nhiệt đới, cận nhiệt đới trong đó có Việt Nam. Có bốn loại
-                    vi rút gây sốt xuất huyết (DENV-1, -2, -3 và -4). Sốt xuất
-                    huyết có thể gặp ở cả trẻ em và người lớn. Bệnh nhân mắc sốt
-                    xuất huyết do 1 trong 4 loại vi rút Dengue chỉ có miễn dịch
-                    với đúng loại vi rút đó. Vì vậy, một người theo lý thuyết có
-                    thể bị nhiễm tới bốn lần.
-                  </p>
-                  <span className="flex items-center text-[14px] font-medium text-[#1250dc]">
-                    Tìm hiểu thêm
-                    <span className="estore-icon ml-[4px] text-[20px] css-wi4pw5">
-                      <svg
-                        className="w-5"
-                        viewBox="0 0 25 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9.25383 4.29289C8.86331 4.68342 8.86331 5.31658 9.25383 5.70711L15.5467 12L9.25383 18.2929C8.86331 18.6834 8.86331 19.3166 9.25383 19.7071C9.64436 20.0976 10.2775 20.0976 10.668 19.7071L17.668 12.7071C18.0586 12.3166 18.0586 11.6834 17.668 11.2929L10.668 4.29289C10.2775 3.90237 9.64435 3.90237 9.25383 4.29289Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </span>
-                  </span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

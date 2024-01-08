@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 interface IBreadcrumb {
   link?: string;
-  nameLink?: string;
+  nameLink?: string | undefined;
   name: string | undefined;
 }
 
@@ -12,10 +12,10 @@ const Breadcrumb = ({ link, nameLink, name }: IBreadcrumb) => {
       <Link className="hover:text-alizarin-crimson" to="/">
         Trang chủ
       </Link>
-      {link && (
+      {nameLink && (
         <>
           /
-          <Link className="hover:text-alizarin-crimson" to={link}>
+          <Link className="hover:text-alizarin-crimson" to={link || ""}>
             {nameLink}
           </Link>
         </>
