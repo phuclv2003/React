@@ -19,6 +19,8 @@ import authApi, { authReducer } from "../services/auth";
 import accountApi, { accountReducer } from "../services/account";
 import productsApi, { productsReducer } from "../services/products";
 import NewsApi, { NewsReducer } from "../services/new";
+import chatApi, { chatReducer } from "../services/chat";
+import categoryApi, { categoryReducer } from "../services/category";
 
 const persistConfig = {
   key: "root",
@@ -31,7 +33,8 @@ const rootReducer = combineReducers({
   [accountApi.reducerPath]: accountReducer,
   [productsApi.reducerPath]: productsReducer,
   [NewsApi.reducerPath]: NewsReducer,
-
+  [categoryApi.reducerPath]: categoryReducer,
+  [chatApi.reducerPath]: chatReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -48,6 +51,8 @@ export const store = configureStore({
       accountApi.middleware,
       productsApi.middleware,
       NewsApi.middleware,
+      chatApi.middleware,
+      categoryApi.middleware
     ),
 });
 

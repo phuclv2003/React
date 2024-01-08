@@ -1,14 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TUser } from "../schema/account";
 
 const NewsApi = createApi({
   reducerPath: "news",
   tagTypes: ["News"],
   baseQuery: fetchBaseQuery({
-    baseUrl:  `http://localhost:8000/api/v1`,
+    baseUrl: `http://localhost:8000/api/v1`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
-      if (token) {  
+      if (token) {
         headers.set("Authorization", "Bearer " + token);
       }
       return headers;
@@ -19,8 +18,9 @@ const NewsApi = createApi({
       getNews: builder.query<any, any>({
         query: (data) => {
           return {
-            url: `news/?page_size=${data.page_size}&page=${data.page}&sort_by=${data.sort_by}`,
+            url: `news`,
             method: "GET",
+            params: data,
           };
         },
         providesTags: ["News"],
@@ -38,9 +38,6 @@ const NewsApi = createApi({
   },
 });
 
-export const {
-  useGetNewsQuery,
-  useGetNewsByIdQuery,
-} = NewsApi;
+export const { useGetNewsQuery, useGetNewsByIdQuery } = NewsApi;
 export const NewsReducer = NewsApi.reducer;
 export default NewsApi;

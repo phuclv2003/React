@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-
 const productsApi = createApi({
   reducerPath: "products",
   tagTypes: ["Products"],
@@ -19,8 +18,9 @@ const productsApi = createApi({
       getAllProducts: builder.query<any, any>({
         query: (data) => {
           return {
-            url: `product/?page_size=${data.page_size}&page=${data.page}&sort_by=${data.sort_by}`,
+            url: `product`,
             method: "GET",
+            params: data,
           };
         },
         providesTags: ["Products"],
@@ -29,8 +29,6 @@ const productsApi = createApi({
   },
 });
 
-export const {
-  useGetAllProductsQuery
-} = productsApi;
+export const { useGetAllProductsQuery } = productsApi;
 export const productsReducer = productsApi.reducer;
 export default productsApi;
