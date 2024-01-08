@@ -90,3 +90,13 @@
 :where(.css-10ed4xt).custom-ant-input-affix-wrapper-disabled .custom-ant-input[disabled] {
   background: transparent;
 }
+
+.css-12owzhw {
+  position: relative;
+  box-shadow: rgba(114, 138, 161, 0.3) 6px 6px 0px;
+}
+
+.bg-gray-1\2c 5 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(237 240 243/var(--tw-bg-opacity));
+}

@@ -9,6 +9,7 @@ import Login from "./page/base/account/login";
 import Register from "./page/base/account/register";
 import Profile from "./page/base/account/profile";
 import EditProfile from "./page/base/account/editProfile";
+import DetailNews from "./page/base/news/detail";
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,9 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<Profile />} > 
             <Route path="editProfile" index element={<EditProfile />} />
+          </Route>
+          <Route path="news" > 
+            <Route path=":id" index element={<DetailNews />} />
           </Route>
         </Route>
         <Route path="/admin" element={<LayoutAdmin />}>
