@@ -2,7 +2,6 @@ import { Menu, Popover } from "antd";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/common.css";
-import { menu } from "../../assets/data/data";
 import header_desktop from "../../assets/images/header_desktop_a4bfadd206.webp";
 import megaphone from "../../assets/images/megaphone_b8025908d5.webp";
 import ArrowDownIcon from "../../assets/svg/arrowDownIcon";
@@ -14,56 +13,64 @@ import ShoppingCartIcon from "../../assets/svg/shoppingCart";
 import UserIcon from "../../assets/svg/user";
 import UserHover from "../../assets/svg/userHover";
 import { useGetProfileQuery } from "../../services/account";
-const items = menu.map((mainMenuItem) => {
-  if (!mainMenuItem.subMenu) {
-    return {
-      label: (
-        <Link to={mainMenuItem.link} key={mainMenuItem.id}>
-          {mainMenuItem.name}
-        </Link>
-      ),
-      key: `main_${mainMenuItem.id}`,
-    };
-  }
-
-  const subMenuItems = mainMenuItem.subMenu.map((subMenuItem) => ({
-    label: (
-      <Link
-        to={subMenuItem.link}
-        key={subMenuItem.id}
-        className="flex items-center gap-x-2"
-      >
-        <img className="w-[20px]" src={subMenuItem.image} alt="" />
-        {subMenuItem.name}
-      </Link>
-    ),
-    key: `sub_${subMenuItem.id}`,
-  }));
-
-  return {
-    label: (
-      <div
-        key={mainMenuItem.id}
-        className="flex items-center gap-x-1 arrow-down-icon"
-      >
-        <Link to={mainMenuItem.link || "#"}>{mainMenuItem.name}</Link>{" "}
-        {mainMenuItem.subMenu && mainMenuItem.subMenu.length > 0 && (
-          <ArrowDownIcon />
-        )}
-      </div>
-    ),
-    key: `main_${mainMenuItem.id}`,
-    children: subMenuItems,
-  };
-});
-
+import { useGetCategoryQuery } from "../../services/category";
 
 const HeaderBase: FC = () => {
   const { data: user } = useGetProfileQuery();
+
+  const { data: cate } = useGetCategoryQuery({
+    page_size: 20,
+    page: 1,
+    sort_by: '{"created_at": "asc"}',
+  });
+
+  const items = cate?.map((item) => {
+    if (!item.sub_category) {
+      return {
+        label: (
+          <Link to={item.id.toString()} key={item.id}>
+            {item.category_name}
+          </Link>
+        ),
+        key: `main_${item.id}`,
+      };
+    }
+
+    const subMenuItems = item.sub_category?.map((cate) => ({
+      label: (
+        <Link
+          to={cate.id.toString()}
+          key={cate.id}
+          className="flex items-center gap-x-2"
+        >
+          <img className="w-[20px]" src={cate.image} alt="" />
+          {cate.category_name}
+        </Link>
+      ),
+      key: `sub_${cate.id}`,
+    }));
+
+    return {
+      label: (
+        <div
+          key={item.id}
+          className="flex items-center gap-x-1 arrow-down-icon"
+        >
+          <Link to={item.id.toString()}>{item.category_name}</Link>
+          {item.sub_category && item.sub_category?.length > 0 && (
+            <ArrowDownIcon />
+          )}
+        </div>
+      ),
+      key: `main_${item.id}`,
+      children: subMenuItems,
+    };
+  });
+
   const logout = async () => {
-    localStorage.removeItem('refresh_token');
+    localStorage.removeItem("refresh_token");
     localStorage.removeItem("token");
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   };
   const someFunction = async () => {
     await logout();
@@ -73,7 +80,7 @@ const HeaderBase: FC = () => {
     <div className="m-0 p-0">
       <div className="flex items-center gap-x-2 my-4 cursor-pointer">
         <UserHover />
-        <div>Thông tin cá nhân</div>
+        <Link to={"/profile/editProfile"}>Thông tin cá nhân</Link>
       </div>
       <div className="flex items-center gap-x-2 my-4 cursor-pointer">
         <OrderIcon />
@@ -121,12 +128,12 @@ const HeaderBase: FC = () => {
         </div>
         <div className="relative">
           <div className="container mx-auto grid grid-cols-[40px_1fr_90px] grid-rows-[40px] content-center pt-1.5 pb-2 md:grid-cols-[200px_1fr_300px] md:grid-rows-[56px] md:pt-4 md:pb-[44px]">
-            <div>
+            <Link to="">
               <img
                 src="https://cms-prod.s3-sgn09.fptcloud.com/smalls/logo_web_a11ae0bbab.svg"
                 alt=""
               />
-            </div>
+            </Link>
             <div>
               <div className=" mx-auto w-full flex justify-center">
                 <div className="inline-flex items-center bg-white rounded-[35px] p-[6px] pl-4 w-[90%]">
@@ -141,7 +148,7 @@ const HeaderBase: FC = () => {
                 </div>
               </div>
 
-              <div className="">
+              <div className="mt-3">
                 <ul className="flex items-center justify-center gap-x-4 text-white">
                   <li>
                     <Link to={"#"}>dung dịch vệ sinh</Link>
@@ -181,14 +188,16 @@ const HeaderBase: FC = () => {
                   </div>
                 </div>
               ) : (
-                <Popover placement="bottom" content={content}
+                <Popover
+                  placement="bottom"
+                  content={content}
                   className="flex items-center cursor-pointer justify-center"
                 >
                   <div>
                     <UserIcon />
                   </div>
                   <div className="text-white font-medium text-[16px] ml-2">
-                    <Link to={"/profile/editProfile"}>{user.account_name}</Link>
+                    <p>{user.account_name}</p>
                   </div>
                 </Popover>
               )}

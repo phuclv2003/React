@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../../assets/css/common.css";
 import banner from "../../../assets/images/banner.webp";
 import muaThuoc from "../../../assets/images/can_mua_thuoc_40x40_3x_59367d7177.webp";
@@ -10,19 +10,29 @@ import { useGetAllProductsQuery } from "../../../services/products";
 import CarouselComponent from "./carousel";
 import { useGetNewsQuery } from "../../../services/new";
 import { useNavigate } from "react-router-dom";
-
+import ModalChat from "./modalChat";
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { data: dataProduct } = useGetAllProductsQuery({ page_size: 6, page: 1, sort_by: JSON.stringify({ created_at: "ASC" }) });
-  const { data: dataNews } = useGetNewsQuery({ page_size: 4, page: 1, sort_by: JSON.stringify({ created_at: "DESC" }) });
-
-   const detailNews = (id: number) => {
-    navigate(`/news/${id}`);
-  }
+  const { data: dataProduct } = useGetAllProductsQuery({
+    page_size: 6,
+    page: 1,
+    sort_by: '{"created_at": "asc"}',
+  });
+  const { data: dataNews } = useGetNewsQuery({
+    page_size: 4,
+    page: 1,
+    sort_by: '{"created_at": "desc"}',
+  });
   
+  const [openModalChat, setOpenModalChat] = useState<boolean>(false);
+
+  const detailNews = (id: number) => {
+    navigate(`/news/${id}`);
+  };
+
   return (
     <>
-      <div className="bg-[#f8f9fd]">
+      <div className="bg-[#f8f9fd] relative">
         <div className="container mx-auto">
           <div className="flex gap-5 py-4">
             <CarouselComponent />
@@ -46,11 +56,12 @@ const Home: React.FC = () => {
                   </div>
                 </div>
                 <div
+                  onClick={() => setOpenModalChat(!openModalChat)}
                   style={{
                     boxShadow:
                       "0 0 16px -4px rgba(0,39,102,.08), 0 0 6px -2px rgba(0,39,102,.03)",
                   }}
-                  className="flex flex-col items-center justify-start px-[11px] py-[17px] rounded-lg bg-white"
+                  className="flex flex-col items-center justify-start px-[11px] py-[17px] rounded-lg bg-white cursor-pointer"
                 >
                   <div>
                     <img src={tuVan} alt="" />
@@ -87,23 +98,23 @@ const Home: React.FC = () => {
             </div>
             <div className="grid grid-cols-6 gap-5 pb-7">
               {dataProduct?.data?.map((item: any) => (
-                <div key={item.id} className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer">
+                <div
+                  key={item.id}
+                  className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer"
+                >
                   <div className="p-3">
                     <div className="px-1 text-center md:px-4">
                       <img className="w-full" src={item.image} alt="product" />
                     </div>
                     <div>
-                      <h3 className="text-body2 font-semibold">
-                        {item.name}
-                      </h3>
+                      <h3 className="text-body2 font-semibold">{item.name}</h3>
                       <div className="mt-1">
                         <span className="text-body2 font-semibold text-[#1250dc] ">
                           {new Intl.NumberFormat("vi-VN").format(item.price)}
                           <span> đ</span>
                         </span>
                         <span className="text-caption font-medium text-[#1250dc] text-[12px] pl-1">
-                          /
-                          <span className="pl-1">{item.unit}</span>
+                          /<span className="pl-1">{item.unit}</span>
                         </span>
                       </div>
                       <div className="m-auto flex pt-1 mt-6">
@@ -127,7 +138,6 @@ const Home: React.FC = () => {
                   </div>
                 </div>
               ))}
-
             </div>
           </div>
         </div>
@@ -169,7 +179,7 @@ const Home: React.FC = () => {
             <div className="grid grid-cols-4 gap-5">
               {dataNews?.data?.map((item: any) => (
                 <div
-                onClick={() => detailNews(item.id)}
+                  onClick={() => detailNews(item.id)}
                   key={item.id}
                   className="flex h-full w-full flex-col rounded-[8px] bg-white transition-all md:rounded-xl md:p-[16px] cursor-pointer"
                   style={{
@@ -179,11 +189,7 @@ const Home: React.FC = () => {
                 >
                   <div className="h-1/2">
                     <div className="overflow-hidden rounded-t-[8px] h-full rounded-b-[0px] md:rounded-[8px]">
-                      <img
-                        className="w-full h-full"
-                        src={item.image}
-                        alt=""
-                      />
+                      <img className="w-full h-full" src={item.image} alt="" />
                     </div>
                   </div>
                   <div className="flex flex-1 h-full grow flex-col p-[12px] md:p-0 md:pt-[20px]">
@@ -221,6 +227,10 @@ const Home: React.FC = () => {
             alt=""
           />
         </div>
+        <ModalChat
+          openModalChat={openModalChat}
+          setOpenModalChat={setOpenModalChat}
+        />
       </div>
     </>
   );
