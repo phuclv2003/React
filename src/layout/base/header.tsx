@@ -46,7 +46,11 @@ const HeaderBase: FC = () => {
           key={cate.id}
           className="flex items-center gap-x-2"
         >
-          <img className="w-[20px]" src={cate.image} alt="" />
+          <img
+            className="w-[20px]"
+            src={"http://localhost:8000/" + cate.image}
+            alt=""
+          />
           {cate.category_name}
         </Link>
       ),
@@ -71,8 +75,8 @@ const HeaderBase: FC = () => {
   });
 
   const logout = async () => {
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("token");
+    await localStorage.removeItem("tokenRefresh");
+    await localStorage.removeItem("token");
     await new Promise((resolve) => setTimeout(resolve, 0));
   };
   const someFunction = async () => {
@@ -137,7 +141,6 @@ const HeaderBase: FC = () => {
                 alt=""
               />
             </Link>
-            <div>
               <div className=" mx-auto w-full flex justify-center">
                 <div className="inline-flex items-center bg-white rounded-[35px] p-[6px] pl-4 w-[90%]">
                   <input
@@ -150,36 +153,6 @@ const HeaderBase: FC = () => {
                   </button>
                 </div>
               </div>
-
-              <div className="mt-3">
-                <ul className="flex items-center justify-center gap-x-4 text-white">
-                  <li>
-                    <Link to={"#"}>dung dịch vệ sinh</Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>canxi</Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>thuốc nhỏ mắt</Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>omega 3</Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>sắt</Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>Khẩu trang</Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>xị mũi</Link>
-                  </li>
-                  <li>
-                    <Link to={"#"}>Kem chống nắng</Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
             <div className="flex h-full items-center justify-between">
               {!user ? (
                 <div className="flex items-center cursor-pointer justify-center">

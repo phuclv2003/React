@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  Refresh,
   RegisterRequest,
   TLogin,
   TRegister,
@@ -7,7 +8,6 @@ import {
   ValidateEmail,
   ValidateEmailRequest,
 } from "../schema/auth";
-
 
 const authApi = createApi({
   reducerPath: "auth",
@@ -47,6 +47,15 @@ const authApi = createApi({
           };
         },
       }),
+      refresh: builder.mutation<RegisterRequest, Partial<Refresh>>({
+        query: (token) => {
+          return {
+            url: "refresh",
+            method: "POST",
+            body: token,
+          };
+        },
+      }),
     };
   },
 });
@@ -55,6 +64,7 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useValidateEmailMutation,
+  useRefreshMutation,
 } = authApi;
 export const authReducer = authApi.reducer;
 export default authApi;

@@ -1,12 +1,13 @@
 import { useFormik } from "formik";
 import React, { FC, useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 import "../../../assets/css/common.css";
-import { SendMessage, sendMessageSchema } from "../../../schema/chat";
-import { useGetProfileQuery } from "../../../services/account";
 import {
-  useChatWithAdminQuery,
-  useSendMessageMutation,
-} from "../../../services/chat";
+  SendMessage,
+  sendMessageSchema
+} from "../../../schema/chat";
+import { useGetProfileQuery } from "../../../services/account";
+import { useChatWithAdminQuery } from "../../../services/chat";
 
 type TModalChat = {
   openModalChat: boolean;
@@ -16,8 +17,40 @@ type TModalChat = {
 const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
   const { data: user } = useGetProfileQuery();
   const { data: chat, refetch } = useChatWithAdminQuery(user?.id || 0);
-  const [sendChat] = useSendMessageMutation();
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const token = localStorage.getItem("token");
+  const socket = io("http://localhost:8000/chat", {
+    auth: {
+      token: token,
+    },
+    path: "/ws/socket.io/",
+  });
+
+  useEffect(() => {
+    socket?.on("connect_error", (error) => {
+      console.log(error);
+    });
+
+    socket.on("connect", () => {
+      console.log("connected!");
+      socket.emit("join_room", 2);
+    });
+
+    socket.on("new_message", (data) => {
+      console.log("Received");
+      refetch();
+    });
+
+    return () => {
+      if (!openModalChat) {
+        socket?.on("disconnect", () => {
+          console.log("Disconnected socket");
+        });
+        socket.disconnect();
+      }
+    };
+  }, [openModalChat, refetch, socket]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -32,17 +65,11 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
     },
     validationSchema: sendMessageSchema,
     onSubmit: async (values: SendMessage) => {
-      try {
-        const res = await sendChat(values);
-        if ("data" in res) {
-          formik.resetForm();
-          refetch();
-          if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-          }
-        }
-      } catch (error) {
-        console.error("Lỗi", error);
+      const newValue = { ...values, room: 2 };
+      socket.emit("send_message", newValue);
+      formik.resetForm();
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       }
     },
   });
@@ -140,7 +167,10 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
               </div>
             </div>
           </header>
-          <div className="bg-[#f5f5f5]" style={{ scrollBehavior: "smooth" }}>
+          <div
+            className="bg-[#f5f5f5] pb-5"
+            style={{ scrollBehavior: "smooth" }}
+          >
             <div className="translate-y-0" style={{ position: "relative" }}>
               <div
                 id="message-list"
@@ -153,7 +183,7 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
                 >
                   {chat?.map((item) => (
                     <div key={item.id}>
-                      {item.account_id === user?.id ? (
+                      {item.sent_account_id === user?.id ? (
                         <li className="flex justify-start flex-row-reverse w-full">
                           <div className="message-content">
                             <div className="message-reply--content">
@@ -210,6 +240,7 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
             </div>
           </div>
           <form
+            id="chatBox"
             className="flex justify-between items-center flex-1 gap-x-5 px-3 pb-5 bg-[#f5f5f5] rounded-b-md"
             onSubmit={formik.handleSubmit}
           >

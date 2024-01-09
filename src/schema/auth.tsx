@@ -12,12 +12,10 @@ export const LoginSchema = yup.object().shape({
 });
 
 export const ResLoginSchema = yup.object().shape({
-  access_token: yup
-    .string().required(),
-  refresh_token: yup
-    .string().required(),
-  token_type: yup
-    .string().required(),
+  access_token: yup.string().required(),
+  refresh_token: yup.string().required(),
+  token_type: yup.string().required(),
+  user_type: yup.string().required(),
 });
 
 export const RegisterSchema = yup.object().shape({
@@ -62,3 +60,9 @@ const validate_emailRequestSchema = yup.object({
 export type ValidateEmailRequest = yup.InferType<
   typeof validate_emailRequestSchema
 >;
+
+const refreshSchema = yup.object({
+  refresh_token: yup.string().required(),
+});
+
+export type Refresh = yup.InferType<typeof refreshSchema>;

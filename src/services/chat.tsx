@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ChatWithAdminResponse, SendMessage } from "../schema/chat";
+import { ChatWithAdminResponse, ListChat, SendMessage } from "../schema/chat";
 
 const chatApi = createApi({
   reducerPath: "chat",
@@ -25,6 +25,15 @@ const chatApi = createApi({
         },
         providesTags: ["Chat"],
       }),
+      listChat: builder.query<ListChat, void>({
+        query: () => {
+          return {
+            url: "users",
+            method: "GET",
+          };
+        },
+        providesTags: ["Chat"],
+      }),
       sendMessage: builder.mutation<any, Partial<SendMessage>>({
         query: (chat) => {
           return {
@@ -39,6 +48,6 @@ const chatApi = createApi({
   },
 });
 
-export const { useChatWithAdminQuery, useSendMessageMutation } = chatApi;
+export const { useChatWithAdminQuery, useSendMessageMutation, useListChatQuery } = chatApi;
 export const chatReducer = chatApi.reducer;
 export default chatApi;

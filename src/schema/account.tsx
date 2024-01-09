@@ -11,6 +11,7 @@ export const UserSchema = yup.object().shape({
   password: yup.string().required(),
   created_at: yup.string().required(),
   is_delete: yup.boolean().required(),
+  user_type: yup.string().required(),
 }).required();
 
 export type TUser = yup.InferType<typeof UserSchema>;

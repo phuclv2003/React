@@ -29,10 +29,13 @@ const Login = () => {
           if ("error" in response) {
             message.error("Tài khoản mật khẩu không chính xác");
           } else {
-            navigate("/");
-            console.log(response);
             localStorage.setItem("token", response.data.access_token);
-            localStorage.setItem("refresh_token", response.data.refresh_token);
+            localStorage.setItem("tokenRefresh", response.data.refresh_token);
+            if (response.data.user_type === "admin") {
+              navigate("/admin");
+            } else {
+              navigate("/");
+            }
           }
         } else {
           navigate("/register", {
