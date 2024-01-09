@@ -136,16 +136,6 @@ const Home: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="px-2 py-0.5 md:py-1 absolute z-10 bg-gradient-to-tl from-[#cd1a0c] to-[#ff5246] -top-[1px] -left-[1px] rounded-tl-xl rounded-br-xl">
-                    <span
-                      className="block text-caption font-semibold text-white"
-                      style={{
-                        textShadow: "rgba(0, 0, 0, 0.25) 0.5px 0.5px 0px",
-                      }}
-                    >
-                      -24%
-                    </span>
-                  </div>
                 </div>
               ))}
             </div>
