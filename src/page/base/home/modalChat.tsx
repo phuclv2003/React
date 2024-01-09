@@ -33,7 +33,7 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
 
     socket.on("connect", () => {
       console.log("connected!");
-      socket.emit("join_room", 2);
+      socket.emit("join_room", user?.id);
     });
 
     socket.on("new_message", (data) => {
@@ -64,7 +64,7 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
     },
     validationSchema: sendMessageSchema,
     onSubmit: async (values: SendMessage) => {
-      const newValue = { ...values, room: 2 };
+      const newValue = { ...values, room: user?.id };
       socket.emit("send_message", newValue);
       formik.resetForm();
       if (scrollRef.current) {

@@ -27,7 +27,7 @@ const Chat = () => {
 
     socket.on("connect", () => {
       console.log("connected!");
-      socket.emit("join_room", 2);
+      socket.emit("join_room", Number(id));
     });
 
     socket.on("new_message", (data) => {
@@ -49,7 +49,7 @@ const Chat = () => {
     },
     validationSchema: sendMessageSchema,
     onSubmit: async (values: SendMessage) => {
-      const newValue = { ...values, room: 2 };
+      const newValue = { ...values, room: Number(id) };
       socket.emit("send_message", newValue);
       formik.resetForm();
       if (scrollRef.current) {
