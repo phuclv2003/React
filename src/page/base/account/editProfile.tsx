@@ -26,6 +26,9 @@ const EditProfile = (props: Props) => {
       }
     },
   });
+
+  
+
   return (
     <>
       <div className='rounded-lg bg-white'>

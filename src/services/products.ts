@@ -25,10 +25,22 @@ const productsApi = createApi({
         },
         providesTags: ["Products"],
       }),
+      getProductById: builder.query<any, any>({
+        query: (id) => {
+          return {
+            url: `product/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Products"],
+      }),
     };
   },
 });
 
-export const { useGetAllProductsQuery } = productsApi;
+export const {
+  useGetAllProductsQuery,
+  useGetProductByIdQuery,
+} = productsApi;
 export const productsReducer = productsApi.reducer;
 export default productsApi;

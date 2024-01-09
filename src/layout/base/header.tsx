@@ -1,6 +1,6 @@
 import { Menu, Popover } from "antd";
 import { FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../assets/css/common.css";
 import header_desktop from "../../assets/images/header_desktop_a4bfadd206.webp";
 import megaphone from "../../assets/images/megaphone_b8025908d5.webp";
@@ -16,6 +16,7 @@ import { useGetProfileQuery } from "../../services/account";
 import { useGetCategoryQuery } from "../../services/category";
 
 const HeaderBase: FC = () => {
+  const navigate = useNavigate();
   const { data: user } = useGetProfileQuery();
 
   const { data: cate } = useGetCategoryQuery({
@@ -23,7 +24,9 @@ const HeaderBase: FC = () => {
     page: 1,
     sort_by: '{"created_at": "asc"}',
   });
-
+  const cart = () => {
+    navigate(`/cart`);
+  }
   const items = cate?.map((item) => {
     if (!item.sub_category) {
       return {
@@ -202,11 +205,11 @@ const HeaderBase: FC = () => {
                 </Popover>
               )}
 
-              <div className="flex items-center bg-[#1250dc] relative shrink-0 md:ml-auto rounded-[42px] w-[134px] h-[48px] justify-center cursor-pointer">
+              <div onClick={() => cart()} className="flex items-center bg-[#1250dc] relative shrink-0 md:ml-auto rounded-[42px] w-[134px] h-[48px] justify-center cursor-pointer">
                 <div>
                   <ShoppingCartIcon />
                 </div>
-                <div className="text-white font-medium text-[16px] ml-2">
+                <div className="text-white font-medium text-[16px] ml-2" >
                   Giỏ hàng
                 </div>
               </div>
