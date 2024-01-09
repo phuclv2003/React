@@ -65,7 +65,7 @@ const Chat = () => {
           <div id="message-list" aria-hidden="true" className="message-list">
             <div
               ref={scrollRef}
-              className="mx-3 py-1 flex flex-col-reverse gap-y-3 max-h-[60vh] overflow-auto"
+              className="mx-3 py-1 flex flex-col-reverse gap-y-3 h-[60vh] overflow-auto"
             >
               {chat?.map((item) => (
                 <div key={item.id}>
