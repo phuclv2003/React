@@ -2,10 +2,7 @@ import { useFormik } from "formik";
 import React, { FC, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import "../../../assets/css/common.css";
-import {
-  SendMessage,
-  sendMessageSchema
-} from "../../../schema/chat";
+import { SendMessage, sendMessageSchema } from "../../../schema/chat";
 import { useGetProfileQuery } from "../../../services/account";
 import { useChatWithAdminQuery } from "../../../services/chat";
 
@@ -15,8 +12,10 @@ type TModalChat = {
 };
 
 const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
-  const { data: user } = useGetProfileQuery();
-  const { data: chat, refetch } = useChatWithAdminQuery(user?.id || 0);
+  const { data: user, isLoading } = useGetProfileQuery();
+  const { data: chat, refetch } = useChatWithAdminQuery(
+    (!isLoading && user?.id) || 0
+  );
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const token = localStorage.getItem("token");
@@ -38,7 +37,7 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
     });
 
     socket.on("new_message", (data) => {
-      console.log("Received");
+      console.log("Received", data);
       refetch();
     });
 
