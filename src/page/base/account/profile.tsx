@@ -11,7 +11,7 @@ type Props = {}
 const Profile = (props: Props) => {
   const { data: user } = useGetProfileQuery();
   const logout = async () => {
-    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('tokenRefresh');
     localStorage.removeItem("token");
     await new Promise(resolve => setTimeout(resolve, 0));
   };

@@ -9,6 +9,7 @@ import { Breadcrumb, Layout, Menu, MenuProps, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import { FC, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useGetProfileQuery } from "../../services/account";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -37,7 +38,7 @@ type Props = {};
 const { Header, Sider, Content } = Layout;
 
 const items: MenuItem[] = [
-  getItem("Option 1", "1", <PieChartOutlined />, "/admin/option1"),
+  getItem("Chat", "1", <PieChartOutlined />, "/admin/chat"),
   getItem("Option 2", "2", <DesktopOutlined />, "/admin/option2"),
   getItem("User", "sub1", <UserOutlined />, undefined, [
     getItem("Tom", "3", undefined, "/admin/users/tom"),
@@ -54,11 +55,19 @@ const items: MenuItem[] = [
 const LayoutAdmin: FC<Props> = () => {
   const navigator = useNavigate();
   const location = useLocation();
-  
+
   const [collapsed, setCollapsed] = useState(false);
   const [breadcrumbs, setBreadcrumbs] = useState<
     { name: string; url: string }[]
   >([]);
+
+  const { data: user, isSuccess } = useGetProfileQuery();
+
+  useEffect(() => {
+    if (user?.user_type !== "admin" && isSuccess) {
+      navigator("/");
+    }
+  }, [isSuccess, navigator, user?.user_type]);
 
   const generatePathArray = (path: string) => {
     const pathArray = path.split("/").filter(Boolean);
@@ -72,7 +81,6 @@ const LayoutAdmin: FC<Props> = () => {
   useEffect(() => {
     setBreadcrumbs(generatePathArray(location.pathname));
   }, [location.pathname]);
-
 
   const {
     token: { colorBgContainer, borderRadiusLG },
