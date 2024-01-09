@@ -23,13 +23,18 @@ const Home: React.FC = () => {
     page: 1,
     sort_by: '{"created_at": "desc"}',
   });
+
+   const detailNews = (id: number) => {
+    navigate(`/news/${id}`);
+  }
+  const detailProduct = (id: number) => {
+    navigate(`/product/${id}`);
+  }
+  const cart = (id: number) => {
+    navigate(`/cart`);
+  }
   
   const [openModalChat, setOpenModalChat] = useState<boolean>(false);
-
-  const detailNews = (id: number) => {
-    navigate(`/news/${id}`);
-  };
-
   return (
     <>
       <div className="bg-[#f8f9fd] relative">
@@ -98,10 +103,7 @@ const Home: React.FC = () => {
             </div>
             <div className="grid grid-cols-6 gap-5 pb-7">
               {dataProduct?.data?.map((item: any) => (
-                <div
-                  key={item.id}
-                  className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer"
-                >
+                <div onClick={() => detailProduct(item.id)} key={item.id} className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer">
                   <div className="p-3">
                     <div className="px-1 text-center md:px-4">
                       <img className="w-full" src={item.image} alt="product" />

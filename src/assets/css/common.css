@@ -100,3 +100,41 @@
   --tw-bg-opacity: 1;
   background-color: rgb(237 240 243/var(--tw-bg-opacity));
 }
+
+
+html {
+  scroll-behavior: smooth !important;
+}
+
+
+.cart-pre-order_block-note__lVvSU textarea {
+  height: 80px;
+  font-size: 16px;
+  line-height: 24px;
+  width: 100%;
+}
+
+.cart-pre-order_text-field__A7Raq input, .cart-pre-order_text-field__A7Raq textarea {
+  position: relative;
+  display: block;
+  width: 100%;
+  font-family: inherit;
+  padding: 16px 56px 16px 16px;
+  color: #020b27;
+  background-color: white;
+  background-clip: padding-box;
+  box-shadow: 0 0 0 1px #c1c8d1!important;
+  border: none;
+  transition: all .3s;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 8px;
+  resize: none;
+}
+ .cart-pre-order_item__f0skA:not(:last-child) {
+  border-bottom: 1px solid var(--gray-200);
+}
