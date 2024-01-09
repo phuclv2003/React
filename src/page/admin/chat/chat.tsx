@@ -34,7 +34,7 @@ const Chat = () => {
       console.log("Received");
       refetch();
     });
-  }, [refetch, socket]);
+  }, [id, refetch, socket]);
 
   useEffect(() => {
     if (scrollRef.current) {

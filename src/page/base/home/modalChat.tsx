@@ -49,7 +49,7 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
         socket.disconnect();
       }
     };
-  }, [openModalChat, refetch, socket]);
+  }, [openModalChat, refetch, socket, user?.id]);
 
   useEffect(() => {
     if (scrollRef.current) {
