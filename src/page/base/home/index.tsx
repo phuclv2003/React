@@ -24,16 +24,16 @@ const Home: React.FC = () => {
     sort_by: '{"created_at": "desc"}',
   });
 
-   const detailNews = (id: number) => {
+  const detailNews = (id: number) => {
     navigate(`/news/${id}`);
-  }
+  };
   const detailProduct = (id: number) => {
     navigate(`/product/${id}`);
-  }
+  };
   // const cart = (id: number) => {
   //   navigate(`/cart`);
   // }
-  
+
   const [openModalChat, setOpenModalChat] = useState<boolean>(false);
   return (
     <>
@@ -103,10 +103,18 @@ const Home: React.FC = () => {
             </div>
             <div className="grid grid-cols-6 gap-5 pb-7">
               {dataProduct?.data?.map((item: any) => (
-                <div onClick={() => detailProduct(item.id)} key={item.id} className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer">
+                <div
+                  onClick={() => detailProduct(item.id)}
+                  key={item.id}
+                  className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer"
+                >
                   <div className="p-3">
                     <div className="px-1 text-center md:px-4">
-                      <img className="w-full" src={item.image} alt="product" />
+                      <img
+                        className="w-full"
+                        src={"http://localhost:8000/" + item.image}
+                        alt="product"
+                      />
                     </div>
                     <div>
                       <h3 className="text-body2 font-semibold">{item.name}</h3>
@@ -191,7 +199,11 @@ const Home: React.FC = () => {
                 >
                   <div className="h-1/2">
                     <div className="overflow-hidden rounded-t-[8px] h-full rounded-b-[0px] md:rounded-[8px]">
-                      <img className="w-full h-full" src={item.image} alt="" />
+                      <img
+                        className="w-full h-full"
+                        src={"http://localhost:8000/" + item.image}
+                        alt=""
+                      />
                     </div>
                   </div>
                   <div className="flex flex-1 h-full grow flex-col p-[12px] md:p-0 md:pt-[20px]">

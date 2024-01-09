@@ -179,7 +179,7 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
               >
                 <div
                   ref={scrollRef}
-                  className="mx-3 py-1 flex flex-col-reverse gap-y-3 max-h-96 overflow-auto"
+                  className="mx-3 py-1 flex flex-col-reverse gap-y-3 h-96 overflow-auto"
                 >
                   {chat?.map((item) => (
                     <div key={item.id}>
