@@ -18,6 +18,7 @@ const Order: FC = () => {
       navigate("/cart");
     }
   }, [data, location.state, navigate]);
+
   const formik = useFormik<any>({
     initialValues: {
       receiving_location: "",
@@ -31,7 +32,7 @@ const Order: FC = () => {
     },
   });
 
-  const subMitAddOrder = () => {
+  const subMitAddOrder = async () => {
     let paymentMethod: string | undefined;
 
     const selectedPaymentMethod = document.querySelector<HTMLInputElement>(
@@ -55,8 +56,11 @@ const Order: FC = () => {
       total_price: data.totalPrice,
       items: items,
     };
-    addOrder(dataReq);
-    message.success("Đặt hàng thành công");
+    const res = await addOrder(dataReq);
+    if ("data" in res) {
+      navigate("/order");
+      message.success("Đặt hàng thành công");
+    }
   };
   return (
     <>
@@ -258,7 +262,7 @@ const Order: FC = () => {
                       }}
                       className="w-full rounded-[42px] cursor-pointer outline-none p-3 mt-4 flex items-center justify-center text-white"
                     >
-                      Hoàn tất{" "}
+                      Hoàn tất
                     </button>
                   </div>
 
