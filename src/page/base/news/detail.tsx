@@ -9,8 +9,6 @@ type Props = {};
 const DetailNews = (props: Props) => {
   const { id } = useParams();
   const { data } = useGetNewsByIdQuery(id);
-  console.log(data);
-
   return (
     <>
       {data && (

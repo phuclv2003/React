@@ -22,6 +22,14 @@ const orderApi = createApi({
           body: order,
         }),
         invalidatesTags: ["Orders"],
+      }),
+      postPayMent: builder.mutation<any, any>({
+        query: (order) => ({
+          url: `payment`,
+          method: "POST",
+          body: order,
+        }),
+        invalidatesTags: ["Orders"],
       })
     };
   },
@@ -29,6 +37,7 @@ const orderApi = createApi({
 
 export const {
   useAddOrderMutation,
+  usePostPayMentMutation
 } = orderApi;
 export const orderReducer = orderApi.reducer;
 export default orderApi;
