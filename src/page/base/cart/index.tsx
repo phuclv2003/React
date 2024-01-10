@@ -12,12 +12,23 @@ const Cart: FC = () => {
   const navigate = useNavigate();
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
   const [totalPrice, setTotalPrice] = useState(0);
+  const [dataOrder, setDataOrder] = useState<any>();
 
-  const { data: dataOrder } = useGetUserListCartsQuery({
+  const { data: dataRes, refetch } = useGetUserListCartsQuery({
     page_size: 20,
     page: 1,
     sort_by: '{"created_at": "asc"}',
   });
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+  useEffect(() => {
+    if (dataRes) {
+      setDataOrder(dataRes);
+    }
+  }, [dataRes]);
+
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const handleSelectAll = (e: any) => {
@@ -104,8 +115,6 @@ const Cart: FC = () => {
           })
         ),
       };
-      console.log(data);
-
       navigate("/order", {
         state: {
           data: {

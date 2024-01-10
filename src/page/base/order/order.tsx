@@ -4,14 +4,81 @@ import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../../assets/css/common.css";
 import Breadcrumb from "../../../components/Breadcrumb";
-import { useAddOrderMutation } from "../../../services/order";
+import { useAddOrderMutation, usePostPayMentMutation } from "../../../services/order";
+interface Location {
+  Id: string;
+  Name: string;
+  Districts: {
+    Id: string;
+    Name: string;
+    Wards: {
+      Id: string;
+      Name: string;
+    }[];
+  }[];
+}
 
+interface FormValues {
+  tel: string;
+  city: string;
+  district: string;
+  ward: string;
+  detailed_address: string;
+}
 const Order: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [addOrder] = useAddOrderMutation();
+  const [postPayMent] = usePostPayMentMutation();
   const [data] = useState<any>(location.state?.data);
-  console.log(data);
+  const [cities, setCities] = useState<Location[]>([]);
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [selectedDistrict, setSelectedDistrict] = useState<string>('');
+  const [districts, setDistricts] = useState<Location['Districts']>([]);
+  const [wards, setWards] = useState<Location['Districts'][0]['Wards']>([]);
+  const [selectedPayment, setSelectedPayment] = useState<string>('');
+  const [paymentError, setPaymentError] = useState<string>('');
+  const validate = (values: FormValues) => {
+    const errors: Partial<FormValues> = {};
+    if (!values.tel) {
+      errors.tel = 'Vui lòng nhập số điện thoại.';
+    } else if (!/^\d+$/.test(values.tel)) {
+      errors.tel = 'Số điện thoại chỉ được chứa số.';
+    }
+
+    if (!values.city) {
+      errors.city = 'Vui lòng chọn tỉnh/thành phố.';
+    }
+
+    if (!values.district) {
+      errors.district = 'Vui lòng chọn quận/huyện.';
+    }
+
+    if (!values.ward) {
+      errors.ward = 'Vui lòng chọn phường/xã.';
+    }
+
+    if (!values.detailed_address) {
+      errors.detailed_address = 'Vui lòng nhập địa chỉ cụ thể.';
+    }
+
+    return errors;
+  };
+  const [ipAddress, setIpAddress] = useState('');
+
+  useEffect(() => {
+    const fetchIpAddress = async () => {
+      try {
+        const response = await fetch('https://api64.ipify.org?format=json');
+        const data = await response.json();
+        setIpAddress(data.ip);
+      } catch (error) {
+        console.error('Lỗi khi lấy địa chỉ IP:', error);
+      }
+    };
+
+    fetchIpAddress();
+  }, []);
 
   useEffect(() => {
     if (!location.state) {
@@ -19,49 +86,101 @@ const Order: FC = () => {
     }
   }, [data, location.state, navigate]);
 
-  const formik = useFormik<any>({
+  const formik = useFormik<FormValues>({
     initialValues: {
-      receiving_location: "",
-      tel: "",
+      tel: '',
+      city: '',
+      district: '',
+      ward: '',
+      detailed_address: '',
     },
-    onSubmit: async (values: any) => {
+    validate,
+    onSubmit: async (values: FormValues) => {
       try {
       } catch (error) {
-        console.error("Lỗi", error);
+        console.error('Lỗi', error);
       }
     },
   });
-
+  const handlePaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedPayment(event.target.value);
+  };
   const subMitAddOrder = async () => {
-    let paymentMethod: string | undefined;
+    const formIsValid = await formik.validateForm();
+    if (Object.keys(formIsValid).length === 0) {
+      if (!selectedPayment) {
+        setPaymentError('Vui lòng chọn phương thức thanh toán.');
+        return;
+      }
+      setPaymentError('');
+      let paymentMethod: string | undefined;
 
-    const selectedPaymentMethod = document.querySelector<HTMLInputElement>(
-      'input[name="payment"]:checked'
-    );
-    if (selectedPaymentMethod) {
-      if (selectedPaymentMethod.id === "6") {
+      if (selectedPayment === "6") {
         paymentMethod = "CASH";
-      } else if (selectedPaymentMethod.id === "7") {
+      } else if (selectedPayment === "7") {
         paymentMethod = "VNPAY";
       }
-    }
-    const items = data.products.map((product: any) => ({
-      product_id: product.id,
-      quantity: product.quantity,
-    }));
-    const dataReq = {
-      receiving_location: formik.values.receiving_location,
-      tel: formik.values.tel,
-      payments: paymentMethod,
-      total_price: data.totalPrice,
-      items: items,
-    };
-    const res = await addOrder(dataReq);
-    if ("data" in res) {
-      navigate("/order");
-      message.success("Đặt hàng thành công");
+      const items = data.products.map((product: any) => ({
+        product_id: product.id,
+        quantity: product.quantity,
+      }));
+      const receiving_location = `${formik.values.detailed_address}, ${formik.values.ward}, ${formik.values.district}, ${formik.values.city}`;
+
+      const dataReq = {
+        receiving_location: receiving_location,
+        tel: formik.values.tel,
+        payments: paymentMethod,
+        total_price: data.totalPrice,
+        items: items,
+      };
+      const res = await addOrder(dataReq);
+      if ("data" in res) {
+        navigate("/order");
+        const resPost = await postPayMent({
+          order_id: res.data.id,
+          total_price: res.data.total_price,
+          bank_code: "NCB",
+          "ipaddr": ipAddress,
+          "language": "vn",
+          "description": `Thanh toán `
+        })
+        message.success("Đặt hàng thành công");
+      }
+    } else {
+      console.log('Form validation failed:', formIsValid);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json');
+        const data = await response.json();
+        setCities(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const cityId = event.target.value;
+    setSelectedCity(cityId);
+    const selectedCityData = cities.find(city => city.Name === cityId);
+    setDistricts(selectedCityData?.Districts || []);
+    setSelectedDistrict('');
+    setWards([]);
+  };
+
+  const handleDistrictChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const districtId = event.target.value;
+    setSelectedDistrict(districtId);
+    const selectedDistrictData = districts.find(district => district.Name === districtId);
+    setWards(selectedDistrictData?.Wards || []);
+  };
+
   return (
     <>
       {data && (
@@ -129,7 +248,7 @@ const Order: FC = () => {
                       <div>Địa chỉ nhận hàng</div>
                     </div>
                     <form action="" onSubmit={formik.handleSubmit}>
-                      <div className="cs-wrapper-text w-full css-wuiu1 mt-4 border-[#c1c8d1]">
+                      <div className="w-full css-wuiu1  rounded-md mt-4 border-[#c1c8d1]">
                         <span className="custom-ant-input-affix-wrapper css-10ed4xt">
                           <input
                             placeholder="Số điện thoại"
@@ -145,33 +264,99 @@ const Order: FC = () => {
                             </span>
                           </span>
                         </span>
+                        {formik.errors.tel && (
+                          <div className="text-red-500 text-sm mt-1">{formik.errors.tel}</div>
+                        )}
                       </div>
-                      <div className="cs-wrapper-text w-full css-wuiu1 mt-4 border-[#c1c8d1]">
+                      <div className="w-full css-wuiu1 border-[1px] rounded-md mt-4 border-[#c1c8d1]">
+                        <select
+                          name="city"
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                            handleCityChange(e);
+                          }}
+                          value={selectedCity}
+                          className="custom-ant-input css-10ed4xt p-0 w-full border-0"
+                        >
+                          <option value="">Chọn Tỉnh/Thành phố</option>
+                          {cities.map(city => (
+                            <option key={city.Id} value={city.Name}>
+                              {city.Name}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="custom-ant-input-suffix">
+                          <span className="optional-label">Chọn Tỉnh/Thành phố</span>
+                        </span>
+                      </div>
+                      {formik.errors.city && (
+                        <div className="text-red-500 text-sm mt-1">{formik.errors.city}</div>
+                      )}
+                      <div className="w-full css-wuiu1 border-[1px] rounded-md mt-4 border-[#c1c8d1]">
+                        <select
+                          name="district"
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                            handleDistrictChange(e);
+                          }}
+                          value={selectedDistrict}
+                          className="custom-ant-input css-10ed4xt p-0 w-full border-0"
+                        >
+                          <option value="">Chọn Quận/Huyện</option>
+                          {districts.map(district => (
+                            <option key={district.Id} value={district.Name}>
+                              {district.Name}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="custom-ant-input-suffix">
+                          <span className="optional-label">Chọn Quận/Huyện</span>
+                        </span>
+                      </div>
+                      {formik.errors.district && (
+                        <div className="text-red-500 text-sm mt-1">{formik.errors.district}</div>
+                      )}
+                      <div className="w-full css-wuiu1 border-[1px] rounded-md mt-4 border-[#c1c8d1]">
+                        <select
+                          name="ward"
+                          onChange={(e) => {
+                            formik.handleChange(e);
+                          }}
+                          className="custom-ant-input css-10ed4xt p-0 w-full border-0"
+                        >
+                          <option value="">Chọn Phường/Xã</option>
+                          {wards.map(ward => (
+                            <option key={ward.Id} value={ward.Name}>
+                              {ward.Name}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="custom-ant-input-suffix">
+                          <span className="optional-label">Chọn Phường/Xã</span>
+                        </span>
+                      </div>
+                      {formik.errors.ward && (
+                        <div className="text-red-500 text-sm mt-1">{formik.errors.ward}</div>
+                      )}
+                      <div className="w-full css-wuiu1  rounded-md mt-4 border-[#c1c8d1]">
                         <span className="custom-ant-input-affix-wrapper css-10ed4xt">
                           <input
-                            placeholder="Địa chỉ nhận hàng"
-                            name="receiving_location"
+                            placeholder="Địa chỉ cụ thể"
+                            name="detailed_address"
                             onChange={formik.handleChange}
-                            value={formik.values.receiving_location}
+                            value={formik.values.detailed_address}
                             className="custom-ant-input css-10ed4xt p-0 w-full border-0"
                             type="text"
                           />
                           <span className="custom-ant-input-suffix">
                             <span className="optional-label">
-                              Địa chỉ nhận hàng
+                              Địa chỉ cụ thể
                             </span>
                           </span>
                         </span>
-                      </div>
-                      <div className="cart-pre-order_text-field__A7Raq mt-4">
-                        <textarea
-                          name="postContent"
-                          id=""
-                          cols={30}
-                          rows={3}
-                          maxLength={500}
-                          placeholder="Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)"
-                        ></textarea>
+                        {formik.errors.detailed_address && (
+                          <div className="text-red-500 text-sm mt-1">{formik.errors.detailed_address}</div>
+                        )}
                       </div>
                     </form>
                   </div>
@@ -191,6 +376,9 @@ const Order: FC = () => {
                             name="payment"
                             type="radio"
                             id="6"
+                            value="6"
+                            checked={selectedPayment === "6"}
+                            onChange={handlePaymentChange}
                           />
                           <div className="w-[40px] h-[40px]">
                             <img
@@ -212,6 +400,9 @@ const Order: FC = () => {
                             name="payment"
                             type="radio"
                             id="7"
+                            value="7"
+                            checked={selectedPayment === "7"}
+                            onChange={handlePaymentChange}
                           />
                           <div className="w-[40px] h-[40px]">
                             <img
@@ -226,6 +417,9 @@ const Order: FC = () => {
                       </div>
                     </li>
                   </ul>
+                  {paymentError && (
+                    <div className="text-red-500 text-sm mt-1">{paymentError}</div>
+                  )}
                 </div>
               </div>
               <div className="ml-1 px-3">
