@@ -42,7 +42,7 @@ const HeaderBase: FC = () => {
     const subMenuItems = item.sub_category?.map((cate) => ({
       label: (
         <Link
-          to={cate.id.toString()}
+          to={`category/${cate.id.toString()}`}
           key={cate.id}
           className="flex items-center gap-x-2"
         >

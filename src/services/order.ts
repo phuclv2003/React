@@ -30,6 +30,14 @@ const orderApi = createApi({
           body: order,
         }),
         invalidatesTags: ["Orders"],
+      }),
+      paymentReturn: builder.query<any, any>({
+        query: (data) => ({
+          url: `payment_return`,
+          method: "GET",
+          params: data,
+        }),
+        providesTags: ["Orders"],
       })
     };
   },
@@ -37,7 +45,8 @@ const orderApi = createApi({
 
 export const {
   useAddOrderMutation,
-  usePostPayMentMutation
+  usePostPayMentMutation,
+  usePaymentReturnQuery
 } = orderApi;
 export const orderReducer = orderApi.reducer;
 export default orderApi;
