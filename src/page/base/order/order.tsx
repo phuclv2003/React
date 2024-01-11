@@ -135,16 +135,22 @@ const Order: FC = () => {
       };
       const res = await addOrder(dataReq);
       if ("data" in res) {
-        navigate("/order");
-        const resPost = await postPayMent({
-          order_id: res.data.id,
-          total_price: res.data.total_price,
-          bank_code: "NCB",
-          "ipaddr": ipAddress,
-          "language": "vn",
-          "description": `Thanh toán `
-        })
         message.success("Đặt hàng thành công");
+        if (paymentMethod === "VNPAY") {
+          const resPost = await postPayMent({
+            order_id: res.data.id,
+            total_price: res.data.total_price,
+            bank_code: "NCB",
+            "ipaddr": ipAddress,
+            "language": "vn",
+            "description": `Thanh toán `
+          })
+          if ("data" in resPost) {
+            window.location.href = resPost.data;
+          }
+        } else {
+
+        }
       }
     } else {
       console.log('Form validation failed:', formIsValid);

@@ -1,23 +1,25 @@
+import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LayoutAdmin from "./layout/admin";
 import LayoutBase from "./layout/base";
-import DashBoard from "./page/admin/dashboard";
-import Home from "./page/base/home";
-import PageNotFound from "./page/pageNotFound";
-import Login from "./page/base/account/login";
-import Register from "./page/base/account/register";
-import Profile from "./page/base/account/profile";
-import EditProfile from "./page/base/account/editProfile";
-import DetailNews from "./page/base/news/detail";
-import DetailProduct from "./page/base/product/detail";
-import Cart from "./page/base/cart";
-import Order from "./page/base/order/order";
-import { useGetProfileQuery } from "./services/account";
-import { useEffect } from "react";
-import { useRefreshMutation } from "./services/auth";
-import ChatList from "./page/admin/chat/list";
 import Chat from "./page/admin/chat/chat";
+import ChatList from "./page/admin/chat/list";
+import DashBoard from "./page/admin/dashboard";
+import EditProfile from "./page/base/account/editProfile";
+import Login from "./page/base/account/login";
+import Profile from "./page/base/account/profile";
+import Register from "./page/base/account/register";
+import Cart from "./page/base/cart";
+import Home from "./page/base/home";
+import DetailNews from "./page/base/news/detail";
+import Order from "./page/base/order/order";
+import PaymentReturn from "./page/base/payment_return";
+import DetailProduct from "./page/base/product/detail";
+import ListByIdCate from "./page/base/product/listByIdCate";
+import PageNotFound from "./page/pageNotFound";
+import { useGetProfileQuery } from "./services/account";
+import { useRefreshMutation } from "./services/auth";
 
 function App() {
   const { data: user, isLoading } = useGetProfileQuery();
@@ -54,14 +56,18 @@ function App() {
           <Route path="cart" element={<Cart  />} />
           <Route path="order" element={<Order  />} />
           <Route path="register" element={<Register />} />
+          <Route path="payment_return" element={<PaymentReturn />} />
           <Route path="profile" element={<Profile />}>
             <Route path="editProfile" index element={<EditProfile />} />
           </Route>
           <Route path="news">
             <Route path=":id" index element={<DetailNews />} />
           </Route>
-          <Route path="product" > 
+          <Route path="product" >
             <Route path=":id" index element={<DetailProduct />} />
+          </Route>
+          <Route path="category" >
+            <Route path=":id" index element={<ListByIdCate />} />
           </Route>
         </Route>
         <Route path="/admin" element={<LayoutAdmin />}>

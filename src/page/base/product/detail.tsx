@@ -57,7 +57,7 @@ const DetailProduct = (props: Props) => {
   return (
     <>
       {dataProduct && (
-        <div style={{ scrollBehavior: "smooth" }} className="container mx-auto">
+        <div style={{ scrollBehavior: "smooth" }} className="container mx-auto pt-6">
           <div></div>
           <div className="rounded-xl bg-white p-4 flex">
             <div className="mr-[32px] max-w-[475px] basis-[475px]">
@@ -89,7 +89,7 @@ const DetailProduct = (props: Props) => {
                     <td className="max-w-[155px] w-full mr-4 text-[#4a4f63]">
                       Danh mục
                     </td>
-                    <td className="flex-1 text-[#020b27]">adadsfasdfads</td>
+                    <td className="flex-1 text-[#020b27]">{dataProduct.breadcrumb[0].parent_category[0].category_name}</td>
                   </tr>
                   <tr className="flex ">
                     <td className="max-w-[155px] w-full mr-4 text-[#4a4f63]">
