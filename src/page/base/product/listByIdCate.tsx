@@ -11,7 +11,7 @@ const ListByIdCate: FC = () => {
   };
 
   const { data: dataProduct } = useGetAllProductsQuery({
-    page_size: 6,
+    page_size: 1000,
     page: 1,
     sort_by: '{"created_at": "asc"}',
     category_id: id
