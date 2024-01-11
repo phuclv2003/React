@@ -211,7 +211,7 @@ const Order: FC = () => {
                           <div className="w-[60px] h-[60px] shadow-[0_0_0_1px_#e4e8ed] flex items-center justify-center mr-3 rounded-md">
                             <img
                               className="w-[52px] h-[52px]"
-                              src={item.product_image}
+                              src={ "http://localhost:8000/" + item.product_image}
                               alt=""
                             />
                           </div>
