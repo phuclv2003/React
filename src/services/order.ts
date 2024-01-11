@@ -59,10 +59,10 @@ const orderApi = createApi({
 });
 
 export const {
+  useGetOrderQuery,
   useAddOrderMutation,
   usePostPayMentMutation,
   usePaymentReturnQuery,
-  useGetOrderQuery,
   useGetOrderByIdQuery
 } = orderApi;
 export const orderReducer = orderApi.reducer;

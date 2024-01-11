@@ -20,7 +20,7 @@ const HeaderBase: FC = () => {
   const { data: user } = useGetProfileQuery();
 
   const { data: cate } = useGetCategoryQuery({
-    page_size: 20,
+    page_size: 1000,
     page: 1,
     sort_by: '{"created_at": "asc"}',
   });
