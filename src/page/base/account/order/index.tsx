@@ -28,8 +28,14 @@ const ListOrderUser = (props: Props) => {
     navigate("/");
   };
 
-  const orderDetail = (id: number) => {
-    navigate(`/order/${id}`);
+  const orderDetail = (item: any) => {
+    navigate(`/order/detail`, {
+      state: {
+        data: {
+          ...item,
+        },
+      },
+    });
   };
   console.log(dataProduct);
   return (
@@ -42,7 +48,7 @@ const ListOrderUser = (props: Props) => {
       <Tabs defaultActiveKey="0" onChange={handleChange} className=" w-full">
         <TabPane tab="Tất cả" key="0" className=''>
           {dataProduct && dataProduct.data.length > 0 ? (dataProduct.data.map((item: any) => (
-            <div onClick={() => orderDetail(item.id)}  key={item.id} className='bg-white w-full mt-2 px-3'>
+            <div onClick={() => orderDetail(item)}  key={item.id} className='bg-white w-full mt-2 px-3'>
               <div>
                 <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
                   <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
