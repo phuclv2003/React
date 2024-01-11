@@ -18,6 +18,18 @@ import { useEffect } from "react";
 import { useRefreshMutation } from "./services/auth";
 import ChatList from "./page/admin/chat/list";
 import Chat from "./page/admin/chat/chat";
+import UserAdmin from "./page/admin/user/list";
+import AddUserAdmin from "./page/admin/user/add";
+import ProductsAdmin from "./page/admin/product/list";
+import AddProductAdmin from "./page/admin/product/add";
+import EditProductAdmin from "./page/admin/product/edit";
+import OrderAdmin from "./page/admin/order";
+import CategoryAdmin from "./page/admin/category/list";
+import AddCategoryAdmin from "./page/admin/category/add";
+import EditCategoryAdmin from "./page/admin/category/edit";
+import NewAdmin from "./page/admin/new/list";
+import AddNewAdmin from "./page/admin/new/add";
+import EditNewAdmin from "./page/admin/new/edit";
 
 function App() {
   const { data: user, isLoading } = useGetProfileQuery();
@@ -51,8 +63,8 @@ function App() {
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
-          <Route path="cart" element={<Cart  />} />
-          <Route path="order" element={<Order  />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="order" element={<Order />} />
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<Profile />}>
             <Route path="editProfile" index element={<EditProfile />} />
@@ -60,7 +72,7 @@ function App() {
           <Route path="news">
             <Route path=":id" index element={<DetailNews />} />
           </Route>
-          <Route path="product" > 
+          <Route path="product">
             <Route path=":id" index element={<DetailProduct />} />
           </Route>
         </Route>
@@ -68,6 +80,18 @@ function App() {
           <Route index element={<DashBoard />} />
           <Route path="chat" element={<ChatList />} />
           <Route path="chat/:id" element={<Chat />} />
+          <Route path="user" element={<UserAdmin />} />
+          <Route path="user/add" element={<AddUserAdmin />} />
+          <Route path="product" element={<ProductsAdmin />} />
+          <Route path="product/add" element={<AddProductAdmin />} />
+          <Route path="product/edit/:id" element={<EditProductAdmin />} />
+          <Route path="order" element={<OrderAdmin />} />
+          <Route path="category" element={<CategoryAdmin />} />
+          <Route path="category/add" element={<AddCategoryAdmin />} />
+          <Route path="category/edit/:id" element={<EditCategoryAdmin />} />
+          <Route path="new" element={<NewAdmin />} />
+          <Route path="new/add" element={<AddNewAdmin />} />
+          <Route path="new/edit/:id" element={<EditNewAdmin />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

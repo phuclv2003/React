@@ -34,10 +34,21 @@ const NewsApi = createApi({
         },
         providesTags: ["News"],
       }),
+      addNew: builder.mutation<any, any>({
+        query: (data) => {
+          return {
+            url: `news`,
+            method: "POST",
+            body: data,
+          };
+        },
+        invalidatesTags: ["News"],
+      }),
     };
   },
 });
 
-export const { useGetNewsQuery, useGetNewsByIdQuery } = NewsApi;
+export const { useGetNewsQuery, useGetNewsByIdQuery, useAddNewMutation } =
+  NewsApi;
 export const NewsReducer = NewsApi.reducer;
 export default NewsApi;

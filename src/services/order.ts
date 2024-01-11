@@ -15,6 +15,16 @@ const orderApi = createApi({
   }),
   endpoints(builder) {
     return {
+      getOrder: builder.query<any, any>({
+        query: (data) => {
+          return {
+            url: "",
+            method: "GET",
+            params: data,
+          };
+        },
+        providesTags: ["Orders"],
+      }),
       addOrder: builder.mutation<any, any>({
         query: (order) => ({
           url: ``,
@@ -28,6 +38,7 @@ const orderApi = createApi({
 });
 
 export const {
+  useGetOrderQuery,
   useAddOrderMutation,
 } = orderApi;
 export const orderReducer = orderApi.reducer;

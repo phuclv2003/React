@@ -26,10 +26,33 @@ const categoryApi = createApi({
         },
         providesTags: ["Category"],
       }),
+      getByIdCategory: builder.query<any, any>({
+        query: (id) => {
+          return {
+            url: `${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["Category"],
+      }),
+      addCategory: builder.mutation<any, any>({
+        query: (data) => {
+          return {
+            url: ``,
+            method: "POST",
+            body: data,
+          };
+        },
+        invalidatesTags: ["Category"],
+      }),
     };
   },
 });
 
-export const { useGetCategoryQuery } = categoryApi;
+export const {
+  useGetCategoryQuery,
+  useGetByIdCategoryQuery,
+  useAddCategoryMutation,
+} = categoryApi;
 export const categoryReducer = categoryApi.reducer;
 export default categoryApi;

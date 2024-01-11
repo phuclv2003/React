@@ -38,15 +38,14 @@ type Props = {};
 const { Header, Sider, Content } = Layout;
 
 const items: MenuItem[] = [
-  getItem("Chat", "1", <PieChartOutlined />, "/admin/chat"),
-  getItem("Option 2", "2", <DesktopOutlined />, "/admin/option2"),
-  getItem("User", "sub1", <UserOutlined />, undefined, [
-    getItem("Tom", "3", undefined, "/admin/users/tom"),
-    getItem("Bill", "4", undefined, "/admin/users/bill"),
-    getItem("Alex", "5", undefined, "/admin/users/alex"),
-  ]),
+  getItem("DashBoard", "1", <PieChartOutlined />, "/admin"),
+  getItem("Chat", "2", <DesktopOutlined />, "/admin/chat"),
+  getItem("User", "3", <UserOutlined />, "/admin/user"),
+  getItem("Product", "4", <UserOutlined />, "/admin/product"),
+  getItem("Order", "5", <UserOutlined />, "/admin/order"),
+  getItem("Category", "6", <UserOutlined />, "/admin/category"),
+  getItem("New", "7", <UserOutlined />, "/admin/new"),
   getItem("Team", "sub2", <TeamOutlined />, undefined, [
-    getItem("Team 1", "6", undefined, "/admin/teams/team1"),
     getItem("Team 2", "8", undefined, "/admin/teams/team2"),
   ]),
   getItem("Files", "9", <FileOutlined />, "/admin/files"),
