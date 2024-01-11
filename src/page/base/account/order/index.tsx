@@ -46,123 +46,98 @@ const ListOrderUser = (props: Props) => {
         </p>
       </div>
       <Tabs defaultActiveKey="0" onChange={handleChange} className=" w-full">
-        <TabPane tab="Tất cả" key="0" className="">
-          {dataProduct && dataProduct.data.length > 0 ? (
-            dataProduct.data.map((item: any) => (
-              <div
-                onClick={() => orderDetail(item)}
-                key={item.id}
-                className="bg-white w-full mt-2 px-3"
-              >
-                <div>
-                  <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
-                    <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
-                      <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">
-                        Đơn hàng 11/01/2024
-                      </span>
-                      <div className="mt-1 inline-flex md:mt-0 md:leading-none">
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="ml-[10px] flex items-center justify-center self-start">
-                      <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
-                      <div className="css-5gg2ui text-semantic-error ml-[6px]">
-                        Đã hủy
+        <TabPane tab="Tất cả" key="0" className=''>
+          {dataProduct && dataProduct.data.length > 0 ? (dataProduct.data.map((item: any) => (
+            <div onClick={() => orderDetail(item)} key={item.id} className='bg-white w-full mt-2 px-3'>
+              <div>
+                <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
+                  <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
+                    <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">Đơn hàng 11/01/2024</span>
+                    <div className="mt-1 inline-flex md:mt-0 md:leading-none">
+                      <div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
+                      </div><div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2">
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 py-3">
-                    {item.items &&
-                      item.items.map((item: any) => (
-                        <div
-                          key={item.product_id}
-                          className="lc-row relative flex flex-wrap mt-2"
-                        >
-                          <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
-                            <div className="flex items-center">
-                              <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
-                                <div>
-                                  <picture className="h-[50px] w-[50px]">
-                                    <source
-                                      srcSet={item.image}
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <source
-                                      srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <img
-                                      loading="lazy"
-                                      decoding="async"
-                                      alt="product-image"
-                                      className="h-[50px] w-[50px]"
-                                      src="/estore-images/fallback-images/error/img-error-1_1.svg"
-                                    />
-                                  </picture>
-                                </div>
-                              </div>
-                              <div className="ml-3 flex-1">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <p className="text-text-primary line-clamp-2">
-                                    {item.product_name}
-                                  </p>
-                                </a>
-                              </div>
+                  <div className="ml-[10px] flex items-center justify-center self-start">
+                    <div className={`css-5gg2ui ml-[6px] ${item.state === 1 ? 'text-semantic-info' : item.state === 2 ? 'text-semantic-success' : item.state === 3 ? 'text-semantic-warning' : item.state === 4 ? 'text-semantic-success' : ''}`}>
+                      {item.state === 1 ? 'Đang xử lý' : item.state === 2 ? 'Đã xác nhận' : item.state === 3 ? 'Đang giao' : item.state === 4 ? 'Đã giao' : 'Đã hủy'}
+                    </div>
+                  </div>
+                </div>
+                <div className='px-4 py-3'>
+                  {item.items && item.items.map((item: any) => (
+                    <div key={item.product_id} className="lc-row relative flex flex-wrap mt-2">
+                      <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
+                        <div className="flex items-center">
+                          <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
+                            <div>
+                              <picture className="h-[50px] w-[50px]">
+                                <source
+                                  srcSet={"http://localhost:8000/" + item.image}
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <source
+                                  srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <img
+                                  loading="lazy"
+                                  decoding="async"
+                                  alt="product-image"
+                                  className="h-[50px] w-[50px]"
+                                  src="/estore-images/fallback-images/error/img-error-1_1.svg"
+                                />
+                              </picture>
                             </div>
                           </div>
-                          <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
-                            <div className="flex justify-end">
-                              <div>
-                                <p className="css-jey85n text-text-primary line-clamp-1">
-                                  {new Intl.NumberFormat("vi-VN").format(
-                                    item.price
-                                  )}
-                                  <span> đ</span>
-                                </p>
-                              </div>
-                              <div className="ml-4 basis-20 text-right">
-                                <p className="css-1oqd6bl text-text-secondary line-clamp-1">
-                                  x{item.quantity} {item.unit}
-                                </p>
-                              </div>
-                            </div>
+                          <div className="ml-3 flex-1">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <p className="text-text-primary line-clamp-2">
+                                {item.product_name}
+                              </p>
+                            </a>
                           </div>
                         </div>
-                      ))}
-                    <div className="border-divider-1pt border-t mt-2 pt-3  w-full">
-                      <div className="flex cursor-pointer py-3 justify-between">
-                        <div className="inline-flex cursor-pointer items-center">
-                          <button className="text-text-focus text-blue-400">
-                            Xem chi tiết
-                          </button>
+                      </div>
+                      <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
+                        <div className="flex justify-end">
+                          <div>
+                            <p className="css-jey85n text-text-primary line-clamp-1">
+                              {new Intl.NumberFormat("vi-VN").format(item.price)}
+                              <span> đ</span>
+                            </p>
+                          </div>
+                          <div className="ml-4 basis-20 text-right">
+                            <p className="css-1oqd6bl text-text-secondary line-clamp-1">x{item.quantity} {item.unit}</p>
+                          </div>
                         </div>
-                        <div>
-                          <span className="text-text-secondary">
-                            Thành tiền:
-                          </span>
-                          <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">
-                            {new Intl.NumberFormat("vi-VN").format(
-                              item.total_price
-                            )}
-                            <span> đ</span>
-                          </span>
-                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className='border-divider-1pt border-t mt-2 pt-3  w-full'>
+                    <div className="flex cursor-pointer py-3 justify-between" >
+                      <div className="inline-flex cursor-pointer items-center">
+                        <button className="text-text-focus text-blue-400">Xem chi tiết</button>
+                      </div>
+                      <div>
+                        <span className="text-text-secondary">Thành tiền:</span>
+                        <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">{new Intl.NumberFormat("vi-VN").format(item.total_price)}
+                          <span> đ</span></span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
+            </div>
+          ))) : (
             <div className="flex justify-center pt-5">
               <div className="text-center">
                 <div className="mx-auto w-full">
@@ -197,118 +172,96 @@ const ListOrderUser = (props: Props) => {
           )}
         </TabPane>
         <TabPane tab="Đang xử lý" key="1">
-          {dataProduct && dataProduct.data.length > 0 ? (
-            dataProduct.data.map((item: any) => (
-              <div key={item.id} className="bg-white w-full mt-2 px-3">
-                <div>
-                  <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
-                    <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
-                      <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">
-                        Đơn hàng 11/01/2024
-                      </span>
-                      <div className="mt-1 inline-flex md:mt-0 md:leading-none">
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="ml-[10px] flex items-center justify-center self-start">
-                      <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
-                      <div className="css-5gg2ui text-semantic-error ml-[6px]">
-                        Đã hủy
+          {dataProduct && dataProduct.data.length > 0 ? (dataProduct.data.map((item: any) => (
+            <div key={item.id} className='bg-white w-full mt-2 px-3'>
+              <div>
+                <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
+                  <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
+                    <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">Đơn hàng 11/01/2024</span>
+                    <div className="mt-1 inline-flex md:mt-0 md:leading-none">
+                      <div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
+                      </div><div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2">
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 py-3">
-                    {item.items &&
-                      item.items.map((item: any) => (
-                        <div
-                          key={item.product_id}
-                          className="lc-row relative flex flex-wrap mt-2"
-                        >
-                          <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
-                            <div className="flex items-center">
-                              <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <picture className="h-[50px] w-[50px]">
-                                    <source
-                                      srcSet={item.image}
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <source
-                                      srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <img
-                                      loading="lazy"
-                                      decoding="async"
-                                      alt="product-image"
-                                      className="h-[50px] w-[50px]"
-                                      src="/estore-images/fallback-images/error/img-error-1_1.svg"
-                                    />
-                                  </picture>
-                                </a>
-                              </div>
-                              <div className="ml-3 flex-1">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <p className="text-text-primary line-clamp-2">
-                                    {item.product_name}
-                                  </p>
-                                </a>
-                              </div>
-                            </div>
+                  <div className="ml-[10px] flex items-center justify-center self-start">
+                    <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
+                    <div className="css-5gg2ui text-semantic-error ml-[6px]">Đã hủy</div>
+                  </div>
+                </div>
+                <div className='px-4 py-3'>
+                  {item.items && item.items.map((item: any) => (
+                    <div key={item.product_id} className="lc-row relative flex flex-wrap mt-2">
+                      <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
+                        <div className="flex items-center">
+                          <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <picture className="h-[50px] w-[50px]">
+                                <source
+                                  srcSet={item.image}
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <source
+                                  srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <img
+                                  loading="lazy"
+                                  decoding="async"
+                                  alt="product-image"
+                                  className="h-[50px] w-[50px]"
+                                  src="/estore-images/fallback-images/error/img-error-1_1.svg"
+                                />
+                              </picture>
+                            </a>
                           </div>
-                          <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
-                            <div className="flex justify-end">
-                              <div>
-                                <p className="css-jey85n text-text-primary line-clamp-1">
-                                  {new Intl.NumberFormat("vi-VN").format(
-                                    item.price
-                                  )}
-                                  <span> đ</span>
-                                </p>
-                              </div>
-                              <div className="ml-4 basis-20 text-right">
-                                <p className="css-1oqd6bl text-text-secondary line-clamp-1">
-                                  x{item.quantity} Hộp
-                                </p>
-                              </div>
-                            </div>
+                          <div className="ml-3 flex-1">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <p className="text-text-primary line-clamp-2">
+                                {item.product_name}
+                              </p>
+                            </a>
                           </div>
                         </div>
-                      ))}
-                    <div className="border-divider-1pt border-t mt-2 pt-3  w-full">
-                      <div className="flex cursor-pointer py-3 justify-between">
-                        <div className="inline-flex cursor-pointer items-center">
-                          <button className="text-text-focus text-blue-400">
-                            Xem chi tiết
-                          </button>
+                      </div>
+                      <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
+                        <div className="flex justify-end">
+                          <div>
+                            <p className="css-jey85n text-text-primary line-clamp-1">
+                              {new Intl.NumberFormat("vi-VN").format(item.price)}
+                              <span> đ</span>
+                            </p>
+                          </div>
+                          <div className="ml-4 basis-20 text-right">
+                            <p className="css-1oqd6bl text-text-secondary line-clamp-1">x{item.quantity} Hộp</p>
+                          </div>
                         </div>
-                        <div>
-                          <span className="text-text-secondary">
-                            Thành tiền:
-                          </span>
-                          <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">
-                            {new Intl.NumberFormat("vi-VN").format(
-                              item.total_price
-                            )}
-                            <span> đ</span>
-                          </span>
-                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className='border-divider-1pt border-t mt-2 pt-3  w-full'>
+                    <div className="flex cursor-pointer py-3 justify-between" >
+                      <div className="inline-flex cursor-pointer items-center">
+                        <button className="text-text-focus text-blue-400">Xem chi tiết</button>
+                      </div>
+                      <div>
+                        <span className="text-text-secondary">Thành tiền:</span>
+                        <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">{new Intl.NumberFormat("vi-VN").format(item.total_price)}
+                          <span> đ</span></span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
+            </div>
+          ))) : (
             <div className="flex justify-center pt-5">
               <div className="text-center">
                 <div className="mx-auto w-full">
@@ -343,118 +296,96 @@ const ListOrderUser = (props: Props) => {
           )}
         </TabPane>
         <TabPane tab="Đã xác nhận" key="2">
-          {dataProduct && dataProduct.data.length > 0 ? (
-            dataProduct.data.map((item: any) => (
-              <div key={item.id} className="bg-white w-full mt-2 px-3">
-                <div>
-                  <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
-                    <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
-                      <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">
-                        Đơn hàng 11/01/2024
-                      </span>
-                      <div className="mt-1 inline-flex md:mt-0 md:leading-none">
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="ml-[10px] flex items-center justify-center self-start">
-                      <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
-                      <div className="css-5gg2ui text-semantic-error ml-[6px]">
-                        Đã hủy
+          {dataProduct && dataProduct.data.length > 0 ? (dataProduct.data.map((item: any) => (
+            <div key={item.id} className='bg-white w-full mt-2 px-3'>
+              <div>
+                <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
+                  <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
+                    <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">Đơn hàng 11/01/2024</span>
+                    <div className="mt-1 inline-flex md:mt-0 md:leading-none">
+                      <div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
+                      </div><div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2">
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 py-3">
-                    {item.items &&
-                      item.items.map((item: any) => (
-                        <div
-                          key={item.product_id}
-                          className="lc-row relative flex flex-wrap mt-2"
-                        >
-                          <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
-                            <div className="flex items-center">
-                              <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <picture className="h-[50px] w-[50px]">
-                                    <source
-                                      srcSet={item.image}
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <source
-                                      srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <img
-                                      loading="lazy"
-                                      decoding="async"
-                                      alt="product-image"
-                                      className="h-[50px] w-[50px]"
-                                      src="/estore-images/fallback-images/error/img-error-1_1.svg"
-                                    />
-                                  </picture>
-                                </a>
-                              </div>
-                              <div className="ml-3 flex-1">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <p className="text-text-primary line-clamp-2">
-                                    {item.product_name}
-                                  </p>
-                                </a>
-                              </div>
-                            </div>
+                  <div className="ml-[10px] flex items-center justify-center self-start">
+                    <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
+                    <div className="css-5gg2ui text-semantic-error ml-[6px]">Đã hủy</div>
+                  </div>
+                </div>
+                <div className='px-4 py-3'>
+                  {item.items && item.items.map((item: any) => (
+                    <div key={item.product_id} className="lc-row relative flex flex-wrap mt-2">
+                      <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
+                        <div className="flex items-center">
+                          <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <picture className="h-[50px] w-[50px]">
+                                <source
+                                  srcSet={item.image}
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <source
+                                  srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <img
+                                  loading="lazy"
+                                  decoding="async"
+                                  alt="product-image"
+                                  className="h-[50px] w-[50px]"
+                                  src="/estore-images/fallback-images/error/img-error-1_1.svg"
+                                />
+                              </picture>
+                            </a>
                           </div>
-                          <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
-                            <div className="flex justify-end">
-                              <div>
-                                <p className="css-jey85n text-text-primary line-clamp-1">
-                                  {new Intl.NumberFormat("vi-VN").format(
-                                    item.price
-                                  )}
-                                  <span> đ</span>
-                                </p>
-                              </div>
-                              <div className="ml-4 basis-20 text-right">
-                                <p className="css-1oqd6bl text-text-secondary line-clamp-1">
-                                  x{item.quantity} Hộp
-                                </p>
-                              </div>
-                            </div>
+                          <div className="ml-3 flex-1">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <p className="text-text-primary line-clamp-2">
+                                {item.product_name}
+                              </p>
+                            </a>
                           </div>
                         </div>
-                      ))}
-                    <div className="border-divider-1pt border-t mt-2 pt-3  w-full">
-                      <div className="flex cursor-pointer py-3 justify-between">
-                        <div className="inline-flex cursor-pointer items-center">
-                          <button className="text-text-focus text-blue-400">
-                            Xem chi tiết
-                          </button>
+                      </div>
+                      <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
+                        <div className="flex justify-end">
+                          <div>
+                            <p className="css-jey85n text-text-primary line-clamp-1">
+                              {new Intl.NumberFormat("vi-VN").format(item.price)}
+                              <span> đ</span>
+                            </p>
+                          </div>
+                          <div className="ml-4 basis-20 text-right">
+                            <p className="css-1oqd6bl text-text-secondary line-clamp-1">x{item.quantity} Hộp</p>
+                          </div>
                         </div>
-                        <div>
-                          <span className="text-text-secondary">
-                            Thành tiền:
-                          </span>
-                          <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">
-                            {new Intl.NumberFormat("vi-VN").format(
-                              item.total_price
-                            )}
-                            <span> đ</span>
-                          </span>
-                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className='border-divider-1pt border-t mt-2 pt-3  w-full'>
+                    <div className="flex cursor-pointer py-3 justify-between" >
+                      <div className="inline-flex cursor-pointer items-center">
+                        <button className="text-text-focus text-blue-400">Xem chi tiết</button>
+                      </div>
+                      <div>
+                        <span className="text-text-secondary">Thành tiền:</span>
+                        <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">{new Intl.NumberFormat("vi-VN").format(item.total_price)}
+                          <span> đ</span></span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
+            </div>
+          ))) : (
             <div className="flex justify-center pt-5">
               <div className="text-center">
                 <div className="mx-auto w-full">
@@ -489,118 +420,96 @@ const ListOrderUser = (props: Props) => {
           )}
         </TabPane>
         <TabPane tab="Đang giao" key="3">
-          {dataProduct && dataProduct.data.length > 0 ? (
-            dataProduct.data.map((item: any) => (
-              <div key={item.id} className="bg-white w-full mt-2 px-3">
-                <div>
-                  <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
-                    <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
-                      <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">
-                        Đơn hàng 11/01/2024
-                      </span>
-                      <div className="mt-1 inline-flex md:mt-0 md:leading-none">
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="ml-[10px] flex items-center justify-center self-start">
-                      <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
-                      <div className="css-5gg2ui text-semantic-error ml-[6px]">
-                        Đã hủy
+          {dataProduct && dataProduct.data.length > 0 ? (dataProduct.data.map((item: any) => (
+            <div key={item.id} className='bg-white w-full mt-2 px-3'>
+              <div>
+                <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
+                  <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
+                    <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">Đơn hàng 11/01/2024</span>
+                    <div className="mt-1 inline-flex md:mt-0 md:leading-none">
+                      <div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
+                      </div><div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2">
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 py-3">
-                    {item.items &&
-                      item.items.map((item: any) => (
-                        <div
-                          key={item.product_id}
-                          className="lc-row relative flex flex-wrap mt-2"
-                        >
-                          <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
-                            <div className="flex items-center">
-                              <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <picture className="h-[50px] w-[50px]">
-                                    <source
-                                      srcSet={item.image}
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <source
-                                      srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <img
-                                      loading="lazy"
-                                      decoding="async"
-                                      alt="product-image"
-                                      className="h-[50px] w-[50px]"
-                                      src="/estore-images/fallback-images/error/img-error-1_1.svg"
-                                    />
-                                  </picture>
-                                </a>
-                              </div>
-                              <div className="ml-3 flex-1">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <p className="text-text-primary line-clamp-2">
-                                    {item.product_name}
-                                  </p>
-                                </a>
-                              </div>
-                            </div>
+                  <div className="ml-[10px] flex items-center justify-center self-start">
+                    <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
+                    <div className="css-5gg2ui text-semantic-error ml-[6px]">Đã hủy</div>
+                  </div>
+                </div>
+                <div className='px-4 py-3'>
+                  {item.items && item.items.map((item: any) => (
+                    <div key={item.product_id} className="lc-row relative flex flex-wrap mt-2">
+                      <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
+                        <div className="flex items-center">
+                          <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <picture className="h-[50px] w-[50px]">
+                                <source
+                                  srcSet={item.image}
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <source
+                                  srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <img
+                                  loading="lazy"
+                                  decoding="async"
+                                  alt="product-image"
+                                  className="h-[50px] w-[50px]"
+                                  src="/estore-images/fallback-images/error/img-error-1_1.svg"
+                                />
+                              </picture>
+                            </a>
                           </div>
-                          <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
-                            <div className="flex justify-end">
-                              <div>
-                                <p className="css-jey85n text-text-primary line-clamp-1">
-                                  {new Intl.NumberFormat("vi-VN").format(
-                                    item.price
-                                  )}
-                                  <span> đ</span>
-                                </p>
-                              </div>
-                              <div className="ml-4 basis-20 text-right">
-                                <p className="css-1oqd6bl text-text-secondary line-clamp-1">
-                                  x{item.quantity} Hộp
-                                </p>
-                              </div>
-                            </div>
+                          <div className="ml-3 flex-1">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <p className="text-text-primary line-clamp-2">
+                                {item.product_name}
+                              </p>
+                            </a>
                           </div>
                         </div>
-                      ))}
-                    <div className="border-divider-1pt border-t mt-2 pt-3  w-full">
-                      <div className="flex cursor-pointer py-3 justify-between">
-                        <div className="inline-flex cursor-pointer items-center">
-                          <button className="text-text-focus text-blue-400">
-                            Xem chi tiết
-                          </button>
+                      </div>
+                      <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
+                        <div className="flex justify-end">
+                          <div>
+                            <p className="css-jey85n text-text-primary line-clamp-1">
+                              {new Intl.NumberFormat("vi-VN").format(item.price)}
+                              <span> đ</span>
+                            </p>
+                          </div>
+                          <div className="ml-4 basis-20 text-right">
+                            <p className="css-1oqd6bl text-text-secondary line-clamp-1">x{item.quantity} Hộp</p>
+                          </div>
                         </div>
-                        <div>
-                          <span className="text-text-secondary">
-                            Thành tiền:
-                          </span>
-                          <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">
-                            {new Intl.NumberFormat("vi-VN").format(
-                              item.total_price
-                            )}
-                            <span> đ</span>
-                          </span>
-                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className='border-divider-1pt border-t mt-2 pt-3  w-full'>
+                    <div className="flex cursor-pointer py-3 justify-between" >
+                      <div className="inline-flex cursor-pointer items-center">
+                        <button className="text-text-focus text-blue-400">Xem chi tiết</button>
+                      </div>
+                      <div>
+                        <span className="text-text-secondary">Thành tiền:</span>
+                        <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">{new Intl.NumberFormat("vi-VN").format(item.total_price)}
+                          <span> đ</span></span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
+            </div>
+          ))) : (
             <div className="flex justify-center pt-5">
               <div className="text-center">
                 <div className="mx-auto w-full">
@@ -635,118 +544,96 @@ const ListOrderUser = (props: Props) => {
           )}
         </TabPane>
         <TabPane tab="Đã giao" key="4">
-          {dataProduct && dataProduct.data.length > 0 ? (
-            dataProduct.data.map((item: any) => (
-              <div key={item.id} className="bg-white w-full mt-2 px-3">
-                <div>
-                  <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
-                    <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
-                      <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">
-                        Đơn hàng 11/01/2024
-                      </span>
-                      <div className="mt-1 inline-flex md:mt-0 md:leading-none">
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="ml-[10px] flex items-center justify-center self-start">
-                      <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
-                      <div className="css-5gg2ui text-semantic-error ml-[6px]">
-                        Đã hủy
+          {dataProduct && dataProduct.data.length > 0 ? (dataProduct.data.map((item: any) => (
+            <div key={item.id} className='bg-white w-full mt-2 px-3'>
+              <div>
+                <div className="shadow-divider-1pt flex px-4 py-3 shadow-[0_1px_0_0]">
+                  <div className="mr-auto flex max-w-[248px] flex-wrap leading-[1] md:flex md:max-w-[585px] md:flex-nowrap md:items-center">
+                    <span className="css-1ktc22 text-text-primary line-clamp-1 max-w-[226px] md:max-w-[336px] font-semibold">Đơn hàng 11/01/2024</span>
+                    <div className="mt-1 inline-flex md:mt-0 md:leading-none">
+                      <div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2"></span>
+                      </div><div className="flex items-center">
+                        <span className="bg-divider-1pt !mx-[6px] inline-flex h-1 w-1 rounded-full md:!mx-2">
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 py-3">
-                    {item.items &&
-                      item.items.map((item: any) => (
-                        <div
-                          key={item.product_id}
-                          className="lc-row relative flex flex-wrap mt-2"
-                        >
-                          <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
-                            <div className="flex items-center">
-                              <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <picture className="h-[50px] w-[50px]">
-                                    <source
-                                      srcSet={item.image}
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <source
-                                      srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
-                                      type="image/webp"
-                                      width="50"
-                                      height="50"
-                                    />
-                                    <img
-                                      loading="lazy"
-                                      decoding="async"
-                                      alt="product-image"
-                                      className="h-[50px] w-[50px]"
-                                      src="/estore-images/fallback-images/error/img-error-1_1.svg"
-                                    />
-                                  </picture>
-                                </a>
-                              </div>
-                              <div className="ml-3 flex-1">
-                                <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
-                                  <p className="text-text-primary line-clamp-2">
-                                    {item.product_name}
-                                  </p>
-                                </a>
-                              </div>
-                            </div>
+                  <div className="ml-[10px] flex items-center justify-center self-start">
+                    <div className="bg-semantic-error tab-item-header-dot h-2 w-2 rounded-full"></div>
+                    <div className="css-5gg2ui text-semantic-error ml-[6px]">Đã hủy</div>
+                  </div>
+                </div>
+                <div className='px-4 py-3'>
+                  {item.items && item.items.map((item: any) => (
+                    <div key={item.product_id} className="lc-row relative flex flex-wrap mt-2">
+                      <div className="lc-col lc-col-12 !basis-[586px] md:!w-[586px] md:!max-w-[586px] css-847gtr">
+                        <div className="flex items-center">
+                          <div className="border-stroke-disable h-16 w-16 max-w-full basis-16 self-baseline rounded-lg border py-[6px] px-[6px]">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <picture className="h-[50px] w-[50px]">
+                                <source
+                                  srcSet={item.image}
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <source
+                                  srcSet="/estore-images/fallback-images/default/img-default-1_1.svg"
+                                  type="image/webp"
+                                  width="50"
+                                  height="50"
+                                />
+                                <img
+                                  loading="lazy"
+                                  decoding="async"
+                                  alt="product-image"
+                                  className="h-[50px] w-[50px]"
+                                  src="/estore-images/fallback-images/error/img-error-1_1.svg"
+                                />
+                              </picture>
+                            </a>
                           </div>
-                          <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
-                            <div className="flex justify-end">
-                              <div>
-                                <p className="css-jey85n text-text-primary line-clamp-1">
-                                  {new Intl.NumberFormat("vi-VN").format(
-                                    item.price
-                                  )}
-                                  <span> đ</span>
-                                </p>
-                              </div>
-                              <div className="ml-4 basis-20 text-right">
-                                <p className="css-1oqd6bl text-text-secondary line-clamp-1">
-                                  x{item.quantity} Hộp
-                                </p>
-                              </div>
-                            </div>
+                          <div className="ml-3 flex-1">
+                            <a href="/ca-nhan/don-hang-cua-toi/80734427831704974322416">
+                              <p className="text-text-primary line-clamp-2">
+                                {item.product_name}
+                              </p>
+                            </a>
                           </div>
                         </div>
-                      ))}
-                    <div className="border-divider-1pt border-t mt-2 pt-3  w-full">
-                      <div className="flex cursor-pointer py-3 justify-between">
-                        <div className="inline-flex cursor-pointer items-center">
-                          <button className="text-text-focus text-blue-400">
-                            Xem chi tiết
-                          </button>
+                      </div>
+                      <div className="lc-col lc-col-4 !hidden !max-w-[100%] !flex-1 md:!block css-o0h841">
+                        <div className="flex justify-end">
+                          <div>
+                            <p className="css-jey85n text-text-primary line-clamp-1">
+                              {new Intl.NumberFormat("vi-VN").format(item.price)}
+                              <span> đ</span>
+                            </p>
+                          </div>
+                          <div className="ml-4 basis-20 text-right">
+                            <p className="css-1oqd6bl text-text-secondary line-clamp-1">x{item.quantity} Hộp</p>
+                          </div>
                         </div>
-                        <div>
-                          <span className="text-text-secondary">
-                            Thành tiền:
-                          </span>
-                          <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">
-                            {new Intl.NumberFormat("vi-VN").format(
-                              item.total_price
-                            )}
-                            <span> đ</span>
-                          </span>
-                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div className='border-divider-1pt border-t mt-2 pt-3  w-full'>
+                    <div className="flex cursor-pointer py-3 justify-between" >
+                      <div className="inline-flex cursor-pointer items-center">
+                        <button className="text-text-focus text-blue-400">Xem chi tiết</button>
+                      </div>
+                      <div>
+                        <span className="text-text-secondary">Thành tiền:</span>
+                        <span className="css-jey85n text-text-focus ml-2 text-blue-400 font-semibold">{new Intl.NumberFormat("vi-VN").format(item.total_price)}
+                          <span> đ</span></span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
+            </div>
+          ))) : (
             <div className="flex justify-center pt-5">
               <div className="text-center">
                 <div className="mx-auto w-full">
