@@ -138,3 +138,18 @@ html {
  .cart-pre-order_item__f0skA:not(:last-child) {
   border-bottom: 1px solid #e4e8ed;
 }
+
+.ant-tabs-nav-list{
+  background-color: white;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+  width: 100% !important;
+}
+
+.ant-tabs-nav-list{
+  justify-content: space-evenly !important;
+}
+
+.ant-tabs-tabpane{
+  width: 100% !important;
+}

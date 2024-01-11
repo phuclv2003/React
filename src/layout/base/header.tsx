@@ -91,7 +91,7 @@ const HeaderBase: FC = () => {
       </div>
       <div className="flex items-center gap-x-2 my-4 cursor-pointer">
         <OrderIcon />
-        <div>Đơn hàng của tôi</div>
+        <Link to={"/profile/listOrderUser"}>Đơn hàng của tôi</Link>
       </div>
       <div
         className="flex items-center gap-x-2 my-4 cursor-pointer"

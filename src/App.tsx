@@ -20,6 +20,8 @@ import ListByIdCate from "./page/base/product/listByIdCate";
 import PageNotFound from "./page/pageNotFound";
 import { useGetProfileQuery } from "./services/account";
 import { useRefreshMutation } from "./services/auth";
+import ListOrderUser from "./page/base/account/order";
+import OrderDetail from "./page/base/account/order/detail";
 
 function App() {
   const { data: user, isLoading } = useGetProfileQuery();
@@ -53,12 +55,17 @@ function App() {
         <Route path="/" element={<LayoutBase />}>
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
-          <Route path="cart" element={<Cart  />} />
-          <Route path="order" element={<Order  />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="order" >
+            <Route index  element={<Order />} />
+            <Route path=":id" index element={<OrderDetail />} />
+          </Route>
+
           <Route path="register" element={<Register />} />
           <Route path="payment_return" element={<PaymentReturn />} />
           <Route path="profile" element={<Profile />}>
             <Route path="editProfile" index element={<EditProfile />} />
+            <Route path="listOrderUser" element={<ListOrderUser />} />
           </Route>
           <Route path="news">
             <Route path=":id" index element={<DetailNews />} />

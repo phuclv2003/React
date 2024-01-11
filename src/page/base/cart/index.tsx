@@ -3,14 +3,17 @@ import Breadcrumb from "../../../components/Breadcrumb";
 import { useNavigate } from "react-router-dom";
 import {
   useGetUserListCartsQuery,
+  useRemoveCartsByIdMutation,
   useUpdateQuantityCartsMutation,
 } from "../../../services/cart";
-import { Checkbox, message } from "antd";
+import { Checkbox, Popconfirm, message } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 const Cart: FC = () => {
   const navigate = useNavigate();
   const [updateOrderMutation] = useUpdateQuantityCartsMutation();
+  const [removeCart] = useRemoveCartsByIdMutation();
+
   const [totalPrice, setTotalPrice] = useState(0);
   const [dataOrder, setDataOrder] = useState<any>();
 
@@ -60,6 +63,16 @@ const Cart: FC = () => {
     }
   }, [checkedItems, dataOrder]);
 
+  const confirm = (id: number) => {
+    try {
+      const res = removeCart({ id: id });
+      if ("data" in res) {
+        message.success("Xóa thành công.");
+      }
+    } catch (error) {
+      message.error("Xóa không thành công.");
+    }
+  };
   const home = () => {
     navigate("/");
   };
@@ -127,9 +140,13 @@ const Cart: FC = () => {
       message.error("Bạn chưa chọn sản phẩm nào để mua");
     }
   };
+
+  const cancel = () => {
+    message.error("Xóa không thành công.");
+  };
   return (
     <>
-      {dataOrder ? (
+      {dataOrder && dataOrder.data.length > 0 ? (
         <div>
           <div className="container mx-auto">
             <Breadcrumb name="Giỏ hàng" />
@@ -220,7 +237,16 @@ const Cart: FC = () => {
                         </td>
                         <td>{item.unit}</td>
                         <td className="pr-4 cursor-pointer">
+                        <Popconfirm
+                      title="Xóa trạng thái."
+                      description="Bạn có muốn hủy không?"
+                      onConfirm={() => confirm(item.id || 0)}
+                      onCancel={cancel}
+                      okText="Đồng ý"
+                      cancelText="Không"
+                    >
                           <DeleteOutlined />
+                    </Popconfirm>
                         </td>
                       </tr>
                     ))}
