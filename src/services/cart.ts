@@ -17,11 +17,11 @@ const cartsApi = createApi({
   endpoints(builder) {
     return {
       getUserListCarts: builder.query<any, TOrder>({
-        query: (cate) => {
+        query: (cart) => {
           return {
             url: "",
             method: "GET",
-            params: cate,
+            params: cart,
           };
         },
         providesTags: ["Carts"],
@@ -42,11 +42,12 @@ const cartsApi = createApi({
         }),
         invalidatesTags: ["Carts"],
       }),
-      removeCartsById: builder.mutation<any, number>({
-        query: (id) => {
+      removeCartsById: builder.mutation<any, any>({
+        query: (cart) => {
           return {
-            url: `${id}`,
+            url: ``,
             method: "DELETE",
+            params: cart,
           };
         },
         invalidatesTags: ["Carts"],

@@ -15,6 +15,21 @@ const orderApi = createApi({
   }),
   endpoints(builder) {
     return {
+      getOrder: builder.query<any, any>({
+        query: (order) => ({
+          url: ``,
+          method: "GET",
+          params: order,
+        }),
+        providesTags: ["Orders"],
+      }),
+      getOrderById: builder.query<any, number>({
+        query: (id) => ({
+          url: `${id}`,
+          method: "GET",
+        }),
+        providesTags: ["Orders"],
+      }),
       addOrder: builder.mutation<any, any>({
         query: (order) => ({
           url: ``,
@@ -46,7 +61,9 @@ const orderApi = createApi({
 export const {
   useAddOrderMutation,
   usePostPayMentMutation,
-  usePaymentReturnQuery
+  usePaymentReturnQuery,
+  useGetOrderQuery,
+  useGetOrderByIdQuery
 } = orderApi;
 export const orderReducer = orderApi.reducer;
 export default orderApi;
