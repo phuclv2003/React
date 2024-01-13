@@ -34,6 +34,29 @@ const productsApi = createApi({
         },
         providesTags: ["Products"],
       }),
+      uploadImage: builder.mutation<any, any>({
+        query: (data) => {
+          return {
+            url: `product/upload_image`,
+            method: "PATCH",
+            body: data,
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+        },
+        invalidatesTags: ["Products"],
+      }),
+      addProduct: builder.mutation<any, any>({
+        query: (data) => {
+          return {
+            url: `product`,
+            method: "POST",
+            body: data,
+          };
+        },
+        invalidatesTags: ["Products"],
+      }),
     };
   },
 });
@@ -41,6 +64,8 @@ const productsApi = createApi({
 export const {
   useGetAllProductsQuery,
   useGetProductByIdQuery,
+  useUploadImageMutation,
+  useAddProductMutation,
 } = productsApi;
 export const productsReducer = productsApi.reducer;
 export default productsApi;

@@ -1,10 +1,10 @@
-import { Tabs } from 'antd'
-import TabPane from 'antd/es/tabs/TabPane'
-import React, { useState } from 'react'
-import { useGetOrderQuery } from '../../../../services/order'
-import { Link, useNavigate } from 'react-router-dom'
+import { Tabs } from "antd";
+import TabPane from "antd/es/tabs/TabPane";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGetOrderQuery } from "../../../../services/order";
 
-type Props = {}
+type Props = {};
 
 const ListOrderUser = (props: Props) => {
   const navigate = useNavigate();
@@ -150,7 +150,8 @@ const ListOrderUser = (props: Props) => {
                   Bạn chưa có đơn hàng nào.
                 </h3>
                 <p className="max-w-[300px] text-[#728091] text-[16px]">
-                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu nhé!
+                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu
+                  nhé!
                 </p>
                 <div
                   onClick={() => home()}
@@ -273,7 +274,8 @@ const ListOrderUser = (props: Props) => {
                   Bạn chưa có đơn hàng nào.
                 </h3>
                 <p className="max-w-[300px] text-[#728091] text-[16px]">
-                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu nhé!
+                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu
+                  nhé!
                 </p>
                 <div
                   onClick={() => home()}
@@ -396,7 +398,8 @@ const ListOrderUser = (props: Props) => {
                   Bạn chưa có đơn hàng nào.
                 </h3>
                 <p className="max-w-[300px] text-[#728091] text-[16px]">
-                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu nhé!
+                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu
+                  nhé!
                 </p>
                 <div
                   onClick={() => home()}
@@ -519,7 +522,8 @@ const ListOrderUser = (props: Props) => {
                   Bạn chưa có đơn hàng nào.
                 </h3>
                 <p className="max-w-[300px] text-[#728091] text-[16px]">
-                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu nhé!
+                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu
+                  nhé!
                 </p>
                 <div
                   onClick={() => home()}
@@ -642,7 +646,8 @@ const ListOrderUser = (props: Props) => {
                   Bạn chưa có đơn hàng nào.
                 </h3>
                 <p className="max-w-[300px] text-[#728091] text-[16px]">
-                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu nhé!
+                  Cùng mua sắm hàng ngàn sản phẩm tại nhà thuốc FPT Long Châu
+                  nhé!
                 </p>
                 <div
                   onClick={() => home()}
@@ -663,9 +668,8 @@ const ListOrderUser = (props: Props) => {
           )}
         </TabPane>
       </Tabs>
-
     </div>
-  )
-}
+  );
+};
 
-export default ListOrderUser
+export default ListOrderUser;

@@ -5,7 +5,7 @@ import { useGetAllProductsQuery } from "../../../services/products";
 const ListByIdCate: FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen] = useState(false);
   const detailProduct = (id: number) => {
     navigate(`/product/${id}`);
   };
