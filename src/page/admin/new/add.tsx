@@ -1,6 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Upload, message } from "antd";
-import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAddNewMutation } from "../../../services/new";
@@ -18,7 +17,7 @@ const AddNewAdmin: React.FC = () => {
       const res = await addNew({
         ...values,
         image:
-          "https://cdn.nhathuoclongchau.com.vn/unsafe/373x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_08302_ba4462d00d.jpg",
+        imageUrl
       });
       if ("data" in res) {
         message.success("Thêm danh mục thành công");
@@ -37,36 +36,36 @@ const AddNewAdmin: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<any | null>(null);
 
-  const handleChange = async (info: UploadChangeParam<UploadFile<any>>) => {
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file upload success.`);
-      setImageUrl(info.file.response.data.image_path);
-      setLoading(false);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-      setLoading(false);
-    }
-  };
+  // const handleChange = async (info: UploadChangeParam<UploadFile<any>>) => {
+  //   if (info.file.status === "done") {
+  //     message.success(`${info.file.name} file upload success.`);
+  //     setImageUrl(info.file.response.data.image_path);
+  //     setLoading(false);
+  //   } else if (info.file.status === "error") {
+  //     message.error(`${info.file.name} file upload failed.`);
+  //     setLoading(false);
+  //   }
+  // };
 
-  const customRequest = async ({ file, onSuccess, onError }: any) => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("image", file);
+  // const customRequest = async ({ file, onSuccess, onError }: any) => {
+  //   try {
+  //     setLoading(true);
+  //     const formData = new FormData();
+  //     formData.append("image", file);
 
-      const res = await uploadImage(formData);
+  //     const res = await uploadImage(formData);
 
-      if ("data" in res) {
-        onSuccess();
-      } else {
-        onError(new Error("Upload failed"));
-      }
-    } catch (error) {
-      onError(error);
-    }
-  };
+  //     if ("data" in res) {
+  //       onSuccess();
+  //     } else {
+  //       onError(new Error("Upload failed"));
+  //     }
+  //   } catch (error) {
+  //     onError(error);
+  //   }
+  // };
 
   const uploadButton = (
     <div>
@@ -74,7 +73,14 @@ const AddNewAdmin: React.FC = () => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
-
+  const handleImageChange = (info: any) => {
+    if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+      setImageUrl(info.file.response.url);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
   return (
     <Form
       form={form}
@@ -91,10 +97,17 @@ const AddNewAdmin: React.FC = () => {
       </Form.Item>
       <Form.Item name="image" label="Ảnh">
         <Upload
-          listType="picture-card"
-          showUploadList={false}
-          customRequest={customRequest}
-          onChange={handleChange}
+           name="file"
+           action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+           data={{
+             upload_preset: "wh3rdke8",
+             cloud_name: "dksgvucji",
+           }}
+           listType="picture-card"
+           maxCount={1}
+           showUploadList={false}
+           className="ant-upload-wrapper ant-upload-select"
+           onChange={handleImageChange}
         >
           {imageUrl ? (
             <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />

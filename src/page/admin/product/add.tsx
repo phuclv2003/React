@@ -27,7 +27,7 @@ const AddProductAdmin: React.FC = () => {
         ...values,
         ingredient: { "vitaminC": values.ingredient },
         image:
-          "https://cdn.nhathuoclongchau.com.vn/unsafe/373x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_08302_ba4462d00d.jpg",
+          imageUrl,
       });
       if ("data" in res) {
         message.success("Thêm sản phẩm thành công");
@@ -46,37 +46,45 @@ const AddProductAdmin: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<any | null>(null);
 
-  const handleChange = async (info: UploadChangeParam<UploadFile<any>>) => {
+  // const handleChange = async (info: UploadChangeParam<UploadFile<any>>) => {
+  //   if (info.file.status === "done") {
+  //     message.success(`${info.file.name} file upload success.`);
+  //     setImageUrl(info.file.response.data.image_path);
+  //     setLoading(false);
+  //   } else if (info.file.status === "error") {
+  //     message.error(`${info.file.name} file upload failed.`);
+  //     setLoading(false);
+  //   }
+  // };
+
+  // const customRequest = async ({ file, onSuccess, onError }: any) => {
+  //   try {
+  //     setLoading(true);
+  //     const formData = new FormData();
+  //     formData.append("image", file);
+
+  //     const res = await uploadImage(formData);
+
+  //     if ("data" in res) {
+  //       onSuccess();
+  //     } else {
+  //       onError(new Error("Upload failed"));
+  //     }
+  //   } catch (error) {
+  //     onError(error);
+  //   }
+  // };
+
+  const handleImageChange = (info: any) => {
     if (info.file.status === "done") {
-      message.success(`${info.file.name} file upload success.`);
-      setImageUrl(info.file.response.data.image_path);
-      setLoading(false);
+      message.success(`${info.file.name} file uploaded successfully`);
+      setImageUrl(info.file.response.url);
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
-      setLoading(false);
     }
   };
-
-  const customRequest = async ({ file, onSuccess, onError }: any) => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("image", file);
-
-      const res = await uploadImage(formData);
-
-      if ("data" in res) {
-        onSuccess();
-      } else {
-        onError(new Error("Upload failed"));
-      }
-    } catch (error) {
-      onError(error);
-    }
-  };
-
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -126,10 +134,17 @@ const AddProductAdmin: React.FC = () => {
       </Form.Item>
       <Form.Item name="image" label="Ảnh">
         <Upload
+          name="file"
+          action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+          data={{
+            upload_preset: "wh3rdke8",
+            cloud_name: "dksgvucji",
+          }}
           listType="picture-card"
+          maxCount={1}
           showUploadList={false}
-          customRequest={customRequest}
-          onChange={handleChange}
+          className="ant-upload-wrapper ant-upload-select"
+          onChange={handleImageChange}
         >
           {imageUrl ? (
             <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />

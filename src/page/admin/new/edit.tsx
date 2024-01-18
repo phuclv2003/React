@@ -15,8 +15,22 @@ const EditNewAdmin: React.FC = () => {
   const [uploadImage] = useUploadImageMutation();
   const { data: dataNew } = useGetNewsByIdQuery(id);
 
+  const [image, setImage] = useState<string | undefined>();
+
+  const [fileList, setFileList] = useState<UploadFile[]>([
+  ]);
   useEffect(() => {
-    form.getFieldsValue(dataNew);
+    if (dataNew) {
+      form.getFieldsValue(dataNew);
+      setFileList([
+        {
+          uid: "-1",
+          name: "image.png",
+          status: "done",
+          url: dataNew.image,
+        },
+      ]);
+    }
   }, [dataNew, form]);
 
   const onFinish = async (values: any) => {
@@ -24,8 +38,7 @@ const EditNewAdmin: React.FC = () => {
     try {
       const res = await addCategory({
         ...values,
-        image:
-          "https://cdn.nhathuoclongchau.com.vn/unsafe/373x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_08302_ba4462d00d.jpg",
+        image: image,
       });
       if ("data" in res) {
         message.success("Thêm danh mục thành công");
@@ -46,35 +59,7 @@ const EditNewAdmin: React.FC = () => {
 
   const [imageUrl, setImageUrl] = useState<string>();
 
-  const handleChange = async (info: UploadChangeParam<UploadFile<any>>) => {
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file upload success.`);
-      setImageUrl(info.file.response.data.image_path);
-      setLoading(false);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-      setLoading(false);
-    }
-  };
-
-  const customRequest = async ({ file, onSuccess, onError }: any) => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("image", file);
-
-      const res = await uploadImage(formData);
-
-      if ("data" in res) {
-        onSuccess();
-      } else {
-        onError(new Error("Upload failed"));
-      }
-    } catch (error) {
-      onError(error);
-    }
-  };
-
+ 
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -82,6 +67,12 @@ const EditNewAdmin: React.FC = () => {
     </div>
   );
 
+  const handleImageChange = ({ fileList: newFileList }: any) => {
+    if (newFileList[0].response) {
+      setImage(newFileList[0].response.secure_url);
+    }
+    setFileList(newFileList);
+  };
   return (
     <Form
       form={form}
@@ -98,16 +89,20 @@ const EditNewAdmin: React.FC = () => {
       </Form.Item>
       <Form.Item name="image" label="Ảnh">
         <Upload
+          name="file"
+          action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+          data={{
+            upload_preset: "wh3rdke8",
+            cloud_name: "dksgvucji",
+          }}
           listType="picture-card"
-          showUploadList={false}
-          customRequest={customRequest}
-          onChange={handleChange}
+          maxCount={1}
+          showUploadList={true}
+          className="ant-upload-wrapper ant-upload-select"
+          onChange={handleImageChange}
+          fileList={fileList}
         >
-          {imageUrl ? (
-            <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
-          ) : (
-            uploadButton
-          )}
+          {uploadButton}
         </Upload>
       </Form.Item>
       <Form.Item name="describe" rules={[{ required: true }]} label="Mô tả">

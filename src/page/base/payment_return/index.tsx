@@ -1,6 +1,6 @@
 import { Button, Result } from 'antd';
-import React, { FC, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { usePaymentReturnQuery } from '../../../services/order';
 
 
@@ -46,7 +46,7 @@ const PaymentReturn: FC = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const [vnpResponse, setVnpResponse] = useState<any>(null);
   const navigate = useNavigate();  
-  const { data, error, isLoading } = usePaymentReturnQuery(Object.fromEntries(urlParams));
+  const { data } = usePaymentReturnQuery(Object.fromEntries(urlParams));
   useEffect(() => {
     if (data) {
       console.log(data.vnp_ResponseCode);
