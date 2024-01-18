@@ -1,10 +1,10 @@
-import React from 'react'
-import Breadcrumb from '../../../components/Breadcrumb'
-import { useGetProfileQuery } from '../../../services/account';
-import UserHover from '../../../assets/svg/userHover';
-import OrderIcon from '../../../assets/svg/order';
-import LogOutIcon from '../../../assets/svg/logOut';
 import { Outlet } from 'react-router';
+import LogOutIcon from '../../../assets/svg/logOut';
+import OrderIcon from '../../../assets/svg/order';
+import UserHover from '../../../assets/svg/userHover';
+import Breadcrumb from '../../../components/Breadcrumb';
+import { useGetProfileQuery } from '../../../services/account';
+import { Link } from 'react-router-dom';
 
 type Props = {}
 
@@ -36,14 +36,14 @@ const Profile = (props: Props) => {
               </div>
             </div>
             <div className='mt-4 bg-white rounded-xl'>
-              <div className="flex items-center gap-x-2 px-3 py-4 cursor-pointer hover:text-[#1250dc] hover:bg-[#edf0f3] transition-all delay-200">
+              <Link to={"/profile/editProfile"}  className="flex items-center gap-x-2 px-3 py-4 cursor-pointer hover:text-[#1250dc] hover:bg-[#edf0f3] transition-all delay-200">
                 <UserHover />
                 <div className='text-16 font-medium'>Thông tin cá nhân</div>
-              </div>
-              <div className="flex items-center gap-x-2 px-3 py-4 cursor-pointer hover:text-[#1250dc] hover:bg-[#edf0f3] transition-all delay-200">
+              </Link>
+              <Link to={"/profile/listOrderUser"} className="flex items-center gap-x-2 px-3 py-4 cursor-pointer hover:text-[#1250dc] hover:bg-[#edf0f3] transition-all delay-200">
                 <OrderIcon />
                 <div className='text-16 font-medium'>Đơn hàng của tôi</div>
-              </div>
+              </Link>
               <div
                 className="flex items-center gap-x-2 px-3 py-4 cursor-pointer hover:text-[#1250dc hover:bg-[#edf0f3] transition-all delay-200"
                 onClick={() => {

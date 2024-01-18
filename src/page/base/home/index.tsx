@@ -30,9 +30,6 @@ const Home: React.FC = () => {
   const detailProduct = (id: number) => {
     navigate(`/product/${id}`);
   };
-  // const cart = (id: number) => {
-  //   navigate(`/cart`);
-  // }
 
   const [openModalChat, setOpenModalChat] = useState<boolean>(false);
   return (

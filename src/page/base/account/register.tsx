@@ -1,13 +1,12 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { message } from "antd";
+import dayjs from "dayjs";
 import { useFormik } from "formik";
+import { Link, useLocation } from "react-router-dom";
 import { RegisterSchema, TRegister } from "../../../schema/auth";
 import {
   useRegisterMutation,
   useValidateEmailMutation,
 } from "../../../services/auth";
-import dayjs from "dayjs";
-import { message } from "antd";
 
 const Register = () => {
   const location = useLocation();
