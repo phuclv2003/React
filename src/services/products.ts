@@ -57,6 +57,16 @@ const productsApi = createApi({
         },
         invalidatesTags: ["Products"],
       }),
+      editProduct: builder.mutation<any, any>({
+        query: (data) => {
+          return {
+            url: `product/${data.id}`,
+            method: "PUT",
+            body: data,
+          };
+        },
+        invalidatesTags: ["Products"],
+      }),
     };
   },
 });
@@ -66,6 +76,7 @@ export const {
   useGetProductByIdQuery,
   useUploadImageMutation,
   useAddProductMutation,
+  useEditProductMutation,
 } = productsApi;
 export const productsReducer = productsApi.reducer;
 export default productsApi;

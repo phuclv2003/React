@@ -2,10 +2,11 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select, Upload, message } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import React, { useEffect, useState } from "react";
+import ReactQuill from "react-quill";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetCategoryQuery } from "../../../services/category";
 import {
-  useAddProductMutation,
+  useEditProductMutation,
   useGetProductByIdQuery,
   useUploadImageMutation,
 } from "../../../services/products";
@@ -15,7 +16,7 @@ const EditProductAdmin: React.FC = () => {
   const [form] = Form.useForm();
   const { id } = useParams<{ id: string }>();
   const { data } = useGetProductByIdQuery(id);
-  const [addProduct] = useAddProductMutation();
+  const [editProduct] = useEditProductMutation();
   const [uploadImage] = useUploadImageMutation();
   const { data: cate } = useGetCategoryQuery({
     page_size: 1000,
@@ -25,25 +26,26 @@ const EditProductAdmin: React.FC = () => {
 
   useEffect(() => {
     form.setFieldsValue(data);
-  },[data, form]);
+  }, [data, form]);
 
   const onFinish = async (values: any) => {
     console.log(values);
     try {
-      const res = await addProduct({
+      const res = await editProduct({
         ...values,
+        id: id,
         ingredient: {
-          "vitaminC": values.ingredient,
-          "vgranuleC": values.ingredient,
+          vitaminC: values.ingredient,
+          vgranuleC: values.ingredient,
         },
         image:
           "https://cdn.nhathuoclongchau.com.vn/unsafe/373x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_08302_ba4462d00d.jpg",
       });
       if ("data" in res) {
-        message.success("Thêm sản phẩm thành công");
+        message.success("Sửa sản phẩm thành công");
         navigator("/admin/product");
       } else {
-        message.error("Thêm sản phẩm thất bại");
+        message.error("Sửa sản phẩm thất bại");
       }
     } catch (error) {
       message.error("Lỗi");
@@ -163,23 +165,43 @@ const EditProductAdmin: React.FC = () => {
         rules={[{ required: true }]}
         label="Cách sử dụng"
       >
-        <Input />
+        <ReactQuill
+          style={{ height: 500 }}
+          theme="snow"
+          value={form.getFieldValue("how_to_use")}
+          onChange={(content) => form.setFieldValue("how_to_use", content)}
+        />
       </Form.Item>
       <Form.Item
         name="side_effects"
         rules={[{ required: true }]}
         label="Tác dụng phụ"
       >
-        <Input />
+        <ReactQuill
+          style={{ height: 500 }}
+          theme="snow"
+          value={form.getFieldValue("side_effects")}
+          onChange={(content) => form.setFieldValue("side_effects", content)}
+        />
       </Form.Item>
       <Form.Item name="note" rules={[{ required: true }]} label="Chú ý">
-        <Input />
+        <ReactQuill
+          style={{ height: 500 }}
+          theme="snow"
+          value={form.getFieldValue("note")}
+          onChange={(content) => form.setFieldValue("note", content)}
+        />
       </Form.Item>
       <Form.Item name="preserve" rules={[{ required: true }]} label="Bảo quản">
-        <Input />
+        <ReactQuill
+          style={{ height: 500 }}
+          theme="snow"
+          value={form.getFieldValue("preserve")}
+          onChange={(content) => form.setFieldValue("preserve", content)}
+        />
       </Form.Item>
       <Form.Item>
-        <Button htmlType="submit">Thêm</Button>
+        <Button htmlType="submit">Sửa</Button>
       </Form.Item>
     </Form>
   );

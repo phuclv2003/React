@@ -54,9 +54,7 @@ const NewAdmin: React.FC = () => {
       dataIndex: "image",
       key: "image",
       width: 150,
-      render: (img) => (
-        <Image width={100} src={"http://localhost:8000/" + img} />
-      ),
+      render: (img) => <Image width={100} src={img} />,
     },
     {
       title: "Nội dung",
@@ -72,9 +70,10 @@ const NewAdmin: React.FC = () => {
             WebkitLineClamp: 1,
             WebkitBoxOrient: "vertical",
           }}
-        >
-          {text}
-        </div>
+          dangerouslySetInnerHTML={{
+            __html: text || "",
+          }}
+        />
       ),
     },
     {

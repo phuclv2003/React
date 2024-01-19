@@ -4,7 +4,7 @@ import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  useAddCategoryMutation,
+  useEditCategoryMutation,
   useGetByIdCategoryQuery,
   useGetCategoryQuery,
 } from "../../../services/category";
@@ -14,7 +14,7 @@ const EditCategoryAdmin: React.FC = () => {
   const navigator = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
-  const [addCategory] = useAddCategoryMutation();
+  const [editCategory] = useEditCategoryMutation();
   const [uploadImage] = useUploadImageMutation();
   const { data: listCategory } = useGetCategoryQuery({
     page_size: 1000,
@@ -30,8 +30,9 @@ const EditCategoryAdmin: React.FC = () => {
   const onFinish = async (values: any) => {
     console.log(values);
     try {
-      const res = await addCategory({
+      const res = await editCategory({
         ...values,
+        id: id,
         image:
           "https://cdn.nhathuoclongchau.com.vn/unsafe/373x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_08302_ba4462d00d.jpg",
       });
@@ -128,7 +129,7 @@ const EditCategoryAdmin: React.FC = () => {
         </Upload>
       </Form.Item>
       <Form.Item>
-        <Button htmlType="submit">Thêm</Button>
+        <Button htmlType="submit">Sửa</Button>
       </Form.Item>
     </Form>
   );
