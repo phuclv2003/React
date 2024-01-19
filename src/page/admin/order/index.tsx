@@ -13,6 +13,16 @@ const OrderAdmin: React.FC = () => {
     page: 1,
     sort_by: '{"created_at": "asc"}',
   });
+
+  const orderDetail = (item: any) => {
+    navigator(`/admin/order/detail`, {
+      state: {
+        data: {
+          ...item,
+        },
+      },
+    });
+  };
   const [dataOrder, setDataOrder] = useState<any | null>(null);
   useEffect(() => {
     if (data) {
@@ -69,22 +79,15 @@ const OrderAdmin: React.FC = () => {
       title: "Thao tác",
       key: "id",
       width: 200,
-      render: (product: any) => (
+      render: (data: any) => (
         <div>
           <Button
-            onClick={() => navigator(`edit/${product.id}`)}
+            type="link"
+            onClick={() => orderDetail(data)}
             className="btn-edit"
             style={{ marginRight: "1rem" }}
           >
-            Sửa
-          </Button>
-          <Button
-            danger
-            onClick={() => { }}
-            className="btn-edit"
-            style={{ marginRight: "1rem" }}
-          >
-            Xóa
+            Chi tiết
           </Button>
         </div>
       ),
@@ -116,7 +119,7 @@ const OrderAdmin: React.FC = () => {
         dayjs(item.created_at)
           .format("DD/MM/YYYY")
           .toLowerCase()
-          .includes(filter.time.trim().toLowerCase()) && 
+          .includes(filter.time.trim().toLowerCase()) &&
         item.state?.toString().toLowerCase().includes(filter.status)
     );
     setDataOrder(filteredData);
@@ -133,6 +136,9 @@ const OrderAdmin: React.FC = () => {
   };
 
   const optionStatus = [{
+    value: 0,
+    label: "Chờ xử lý",
+  },{
     value: 1,
     label: "Đang xử lý",
   }, {
