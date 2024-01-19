@@ -38,6 +38,13 @@ const orderApi = createApi({
         }),
         invalidatesTags: ["Orders"],
       }),
+      updateOrder: builder.mutation<any, any>({
+        query: (data) => ({
+          url: `${data.id}/update_state?state=${data.status}`,
+          method: "PUT",
+        }),
+        invalidatesTags: ["Orders"],
+      }),
       postPayMent: builder.mutation<any, any>({
         query: (order) => ({
           url: `payment`,
@@ -62,6 +69,7 @@ export const {
   useGetOrderQuery,
   useAddOrderMutation,
   usePostPayMentMutation,
+  useUpdateOrderMutation,
   usePaymentReturnQuery,
   useGetOrderByIdQuery
 } = orderApi;
