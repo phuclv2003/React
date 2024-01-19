@@ -34,6 +34,7 @@ import ListByIdCate from "./page/base/product/listByIdCate";
 import PageNotFound from "./page/pageNotFound";
 import { useGetProfileQuery } from "./services/account";
 import { useRefreshMutation } from "./services/auth";
+import OrderDetailAdmin from "./page/admin/order/detail";
 
 function App() {
   const { data: user, isLoading } = useGetProfileQuery();
@@ -98,7 +99,10 @@ function App() {
           <Route path="product" element={<ProductsAdmin />} />
           <Route path="product/add" element={<AddProductAdmin />} />
           <Route path="product/edit/:id" element={<EditProductAdmin />} />
-          <Route path="order" element={<OrderAdmin />} />
+          <Route path="order">
+            <Route index element={<OrderAdmin />} />
+            <Route path="detail" element={<OrderDetailAdmin />} />
+          </Route>
           <Route path="category" element={<CategoryAdmin />} />
           <Route path="category/add" element={<AddCategoryAdmin />} />
           <Route path="category/edit/:id" element={<EditCategoryAdmin />} />
