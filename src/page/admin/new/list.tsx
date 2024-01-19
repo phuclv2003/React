@@ -1,10 +1,11 @@
 import { Button, Image } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TableAdmin from "../../../components/table";
 import { useGetNewsQuery } from "../../../services/new";
 import dayjs from "dayjs";
+import Search from "antd/es/input/Search";
 
 const NewAdmin: React.FC = () => {
   const navigator = useNavigate();
@@ -14,6 +15,13 @@ const NewAdmin: React.FC = () => {
     sort_by: '{"created_at": "asc"}',
   });
 
+  const [listNews, setListNews] = useState<any[] | undefined>([]);
+
+  const [openReset, setOpenReset] = useState<boolean>(false);
+  const [filter, setFilter] = useState({ name: "" });
+  const handleFilterChange = (fieldName: string, value: string) => {
+    setFilter({ ...filter, [fieldName]: value });
+  };
   const columns: ColumnsType<any> = [
     {
       title: "STT",
@@ -110,7 +118,7 @@ const NewAdmin: React.FC = () => {
           </Button>
           <Button
             danger
-            onClick={() => {}}
+            onClick={() => { }}
             className="btn-edit"
             style={{ marginRight: "1rem" }}
           >
@@ -121,12 +129,44 @@ const NewAdmin: React.FC = () => {
     },
   ];
 
+  useEffect(() => {
+    const filteredData = listNew?.data.filter((item: { title: string; }) =>
+      item.title?.toLowerCase().includes(filter.name.trim().toLowerCase())
+    );
+    setListNews(filteredData);
+  }, [listNew, filter]);
+
+  useEffect(() => {
+    if (filter.name === "") {
+      setOpenReset(false);
+    } else {
+      setOpenReset(true);
+    }
+  }, [filter.name]);
   return (
     <>
+      <div className="btn-table">
+        <h2 style={{ margin: "0.5rem" }}>Tìm kiếm</h2>
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Search
+            placeholder="Tìm kiếm Trạng Thái "
+            value={filter?.name}
+            onChange={(e) => handleFilterChange("name", e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => setFilter({ name: "" })}
+            danger
+            disabled={!openReset}
+          >
+            Cài lại
+          </Button>
+        </div>
+      </div>
       <Button className="mb-5" onClick={() => navigator("add")}>
         Thêm tin tức
       </Button>
-      <TableAdmin columns={columns} data={listNew?.data} />
+      <TableAdmin columns={columns} data={listNews} />
     </>
   );
 };
