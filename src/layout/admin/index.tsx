@@ -1,8 +1,6 @@
 import {
   DesktopOutlined,
-  FileOutlined,
   PieChartOutlined,
-  TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, MenuProps, theme } from "antd";
@@ -102,6 +100,7 @@ const LayoutAdmin: FC<Props> = () => {
           <Breadcrumb style={{ margin: "16px 0" }}>
             {breadcrumbs.map((item) => (
               <Breadcrumb.Item
+                key={item.url}
                 className="capitalize hover:text-[#001628] cursor-pointer"
                 onClick={() => navigator(`${item.url}`)}
               >

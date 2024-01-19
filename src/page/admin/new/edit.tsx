@@ -12,22 +12,12 @@ const EditNewAdmin: React.FC = () => {
   const [form] = Form.useForm();
   const [editNew] = useEditNewMutation();
   const { data: dataNew } = useGetNewsByIdQuery(id);
-
+  
   const [imageUrl, setImageUrl] = useState<any | null>(null);
-
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   useEffect(() => {
     if (dataNew) {
       form.setFieldsValue(dataNew);
-      setFileList([
-        {
-          uid: "-1",
-          name: "image.png",
-          status: "done",
-          url: dataNew.image,
-        },
-      ]);
     }
   }, [dataNew, form]);
 

@@ -6,7 +6,6 @@ const ListByIdCate: FC = () => {
   const navigate = useNavigate();
   const [conditions, setConditions] = useState<any[]>([]);
   const { id } = useParams();
-  const [isOpen] = useState(false);
   const [min, setMin] = useState<number | null>(null);
   const [max, setMax] = useState<number | null>(null);
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
