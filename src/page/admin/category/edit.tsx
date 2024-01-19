@@ -23,7 +23,7 @@ const EditCategoryAdmin: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<string>();
 
   useEffect(() => {
-    form.getFieldsValue(category);
+    form.setFieldsValue(category);
   }, [category, form]);
 
   const onFinish = async (values: any) => {
