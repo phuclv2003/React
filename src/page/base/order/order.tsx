@@ -152,6 +152,7 @@ const Order: FC = () => {
             window.location.href = resPost.data;
           }
         } else {
+          navigate("/profile/listOrderUser")
         }
       }
     } else {

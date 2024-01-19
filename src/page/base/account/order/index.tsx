@@ -12,7 +12,7 @@ const ListOrderUser = (props: Props) => {
   const { data: dataProduct, refetch } = useGetOrderQuery({
     page_size: 1000,
     page: 1,
-    sort_by: '{"created_at": "asc"}',
+    sort_by: '{"created_at": "desc"}',
     ...(id !== null && { state: id }),
   });
   const handleChange = (key: string) => {
