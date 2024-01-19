@@ -45,10 +45,6 @@ const items: MenuItem[] = [
   getItem("Order", "5", <UserOutlined />, "/admin/order"),
   getItem("Category", "6", <UserOutlined />, "/admin/category"),
   getItem("New", "7", <UserOutlined />, "/admin/new"),
-  getItem("Team", "sub2", <TeamOutlined />, undefined, [
-    getItem("Team 2", "8", undefined, "/admin/teams/team2"),
-  ]),
-  getItem("Files", "9", <FileOutlined />, "/admin/files"),
 ];
 
 const LayoutAdmin: FC<Props> = () => {

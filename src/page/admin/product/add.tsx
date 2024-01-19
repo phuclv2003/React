@@ -44,11 +44,15 @@ const AddProductAdmin: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<any | null>(null);
 
   const handleImageChange = (info: any) => {
-    if (info.file.status === "done") {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+    } else if (info.file.status === "done") {
       message.success(`${info.file.name} file uploaded successfully`);
       setImageUrl(info.file.response.url);
+      setLoading(false);
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
+      setLoading(false);
     }
   };
   const uploadButton = (

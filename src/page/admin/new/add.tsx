@@ -43,11 +43,15 @@ const AddNewAdmin: React.FC = () => {
     </div>
   );
   const handleImageChange = (info: any) => {
-    if (info.file.status === "done") {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+    } else if (info.file.status === "done") {
       message.success(`${info.file.name} tải file thành công`);
       setImageUrl(info.file.response.url);
+      setLoading(false);
     } else if (info.file.status === "error") {
       message.error(`${info.file.name} tải file thất bại`);
+      setLoading(false);
     }
   };
   return (

@@ -4,7 +4,10 @@ import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../../assets/css/common.css";
 import Breadcrumb from "../../../components/Breadcrumb";
-import { useAddOrderMutation, usePostPayMentMutation } from "../../../services/order";
+import {
+  useAddOrderMutation,
+  usePostPayMentMutation,
+} from "../../../services/order";
 interface Location {
   Id: string;
   Name: string;
@@ -32,48 +35,48 @@ const Order: FC = () => {
   const [postPayMent] = usePostPayMentMutation();
   const [data] = useState<any>(location.state?.data);
   const [cities, setCities] = useState<Location[]>([]);
-  const [selectedCity, setSelectedCity] = useState<string>('');
-  const [selectedDistrict, setSelectedDistrict] = useState<string>('');
-  const [districts, setDistricts] = useState<Location['Districts']>([]);
-  const [wards, setWards] = useState<Location['Districts'][0]['Wards']>([]);
-  const [selectedPayment, setSelectedPayment] = useState<string>('');
-  const [paymentError, setPaymentError] = useState<string>('');
+  const [selectedCity, setSelectedCity] = useState<string>("");
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("");
+  const [districts, setDistricts] = useState<Location["Districts"]>([]);
+  const [wards, setWards] = useState<Location["Districts"][0]["Wards"]>([]);
+  const [selectedPayment, setSelectedPayment] = useState<string>("");
+  const [paymentError, setPaymentError] = useState<string>("");
   const validate = (values: FormValues) => {
     const errors: Partial<FormValues> = {};
     if (!values.tel) {
-      errors.tel = 'Vui lòng nhập số điện thoại.';
+      errors.tel = "Vui lòng nhập số điện thoại.";
     } else if (!/^\d+$/.test(values.tel)) {
-      errors.tel = 'Số điện thoại chỉ được chứa số.';
+      errors.tel = "Số điện thoại chỉ được chứa số.";
     }
 
     if (!values.city) {
-      errors.city = 'Vui lòng chọn tỉnh/thành phố.';
+      errors.city = "Vui lòng chọn tỉnh/thành phố.";
     }
 
     if (!values.district) {
-      errors.district = 'Vui lòng chọn quận/huyện.';
+      errors.district = "Vui lòng chọn quận/huyện.";
     }
 
     if (!values.ward) {
-      errors.ward = 'Vui lòng chọn phường/xã.';
+      errors.ward = "Vui lòng chọn phường/xã.";
     }
 
     if (!values.detailed_address) {
-      errors.detailed_address = 'Vui lòng nhập địa chỉ cụ thể.';
+      errors.detailed_address = "Vui lòng nhập địa chỉ cụ thể.";
     }
 
     return errors;
   };
-  const [ipAddress, setIpAddress] = useState('');
+  const [ipAddress, setIpAddress] = useState("");
 
   useEffect(() => {
     const fetchIpAddress = async () => {
       try {
-        const response = await fetch('https://api64.ipify.org?format=json');
+        const response = await fetch("https://api64.ipify.org?format=json");
         const data = await response.json();
         setIpAddress(data.ip);
       } catch (error) {
-        console.error('Lỗi khi lấy địa chỉ IP:', error);
+        console.error("Lỗi khi lấy địa chỉ IP:", error);
       }
     };
 
@@ -88,17 +91,17 @@ const Order: FC = () => {
 
   const formik = useFormik<FormValues>({
     initialValues: {
-      tel: '',
-      city: '',
-      district: '',
-      ward: '',
-      detailed_address: '',
+      tel: "",
+      city: "",
+      district: "",
+      ward: "",
+      detailed_address: "",
     },
     validate,
     onSubmit: async (values: FormValues) => {
       try {
       } catch (error) {
-        console.error('Lỗi', error);
+        console.error("Lỗi", error);
       }
     },
   });
@@ -109,10 +112,10 @@ const Order: FC = () => {
     const formIsValid = await formik.validateForm();
     if (Object.keys(formIsValid).length === 0) {
       if (!selectedPayment) {
-        setPaymentError('Vui lòng chọn phương thức thanh toán.');
+        setPaymentError("Vui lòng chọn phương thức thanh toán.");
         return;
       }
-      setPaymentError('');
+      setPaymentError("");
       let paymentMethod: string | undefined;
 
       if (selectedPayment === "6") {
@@ -141,30 +144,31 @@ const Order: FC = () => {
             order_id: res.data.id,
             total_price: res.data.total_price,
             bank_code: "NCB",
-            "ipaddr": ipAddress,
-            "language": "vn",
-            "description": `Thanh toán `
-          })
+            ipaddr: ipAddress,
+            language: "vn",
+            description: `Thanh toán `,
+          });
           if ("data" in resPost) {
             window.location.href = resPost.data;
           }
         } else {
-
         }
       }
     } else {
-      console.log('Form validation failed:', formIsValid);
+      console.log("Form validation failed:", formIsValid);
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json');
+        const response = await fetch(
+          "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
+        );
         const data = await response.json();
         setCities(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -174,16 +178,20 @@ const Order: FC = () => {
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const cityId = event.target.value;
     setSelectedCity(cityId);
-    const selectedCityData = cities.find(city => city.Name === cityId);
+    const selectedCityData = cities.find((city) => city.Name === cityId);
     setDistricts(selectedCityData?.Districts || []);
-    setSelectedDistrict('');
+    setSelectedDistrict("");
     setWards([]);
   };
 
-  const handleDistrictChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleDistrictChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const districtId = event.target.value;
     setSelectedDistrict(districtId);
-    const selectedDistrictData = districts.find(district => district.Name === districtId);
+    const selectedDistrictData = districts.find(
+      (district) => district.Name === districtId
+    );
     setWards(selectedDistrictData?.Wards || []);
   };
 
@@ -211,7 +219,7 @@ const Order: FC = () => {
                           <div className="w-[60px] h-[60px] shadow-[0_0_0_1px_#e4e8ed] flex items-center justify-center mr-3 rounded-md">
                             <img
                               className="w-[52px] h-[52px]"
-                              src={ "http://localhost:8000/" + item.product_image}
+                              src={item.product_image}
                               alt=""
                             />
                           </div>
@@ -271,7 +279,9 @@ const Order: FC = () => {
                           </span>
                         </span>
                         {formik.errors.tel && (
-                          <div className="text-red-500 text-sm mt-1">{formik.errors.tel}</div>
+                          <div className="text-red-500 text-sm mt-1">
+                            {formik.errors.tel}
+                          </div>
                         )}
                       </div>
                       <div className="w-full css-wuiu1 border-[1px] rounded-md mt-4 border-[#c1c8d1]">
@@ -285,18 +295,22 @@ const Order: FC = () => {
                           className="custom-ant-input css-10ed4xt p-0 w-full border-0"
                         >
                           <option value="">Chọn Tỉnh/Thành phố</option>
-                          {cities.map(city => (
+                          {cities.map((city) => (
                             <option key={city.Id} value={city.Name}>
                               {city.Name}
                             </option>
                           ))}
                         </select>
                         <span className="custom-ant-input-suffix">
-                          <span className="optional-label">Chọn Tỉnh/Thành phố</span>
+                          <span className="optional-label">
+                            Chọn Tỉnh/Thành phố
+                          </span>
                         </span>
                       </div>
                       {formik.errors.city && (
-                        <div className="text-red-500 text-sm mt-1">{formik.errors.city}</div>
+                        <div className="text-red-500 text-sm mt-1">
+                          {formik.errors.city}
+                        </div>
                       )}
                       <div className="w-full css-wuiu1 border-[1px] rounded-md mt-4 border-[#c1c8d1]">
                         <select
@@ -309,18 +323,22 @@ const Order: FC = () => {
                           className="custom-ant-input css-10ed4xt p-0 w-full border-0"
                         >
                           <option value="">Chọn Quận/Huyện</option>
-                          {districts.map(district => (
+                          {districts.map((district) => (
                             <option key={district.Id} value={district.Name}>
                               {district.Name}
                             </option>
                           ))}
                         </select>
                         <span className="custom-ant-input-suffix">
-                          <span className="optional-label">Chọn Quận/Huyện</span>
+                          <span className="optional-label">
+                            Chọn Quận/Huyện
+                          </span>
                         </span>
                       </div>
                       {formik.errors.district && (
-                        <div className="text-red-500 text-sm mt-1">{formik.errors.district}</div>
+                        <div className="text-red-500 text-sm mt-1">
+                          {formik.errors.district}
+                        </div>
                       )}
                       <div className="w-full css-wuiu1 border-[1px] rounded-md mt-4 border-[#c1c8d1]">
                         <select
@@ -331,7 +349,7 @@ const Order: FC = () => {
                           className="custom-ant-input css-10ed4xt p-0 w-full border-0"
                         >
                           <option value="">Chọn Phường/Xã</option>
-                          {wards.map(ward => (
+                          {wards.map((ward) => (
                             <option key={ward.Id} value={ward.Name}>
                               {ward.Name}
                             </option>
@@ -342,7 +360,9 @@ const Order: FC = () => {
                         </span>
                       </div>
                       {formik.errors.ward && (
-                        <div className="text-red-500 text-sm mt-1">{formik.errors.ward}</div>
+                        <div className="text-red-500 text-sm mt-1">
+                          {formik.errors.ward}
+                        </div>
                       )}
                       <div className="w-full css-wuiu1  rounded-md mt-4 border-[#c1c8d1]">
                         <span className="custom-ant-input-affix-wrapper css-10ed4xt">
@@ -361,7 +381,9 @@ const Order: FC = () => {
                           </span>
                         </span>
                         {formik.errors.detailed_address && (
-                          <div className="text-red-500 text-sm mt-1">{formik.errors.detailed_address}</div>
+                          <div className="text-red-500 text-sm mt-1">
+                            {formik.errors.detailed_address}
+                          </div>
                         )}
                       </div>
                     </form>
@@ -424,7 +446,9 @@ const Order: FC = () => {
                     </li>
                   </ul>
                   {paymentError && (
-                    <div className="text-red-500 text-sm mt-1">{paymentError}</div>
+                    <div className="text-red-500 text-sm mt-1">
+                      {paymentError}
+                    </div>
                   )}
                 </div>
               </div>

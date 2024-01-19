@@ -187,9 +187,7 @@ const Cart: FC = () => {
                             <div className="w-[60px] h-[60px] shadow-[0_0_0_1px_#e4e8ed] flex items-center justify-center mr-3 rounded-md">
                               <img
                                 className="w-[52px] h-[52px]"
-                                src={
-                                  "http://localhost:8000/" + item.product_image
-                                }
+                                src={item.product_image}
                                 alt=""
                               />
                             </div>
@@ -237,16 +235,16 @@ const Cart: FC = () => {
                         </td>
                         <td>{item.unit}</td>
                         <td className="pr-4 cursor-pointer">
-                        <Popconfirm
-                      title="Xóa trạng thái."
-                      description="Bạn có muốn hủy không?"
-                      onConfirm={() => confirm(item.id || 0)}
-                      onCancel={cancel}
-                      okText="Đồng ý"
-                      cancelText="Không"
-                    >
-                          <DeleteOutlined />
-                    </Popconfirm>
+                          <Popconfirm
+                            title="Xóa trạng thái."
+                            description="Bạn có muốn hủy không?"
+                            onConfirm={() => confirm(item.id || 0)}
+                            onCancel={cancel}
+                            okText="Đồng ý"
+                            cancelText="Không"
+                          >
+                            <DeleteOutlined />
+                          </Popconfirm>
                         </td>
                       </tr>
                     ))}

@@ -107,11 +107,7 @@ const Home: React.FC = () => {
                 >
                   <div className="p-3">
                     <div className="px-1 text-center md:px-4">
-                      <img
-                        className="w-full"
-                        src={"http://localhost:8000/" + item.image}
-                        alt="product"
-                      />
+                      <img className="w-full" src={item.image} alt="product" />
                     </div>
                     <div>
                       <h3 className="text-body2 font-semibold">{item.name}</h3>
@@ -186,11 +182,7 @@ const Home: React.FC = () => {
                 >
                   <div className="h-1/2">
                     <div className="overflow-hidden rounded-t-[8px] h-full rounded-b-[0px] md:rounded-[8px]">
-                      <img
-                        className="w-full h-full"
-                        src={"http://localhost:8000/" + item.image}
-                        alt=""
-                      />
+                      <img className="w-full h-full" src={item.image} alt="" />
                     </div>
                   </div>
                   <div className="flex flex-1 h-full grow flex-col p-[12px] md:p-0 md:pt-[20px]">

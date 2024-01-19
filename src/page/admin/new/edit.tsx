@@ -1,6 +1,6 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Upload, message } from "antd";
-import { UploadFile } from "antd/es/upload";
+import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,9 +13,10 @@ const EditNewAdmin: React.FC = () => {
   const [editNew] = useEditNewMutation();
   const { data: dataNew } = useGetNewsByIdQuery(id);
 
-  const [image, setImage] = useState<string | undefined>();
+  const [imageUrl, setImageUrl] = useState<any | null>(null);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
   useEffect(() => {
     if (dataNew) {
       form.setFieldsValue(dataNew);
@@ -35,7 +36,7 @@ const EditNewAdmin: React.FC = () => {
       const res = await editNew({
         ...values,
         id: id,
-        image: image,
+        image: imageUrl,
       });
       if ("data" in res) {
         message.success("Sửa tin tức thành công");
@@ -61,12 +62,21 @@ const EditNewAdmin: React.FC = () => {
     </div>
   );
 
-  const handleImageChange = ({ fileList: newFileList }: any) => {
-    if (newFileList[0].response) {
-      setImage(newFileList[0].response.secure_url);
+  const handleImageChange = async (
+    info: UploadChangeParam<UploadFile<any>>
+  ) => {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+    } else if (info.file.status === "done") {
+      message.success(`${info.file.name} file upload success.`);
+      setImageUrl(info.file.response.data.image_path);
+      setLoading(false);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+      setLoading(false);
     }
-    setFileList(newFileList);
   };
+
   return (
     <Form
       form={form}
@@ -91,12 +101,15 @@ const EditNewAdmin: React.FC = () => {
           }}
           listType="picture-card"
           maxCount={1}
-          showUploadList={true}
+          showUploadList={false}
           className="ant-upload-wrapper ant-upload-select"
           onChange={handleImageChange}
-          fileList={fileList}
         >
-          {uploadButton}
+          {imageUrl ? (
+            <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+          ) : (
+            uploadButton
+          )}
         </Upload>
       </Form.Item>
       <Form.Item

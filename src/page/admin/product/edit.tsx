@@ -61,7 +61,9 @@ const EditProductAdmin: React.FC = () => {
   const [imageUrl, setImageUrl] = useState<string>();
 
   const handleChange = async (info: UploadChangeParam<UploadFile<any>>) => {
-    if (info.file.status === "done") {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+    } else if (info.file.status === "done") {
       message.success(`${info.file.name} file upload success.`);
       setImageUrl(info.file.response.data.image_path);
       setLoading(false);

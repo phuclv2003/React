@@ -48,7 +48,7 @@ const HeaderBase: FC = () => {
         >
           <img
             className="w-[20px]"
-            src={"http://localhost:8000/" + cate.image}
+            src={cate.image}
             alt=""
           />
           {cate.category_name}

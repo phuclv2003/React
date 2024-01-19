@@ -1,6 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select, Upload, message } from "antd";
-import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -8,20 +7,20 @@ import {
   useGetByIdCategoryQuery,
   useGetCategoryQuery,
 } from "../../../services/category";
-import { useUploadImageMutation } from "../../../services/products";
 
 const EditCategoryAdmin: React.FC = () => {
   const navigator = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [form] = Form.useForm();
   const [editCategory] = useEditCategoryMutation();
-  const [uploadImage] = useUploadImageMutation();
   const { data: listCategory } = useGetCategoryQuery({
     page_size: 1000,
     page: 1,
     sort_by: '{"created_at": "asc"}',
   });
   const { data: category } = useGetByIdCategoryQuery(id);
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string>();
 
   useEffect(() => {
     form.getFieldsValue(category);
@@ -33,8 +32,7 @@ const EditCategoryAdmin: React.FC = () => {
       const res = await editCategory({
         ...values,
         id: id,
-        image:
-          "https://cdn.nhathuoclongchau.com.vn/unsafe/373x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_08302_ba4462d00d.jpg",
+        image: imageUrl,
       });
       if ("data" in res) {
         message.success("Thêm danh mục thành công");
@@ -51,45 +49,25 @@ const EditCategoryAdmin: React.FC = () => {
     console.log("Failed:", errorInfo);
   };
 
-  const [loading, setLoading] = useState(false);
-
-  const [imageUrl, setImageUrl] = useState<string>();
-
-  const handleChange = async (info: UploadChangeParam<UploadFile<any>>) => {
-    if (info.file.status === "done") {
-      message.success(`${info.file.name} file upload success.`);
-      setImageUrl(info.file.response.data.image_path);
-      setLoading(false);
-    } else if (info.file.status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-      setLoading(false);
-    }
-  };
-
-  const customRequest = async ({ file, onSuccess, onError }: any) => {
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("image", file);
-
-      const res = await uploadImage(formData);
-
-      if ("data" in res) {
-        onSuccess();
-      } else {
-        onError(new Error("Upload failed"));
-      }
-    } catch (error) {
-      onError(error);
-    }
-  };
-
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+
+  const handleImageChange = (info: any) => {
+    if (info.file.status === "uploading") {
+      setLoading(true);
+    } else if (info.file.status === "done") {
+      message.success(`${info.file.name} tải file thành công`);
+      setImageUrl(info.file.response.url);
+      setLoading(false);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} tải file thất bại`);
+      setLoading(false);
+    }
+  };
 
   return (
     <Form
@@ -116,10 +94,17 @@ const EditCategoryAdmin: React.FC = () => {
       </Form.Item>
       <Form.Item name="image" label="Ảnh">
         <Upload
+          name="file"
+          action="https://api.cloudinary.com/v1_1/dksgvucji/image/upload"
+          data={{
+            upload_preset: "wh3rdke8",
+            cloud_name: "dksgvucji",
+          }}
           listType="picture-card"
+          maxCount={1}
           showUploadList={false}
-          customRequest={customRequest}
-          onChange={handleChange}
+          className="ant-upload-wrapper ant-upload-select"
+          onChange={handleImageChange}
         >
           {imageUrl ? (
             <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />

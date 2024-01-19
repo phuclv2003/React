@@ -35,9 +35,7 @@ const UserAdmin: React.FC = () => {
       dataIndex: "upload_file_path",
       key: "upload_file_path",
       width: 150,
-      render: (img) => (
-        <Image width={100} src={"http://localhost:8000/" + img} />
-      ),
+      render: (img) => <Image width={100} src={img} />,
     },
     {
       title: "SĐT",

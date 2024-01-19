@@ -1,8 +1,6 @@
-import { FC, useState } from "react"
+import { FC, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../../services/products";
-
-
 
 const ListByIdCate: FC = () => {
   const navigate = useNavigate();
@@ -34,7 +32,11 @@ const ListByIdCate: FC = () => {
     setConditions(newConditions);
   };
 
-  const handleChange = (idMin: number | null, idMax: number | null, buttonIndex: number) => {
+  const handleChange = (
+    idMin: number | null,
+    idMax: number | null,
+    buttonIndex: number
+  ) => {
     setSelectedButton(buttonIndex);
     if (idMin) {
       setMin(idMin);
@@ -52,7 +54,7 @@ const ListByIdCate: FC = () => {
     setSelectedButton(null);
     setMin(null);
     setMax(null);
-  }
+  };
   return (
     <div className="container mx-auto pt-6">
       <div className="md:grid md:grid-cols-[289px_907fr] md:gap-5">
@@ -73,7 +75,10 @@ const ListByIdCate: FC = () => {
               </span>
               <h3 className="">Bộ lọc nâng cao</h3>
             </div>
-            <div className="sm-scrollbar max-h-[calc(100vmin-45px-2*12px-16px)] overflow-auto px-4 [&amp;>:last-child]:pb-0" style={{ scrollbarGutter: "stable" }}>
+            <div
+              className="sm-scrollbar max-h-[calc(100vmin-45px-2*12px-16px)] overflow-auto px-4 [&amp;>:last-child]:pb-0"
+              style={{ scrollbarGutter: "stable" }}
+            >
               <div className="border-divider-1pt border-t pt-3 pb-2">
                 <div className="flex cursor-pointer items-center gap-3">
                   <p className="css-1v577ri">Giá bán</p>
@@ -83,31 +88,48 @@ const ListByIdCate: FC = () => {
                     <ul className="w-full">
                       <li className="mt-2">
                         <button
-                          onClick={() => {handleChange(null, 100000, 1); addCondition('Dưới 100.000đ');}}
-                          
+                          onClick={() => {
+                            handleChange(null, 100000, 1);
+                            addCondition("Dưới 100.000đ");
+                          }}
                           type="button"
-                          className={`py-[13px] px-[9px] rounded-md ant-btn ant-btn-default w-full estore-btn-selected !duration-200 !ease-in-out ${selectedButton === 1 ? 'shadow-[inset_0_0_0_1px_#1250dc]' : 'shadow-[inset_0_0_0_1px_#c1c8d1]'
-                            }`}
+                          className={`py-[13px] px-[9px] rounded-md ant-btn ant-btn-default w-full estore-btn-selected !duration-200 !ease-in-out ${
+                            selectedButton === 1
+                              ? "shadow-[inset_0_0_0_1px_#1250dc]"
+                              : "shadow-[inset_0_0_0_1px_#c1c8d1]"
+                          }`}
                         >
                           <span className="">Dưới 100.000đ</span>
                         </button>
                       </li>
                       <li className="mt-2">
                         <button
-                          onClick={() => {handleChange(100000, 300000, 2); addCondition('Từ 100.000đ đến 300.000đ');}}
+                          onClick={() => {
+                            handleChange(100000, 300000, 2);
+                            addCondition("Từ 100.000đ đến 300.000đ");
+                          }}
                           type="button"
-                          className={`py-[13px] px-[9px] rounded-md ant-btn ant-btn-default w-full estore-btn-selected !duration-200 !ease-in-out ${selectedButton === 2 ? 'shadow-[inset_0_0_0_1px_#1250dc]' : 'shadow-[inset_0_0_0_1px_#c1c8d1]'
-                            }`}
+                          className={`py-[13px] px-[9px] rounded-md ant-btn ant-btn-default w-full estore-btn-selected !duration-200 !ease-in-out ${
+                            selectedButton === 2
+                              ? "shadow-[inset_0_0_0_1px_#1250dc]"
+                              : "shadow-[inset_0_0_0_1px_#c1c8d1]"
+                          }`}
                         >
                           <span className="">100.000đ đến 300.000đ</span>
                         </button>
                       </li>
                       <li className="mt-2">
                         <button
-                          onClick={() => {handleChange(300000, 500000, 3); addCondition('Từ 300.000đ đến 500.000đ');}}
+                          onClick={() => {
+                            handleChange(300000, 500000, 3);
+                            addCondition("Từ 300.000đ đến 500.000đ");
+                          }}
                           type="button"
-                          className={`py-[13px] px-[9px] rounded-md ant-btn ant-btn-default w-full estore-btn-selected !duration-200 !ease-in-out ${selectedButton === 3 ? 'shadow-[inset_0_0_0_1px_#1250dc]' : 'shadow-[inset_0_0_0_1px_#c1c8d1]'
-                            }`}
+                          className={`py-[13px] px-[9px] rounded-md ant-btn ant-btn-default w-full estore-btn-selected !duration-200 !ease-in-out ${
+                            selectedButton === 3
+                              ? "shadow-[inset_0_0_0_1px_#1250dc]"
+                              : "shadow-[inset_0_0_0_1px_#c1c8d1]"
+                          }`}
                         >
                           <span className="">300.000đ đến 500.000đ</span>
                         </button>
@@ -115,9 +137,15 @@ const ListByIdCate: FC = () => {
                       <li className="mt-2">
                         <button
                           type="button"
-                          onClick={() => {handleChange(500000, null, 4); addCondition('Trên 500.000đ');}}
-                          className={`py-[13px] px-[9px] rounded-md ant-btn ant-btn-default w-full estore-btn-selected !duration-200 !ease-in-out ${selectedButton === 4 ? 'shadow-[inset_0_0_0_1px_#1250dc]' : 'shadow-[inset_0_0_0_1px_#c1c8d1]'
-                            }`}
+                          onClick={() => {
+                            handleChange(500000, null, 4);
+                            addCondition("Trên 500.000đ");
+                          }}
+                          className={`py-[13px] px-[9px] rounded-md ant-btn ant-btn-default w-full estore-btn-selected !duration-200 !ease-in-out ${
+                            selectedButton === 4
+                              ? "shadow-[inset_0_0_0_1px_#1250dc]"
+                              : "shadow-[inset_0_0_0_1px_#c1c8d1]"
+                          }`}
                         >
                           <span className="">Trên 500.000đ</span>
                         </button>
@@ -228,124 +256,122 @@ const ListByIdCate: FC = () => {
                   </div>
                 </div>
               </div> */}
-
             </div>
           </div>
         </div>
         <div>
           <div>
-            <h2 className="text-[#020b27] text-[18px] font-semibold">Danh sách sản phẩm </h2>
+            <h2 className="text-[#020b27] text-[18px] font-semibold">
+              Danh sách sản phẩm{" "}
+            </h2>
           </div>
           {conditions.length > 0 && (
-              <div className="mt-4">
-                <span className="text-text-secondary hidden whitespace-nowrap md:inline">
-                  Lọc theo ({conditions.length})
-                </span>
-                <div className="no-scrollbar border-t-stroke-disable flex flex-wrap items-center gap-2 overflow-x-auto border bg-white py-3 px-4 md:mb-3 md:overflow-x-visible md:rounded-xl md:border-0">
-                  {conditions.map((condition, index) => (
-                    <span
-                      key={index}
-                      className="ant-tag !mr-2 shrink-0 whitespace-nowrap last:!mr-0 estore-tag type-1-secondary size-medium css-nhkq40 css-10ed4xt"
-                      style={{ cursor: 'auto' }}
-                    >
-                      <p className="css-15sc8tc">
-                        <span className="css-15sc8tc">{condition}</span>
-                      </p>
-                      <span className="ant-tag-close-icon">
-                        <span
-                          className="estore-icon css-u5y24t"
-                          onClick={() => removeCondition(index)}
+            <div className="mt-4">
+              <span className="text-text-secondary hidden whitespace-nowrap md:inline">
+                Lọc theo ({conditions.length})
+              </span>
+              <div className="no-scrollbar border-t-stroke-disable flex flex-wrap items-center gap-2 overflow-x-auto border bg-white py-3 px-4 md:mb-3 md:overflow-x-visible md:rounded-xl md:border-0">
+                {conditions.map((condition, index) => (
+                  <span
+                    key={index}
+                    className="ant-tag !mr-2 shrink-0 whitespace-nowrap last:!mr-0 estore-tag type-1-secondary size-medium css-nhkq40 css-10ed4xt"
+                    style={{ cursor: "auto" }}
+                  >
+                    <p className="css-15sc8tc">
+                      <span className="css-15sc8tc">{condition}</span>
+                    </p>
+                    <span className="ant-tag-close-icon">
+                      <span
+                        className="estore-icon css-u5y24t"
+                        onClick={() => removeCondition(index)}
+                      >
+                        <svg
+                          viewBox="0 0 25 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          <svg viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                              d="M4.21263 4.3871L4.29582 4.29289C4.65631 3.93241 5.22354 3.90468 5.61583 4.2097L5.71004 4.29289L12.0029 10.585L18.2958 4.29289C18.6863 3.90237 19.3195 3.90237 19.71 4.29289C20.1006 4.68342 20.1006 5.31658 19.71 5.70711L13.4179 12L19.71 18.2929C20.0705 18.6534 20.0982 19.2206 19.7932 19.6129L19.71 19.7071C19.3496 20.0676 18.7823 20.0953 18.39 19.7903L18.2958 19.7071L12.0029 13.415L5.71004 19.7071C5.31951 20.0976 4.68635 20.0976 4.29582 19.7071C3.9053 19.3166 3.9053 18.6834 4.29582 18.2929L10.5879 12L4.29582 5.70711C3.93534 5.34662 3.90761 4.77939 4.21263 4.3871L4.29582 4.29289L4.21263 4.3871Z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                        </span>
+                          <path
+                            d="M4.21263 4.3871L4.29582 4.29289C4.65631 3.93241 5.22354 3.90468 5.61583 4.2097L5.71004 4.29289L12.0029 10.585L18.2958 4.29289C18.6863 3.90237 19.3195 3.90237 19.71 4.29289C20.1006 4.68342 20.1006 5.31658 19.71 5.70711L13.4179 12L19.71 18.2929C20.0705 18.6534 20.0982 19.2206 19.7932 19.6129L19.71 19.7071C19.3496 20.0676 18.7823 20.0953 18.39 19.7903L18.2958 19.7071L12.0029 13.415L5.71004 19.7071C5.31951 20.0976 4.68635 20.0976 4.29582 19.7071C3.9053 19.3166 3.9053 18.6834 4.29582 18.2929L10.5879 12L4.29582 5.70711C3.93534 5.34662 3.90761 4.77939 4.21263 4.3871L4.29582 4.29289L4.21263 4.3871Z"
+                            fill="currentColor"
+                          />
+                        </svg>
                       </span>
                     </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          {
-            (dataProduct && dataProduct.data.length > 0) ? (
-              <div className="grid mt-2 grid-cols-2 gap-2 md:grid-cols-4 md:gap-5">
-                {dataProduct?.data?.map((item: any) => (
-                  <div
-                    onClick={() => detailProduct(item.id)}
-                    key={item.id}
-                    className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer"
-                  >
-                    <div className="p-3">
-                      <div className="px-1 text-center md:px-4">
-                        <img
-                          className="w-full"
-                          src={"http://localhost:8000/" + item.image}
-                          alt="product"
-                        />
-                      </div>
-                      <div>
-                        <h3 className="text-body2 font-semibold">{item.name}</h3>
-                        <div className="mt-1">
-                          <span className="text-body2 font-semibold text-[#1250dc] ">
-                            {new Intl.NumberFormat("vi-VN").format(item.price)}
-                            <span> đ</span>
-                          </span>
-                          <span className="text-caption font-medium text-[#1250dc] text-[12px] pl-1">
-                            /<span className="pl-1">{item.unit}</span>
-                          </span>
-                        </div>
-                        <div className="m-auto flex pt-1 mt-6">
-                          <div className="w-fit rounded-xl bg-[#edf0f3] px-2 py-1">
-                            <p className="w-fit text-caption font-medium text-[#4a4f63] line-clamp-2 text-[12px]">
-                              {item.unit}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  </span>
                 ))}
               </div>
-            ) : (
-              <div className="flex justify-center pt-5">
-                <div className="text-center">
-                  <div className="mx-auto w-full">
-                    <img
-                      src="https://nhathuoclongchau.com.vn/estore-images/illustration-not-found.svg"
-                      alt=""
-                    />
-                  </div>
-                  <h3 className="text-[#4a4f63] font-semibold text-[18px]">
-                    Ôi! Không tìm thấy sản phẩm nào phù hợp
-                  </h3>
-                  <p className="max-w-[300px] text-[#728091] text-[16px]">
-                    Hãy thử lại bằng cách thay đổi điều kiện lọc hoặc
-                  </p>
-                  <div
-                    className="flex justify-center mt-2 cursor-pointer"
-                  >
-                    <div
-                      onClick={() => deleteData()}
-                      style={{
-                        background:
-                          "linear-gradient(315deg,#1250dc 14.64%,#306de4 85.36%)",
-                      }}
-                      className="h-[48px] px-4 text-white rounded-[42px] flex justify-center items-center w-[60%]"
-                    > Xóa tất cả bộ lọc
+            </div>
+          )}
+          {dataProduct && dataProduct.data.length > 0 ? (
+            <div className="grid mt-2 grid-cols-2 gap-2 md:grid-cols-4 md:gap-5">
+              {dataProduct?.data?.map((item: any) => (
+                <div
+                  onClick={() => detailProduct(item.id)}
+                  key={item.id}
+                  className="bg-white relative rounded-xl border border-white hover:border-[#1250dc] transition-all duration-300 ease-in-out cursor-pointer"
+                >
+                  <div className="p-3">
+                    <div className="px-1 text-center md:px-4">
+                      <img className="w-full" src={item.image} alt="product" />
+                    </div>
+                    <div>
+                      <h3 className="text-body2 font-semibold">{item.name}</h3>
+                      <div className="mt-1">
+                        <span className="text-body2 font-semibold text-[#1250dc] ">
+                          {new Intl.NumberFormat("vi-VN").format(item.price)}
+                          <span> đ</span>
+                        </span>
+                        <span className="text-caption font-medium text-[#1250dc] text-[12px] pl-1">
+                          /<span className="pl-1">{item.unit}</span>
+                        </span>
+                      </div>
+                      <div className="m-auto flex pt-1 mt-6">
+                        <div className="w-fit rounded-xl bg-[#edf0f3] px-2 py-1">
+                          <p className="w-fit text-caption font-medium text-[#4a4f63] line-clamp-2 text-[12px]">
+                            {item.unit}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center pt-5">
+              <div className="text-center">
+                <div className="mx-auto w-full">
+                  <img
+                    src="https://nhathuoclongchau.com.vn/estore-images/illustration-not-found.svg"
+                    alt=""
+                  />
+                </div>
+                <h3 className="text-[#4a4f63] font-semibold text-[18px]">
+                  Ôi! Không tìm thấy sản phẩm nào phù hợp
+                </h3>
+                <p className="max-w-[300px] text-[#728091] text-[16px]">
+                  Hãy thử lại bằng cách thay đổi điều kiện lọc hoặc
+                </p>
+                <div className="flex justify-center mt-2 cursor-pointer">
+                  <div
+                    onClick={() => deleteData()}
+                    style={{
+                      background:
+                        "linear-gradient(315deg,#1250dc 14.64%,#306de4 85.36%)",
+                    }}
+                    className="h-[48px] px-4 text-white rounded-[42px] flex justify-center items-center w-[60%]"
+                  >
+                    {" "}
+                    Xóa tất cả bộ lọc
+                  </div>
+                </div>
               </div>
-            )
-          }
+            </div>
+          )}
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
 export default ListByIdCate;
