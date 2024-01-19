@@ -5,6 +5,8 @@ import "../../../assets/css/common.css";
 import { SendMessage, sendMessageSchema } from "../../../schema/chat";
 import { useGetProfileQuery } from "../../../services/account";
 import { useChatWithAdminQuery } from "../../../services/chat";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
 type TModalChat = {
   openModalChat: boolean;
@@ -12,6 +14,7 @@ type TModalChat = {
 };
 
 const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
+  const navigator = useNavigate();
   const { data: user, isLoading } = useGetProfileQuery();
   const { data: chat, refetch } = useChatWithAdminQuery(
     (!isLoading && user?.id) || 0
@@ -180,48 +183,23 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
                   ref={scrollRef}
                   className="mx-3 py-1 flex flex-col-reverse gap-y-3 h-96 overflow-auto"
                 >
-                  {chat?.map((item) => (
-                    <div key={item.id}>
-                      {item.sent_account_id === user?.id ? (
-                        <li className="flex justify-start flex-row-reverse w-full">
-                          <div className="message-content">
-                            <div className="message-reply--content">
-                              <div className="message">
-                                <div
-                                  className="message--content"
-                                  style={{ border: "0px solid transparent" }}
-                                >
+                  {token ? (
+                    chat?.map((item) => (
+                      <div key={item.id}>
+                        {item.sent_account_id === user?.id ? (
+                          <li className="flex justify-start flex-row-reverse w-full">
+                            <div className="message-content">
+                              <div className="message-reply--content">
+                                <div className="message">
                                   <div
-                                    data-order="alone"
-                                    className="message-bubble bg-[#fbfcf8] py-2 px-3 rounded-lg max-w-64"
+                                    className="message--content"
+                                    style={{ border: "0px solid transparent" }}
                                   >
-                                    <div className="message-text break-words text-sm">
-                                      <p>{item.message}</p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      ) : (
-                        <li className="flex justify-start">
-                          <div className="message-content">
-                            <div className="message-reply--content">
-                              <div className="message">
-                                <div
-                                  className="message--content"
-                                  style={{ border: "0px solid transparent" }}
-                                >
-                                  <div
-                                    data-order="alone"
-                                    className="message-bubble bg-[#afcdeb] py-2 px-3 rounded-lg w-64"
-                                  >
-                                    <div className="message-bubble__inner">
-                                      <div
-                                        translate="no"
-                                        className="message-text break-words text-sm"
-                                      >
+                                    <div
+                                      data-order="alone"
+                                      className="message-bubble bg-[#fbfcf8] py-2 px-3 rounded-lg max-w-64"
+                                    >
+                                      <div className="message-text break-words text-sm">
                                         <p>{item.message}</p>
                                       </div>
                                     </div>
@@ -229,11 +207,78 @@ const ModalChat: FC<TModalChat> = ({ openModalChat, setOpenModalChat }) => {
                                 </div>
                               </div>
                             </div>
+                          </li>
+                        ) : (
+                          <li className="flex justify-start">
+                            <div className="message-content">
+                              <div className="message-reply--content">
+                                <div className="message">
+                                  <div
+                                    className="message--content"
+                                    style={{ border: "0px solid transparent" }}
+                                  >
+                                    <div
+                                      data-order="alone"
+                                      className="message-bubble bg-[#afcdeb] py-2 px-3 rounded-lg w-64"
+                                    >
+                                      <div className="message-bubble__inner">
+                                        <div
+                                          translate="no"
+                                          className="message-text break-words text-sm"
+                                        >
+                                          <p>{item.message}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <li className="flex justify-start">
+                      <div className="message-content">
+                        <div className="message-reply--content">
+                          <div className="message">
+                            <div
+                              className="message--content"
+                              style={{ border: "0px solid transparent" }}
+                            >
+                              <div
+                                data-order="alone"
+                                className="message-bubble bg-[#afcdeb] py-2 px-3 rounded-lg w-64"
+                              >
+                                <div className="message-bubble__inner">
+                                  <div
+                                    translate="no"
+                                    className="message-text break-words text-sm"
+                                  >
+                                    <h3 className="text-lg">
+                                      Chat với Dược sỹ Long Châu
+                                    </h3>
+                                    <p className="text-sm my-2">
+                                      Vui lòng nhập thông tin của bạn để kết nối
+                                      ngay với Dược sỹ của Nhà thuốc Long Châu
+                                      nhé!
+                                    </p>
+                                    <Button
+                                      className="border-[#0f67ad] text-[#0f67ad] cursor-pointer"
+                                      onClick={() => navigator("/login")}
+                                    >
+                                      Đăng nhập tại đây
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                        </li>
-                      )}
-                    </div>
-                  ))}
+                        </div>
+                      </div>
+                    </li>
+                  )}
                 </div>
               </div>
             </div>

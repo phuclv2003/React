@@ -154,7 +154,82 @@ const Home: React.FC = () => {
                     Thần kinh não
                   </h3>
                   <div className="text-sm font-medium text-[#657384]">
-                    81 sản phẩm
+                    8 sản phẩm
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white border border-[#d9dfe5] rounded-2xl hover:opacity-80 cursor-pointer">
+                <div className="py-6 pt-4 text-center flex flex-col items-center">
+                  <img
+                    className="w-6"
+                    src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/tpcn_vitamin_khoang_chat_level_2_91b99b5a64.png"
+                    alt=""
+                  />
+                  <h3 className="text-sm font-semibold mt-2 mb-1">
+                    Vitamin & Khoáng chất
+                  </h3>
+                  <div className="text-sm font-medium text-[#657384]">
+                    3 sản phẩm
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white border border-[#d9dfe5] rounded-2xl hover:opacity-80 cursor-pointer">
+                <div className="py-6 pt-4 text-center flex flex-col items-center">
+                  <img
+                    className="w-6"
+                    src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/suc_khoe_tim_mach_level_2_1fc9d156fd.png"
+                    alt=""
+                  />
+                  <h3 className="text-sm font-semibold mt-2 mb-1">
+                    Sức khỏe tim mạch
+                  </h3>
+                  <div className="text-sm font-medium text-[#657384]">
+                    7 sản phẩm
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white border border-[#d9dfe5] rounded-2xl hover:opacity-80 cursor-pointer">
+                <div className="py-6 pt-4 text-center flex flex-col items-center">
+                  <img
+                    className="w-6"
+                    src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/ho_tro_lam_dep_level_2_87dfb56752.png"
+                    alt=""
+                  />
+                  <h3 className="text-sm font-semibold mt-2 mb-1">
+                    Hỗ trợ làm đẹp
+                  </h3>
+                  <div className="text-sm font-medium text-[#657384]">
+                    2 sản phẩm
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white border border-[#d9dfe5] rounded-2xl hover:opacity-80 cursor-pointer">
+                <div className="py-6 pt-4 text-center flex flex-col items-center">
+                  <img
+                    className="w-6"
+                    src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/ho_tro_tieu_hoa_level_2_df7385ed6e.png"
+                    alt=""
+                  />
+                  <h3 className="text-sm font-semibold mt-2 mb-1">
+                    Hỗ trợ tiêu hóa
+                  </h3>
+                  <div className="text-sm font-medium text-[#657384]">
+                    9 sản phẩm
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white border border-[#d9dfe5] rounded-2xl hover:opacity-80 cursor-pointer">
+                <div className="py-6 pt-4 text-center flex flex-col items-center">
+                  <img
+                    className="w-6"
+                    src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/dinh_duong_level_2_6b1af6b735.png"
+                    alt=""
+                  />
+                  <h3 className="text-sm font-semibold mt-2 mb-1">
+                    Dinh dưỡng
+                  </h3>
+                  <div className="text-sm font-medium text-[#657384]">
+                    6 sản phẩm
                   </div>
                 </div>
               </div>
@@ -189,9 +264,19 @@ const Home: React.FC = () => {
                     <h3 className="leading-[24px] tracking-[0.005em] text-[18px] font-bold text-[#020b27] md:tracking-[0.0025em]">
                       {item.title}
                     </h3>
-                    <p className="mt-[8px] mb-[24px] text-gray-7 line-clamp-3 md:mb-[20px] text-[15px] font-medium">
-                      {item.describe}
-                    </p>
+                    <p
+                      className="mt-[8px] mb-[24px] text-gray-7 line-clamp-3 md:mb-[20px] text-[15px] font-medium"
+                      style={{
+                        display: "-webkit-box",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: item.describe || "",
+                      }}
+                    />
                     <span className="flex items-center text-[14px] font-medium text-[#1250dc]">
                       Tìm hiểu thêm
                       <span className="estore-icon ml-[4px] text-[20px] css-wi4pw5">

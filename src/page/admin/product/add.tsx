@@ -1,5 +1,9 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Select, Upload, message } from "antd";
+import {
+  LoadingOutlined,
+  MinusOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import { Button, Form, Input, Select, Space, Upload, message } from "antd";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
@@ -15,13 +19,27 @@ const AddProductAdmin: React.FC = () => {
     page: 1,
     sort_by: '{"created_at": "asc"}',
   });
+  const [loading, setLoading] = useState(false);
+  const [dataIngredient, setDataIngredient] = useState<
+    {
+      [x: string]: string;
+    }[]
+  >([]);
+  const [ingredientName, setIngredientName] = useState("");
+  const [ingredientContent, setIngredientContent] = useState("");
+  const [imageUrl, setImageUrl] = useState<any | null>(null);
 
   const onFinish = async (values: any) => {
-    console.log(values);
     try {
+      const transformedIngredient = dataIngredient.reduce((acc, item) => {
+        const key = Object.keys(item)[0];
+        const value = item[key];
+        return { ...acc, [key]: value };
+      }, {});
+
       const res = await addProduct({
         ...values,
-        ingredient: { vitaminC: values.ingredient },
+        ingredient: transformedIngredient,
         image: imageUrl,
       });
       if ("data" in res) {
@@ -38,10 +56,6 @@ const AddProductAdmin: React.FC = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-
-  const [loading, setLoading] = useState(false);
-
-  const [imageUrl, setImageUrl] = useState<any | null>(null);
 
   const handleImageChange = (info: any) => {
     if (info.file.status === "uploading") {
@@ -61,6 +75,24 @@ const AddProductAdmin: React.FC = () => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
+
+  const handleIngredient = () => {
+    if (ingredientName && ingredientContent) {
+      const newIngredient = { [`${ingredientName}`]: ingredientContent };
+      setDataIngredient([...dataIngredient, newIngredient]);
+      console.log([...dataIngredient, newIngredient]);
+      form.setFieldValue("ingredient", [...dataIngredient, newIngredient]);
+      setIngredientName("");
+      setIngredientContent("");
+    }
+  };
+
+  const handleRemoteIngredient = (index: number) => {
+    const newDataIngredient = [...dataIngredient];
+    newDataIngredient.splice(index, 1);
+    setDataIngredient(newDataIngredient);
+    form.setFieldValue("ingredient", newDataIngredient);
+  };
 
   return (
     <Form
@@ -124,12 +156,80 @@ const AddProductAdmin: React.FC = () => {
         </Upload>
       </Form.Item>
       <Form.Item
+        label="Thành phần"
+        name="ingredient"
+        rules={[{ required: true, message: "Không được để trống" }]}
+      >
+        <div style={{ display: "flex", columnGap: 20 }}>
+          <Input
+            placeholder="Tìm kiếm tên"
+            value={ingredientName}
+            onChange={(e) => setIngredientName(e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Input
+            placeholder="Tìm kiếm tên"
+            value={ingredientContent}
+            onChange={(e) => setIngredientContent(e.target.value)}
+            style={{ width: 200, marginBottom: 10 }}
+          />
+          <Button
+            onClick={() => handleIngredient()}
+            ghost
+            type="primary"
+            shape="circle"
+            icon={<PlusOutlined />}
+          />
+        </div>
+        <>
+          {dataIngredient.map((item, index) => {
+            return (
+              <div key={index} style={{ display: "flex", columnGap: 20 }}>
+                <Input
+                  value={Object.keys(item)[0]}
+                  disabled
+                  style={{ width: 200, marginBottom: 10 }}
+                />
+                <Input
+                  value={item[Object.keys(item)[0]]}
+                  disabled
+                  style={{ width: 200, marginBottom: 10 }}
+                />
+                <Button
+                  onClick={() => handleRemoteIngredient(index)}
+                  danger
+                  type="primary"
+                  shape="circle"
+                  icon={<MinusOutlined />}
+                />
+              </div>
+            );
+          })}
+        </>
+      </Form.Item>
+      {/* <Form.Item>
+        <Form.Item
+          label="Tên thành phần"
+          rules={[{ required: true, message: "Không được để trống" }]}
+          style={{ width: "100%" }}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Hàm lượng(g)"
+          style={{ width: "100%" }}
+          rules={[{ required: true, message: "Không được để trống" }]}
+        >
+          <Input />
+        </Form.Item>
+      </Form.Item> */}
+      {/* <Form.Item
         name="ingredient"
         rules={[{ required: true }]}
         label="Thành phần"
       >
         <Input />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item name="use" rules={[{ required: true }]} label="Công dụng">
         <Input />
       </Form.Item>
@@ -137,9 +237,10 @@ const AddProductAdmin: React.FC = () => {
         name="how_to_use"
         rules={[{ required: true }]}
         label="Cách sử dụng"
+        style={{ height: 260, width: "100%" }}
       >
         <ReactQuill
-          style={{ height: 500 }}
+          style={{ height: 200 }}
           theme="snow"
           value={form.getFieldValue("how_to_use")}
           onChange={(content) => form.setFieldValue("how_to_use", content)}
@@ -149,25 +250,36 @@ const AddProductAdmin: React.FC = () => {
         name="side_effects"
         rules={[{ required: true }]}
         label="Tác dụng phụ"
+        style={{ height: 260, width: "100%" }}
       >
         <ReactQuill
-          style={{ height: 500 }}
+          style={{ height: 200 }}
           theme="snow"
           value={form.getFieldValue("side_effects")}
           onChange={(content) => form.setFieldValue("side_effects", content)}
         />
       </Form.Item>
-      <Form.Item name="note" rules={[{ required: true }]} label="Chú ý">
+      <Form.Item
+        name="note"
+        rules={[{ required: true }]}
+        label="Chú ý"
+        style={{ height: 260, width: "100%" }}
+      >
         <ReactQuill
-          style={{ height: 500 }}
+          style={{ height: 200 }}
           theme="snow"
           value={form.getFieldValue("note")}
           onChange={(content) => form.setFieldValue("note", content)}
         />
       </Form.Item>
-      <Form.Item name="preserve" rules={[{ required: true }]} label="Bảo quản">
+      <Form.Item
+        name="preserve"
+        rules={[{ required: true }]}
+        label="Bảo quản"
+        style={{ height: 260, width: "100%" }}
+      >
         <ReactQuill
-          style={{ height: 500 }}
+          style={{ height: 200 }}
           theme="snow"
           value={form.getFieldValue("preserve")}
           onChange={(content) => form.setFieldValue("preserve", content)}

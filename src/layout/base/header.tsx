@@ -26,7 +26,7 @@ const HeaderBase: FC = () => {
   });
   const cart = () => {
     navigate(`/cart`);
-  }
+  };
   const items = cate?.map((item) => {
     if (!item.sub_category) {
       return {
@@ -46,11 +46,7 @@ const HeaderBase: FC = () => {
           key={cate.id}
           className="flex items-center gap-x-2"
         >
-          <img
-            className="w-[20px]"
-            src={cate.image}
-            alt=""
-          />
+          <img className="w-[20px]" src={cate.image} alt="" />
           {cate.category_name}
         </Link>
       ),
@@ -63,9 +59,13 @@ const HeaderBase: FC = () => {
           key={item.id}
           className="flex items-center gap-x-1 arrow-down-icon"
         >
-          <Link to={item.id.toString()}>{item.category_name}</Link>
-          {item.sub_category && item.sub_category?.length > 0 && (
-            <ArrowDownIcon />
+          {item.sub_category && item.sub_category?.length > 0 ? (
+            <>
+              <div>{item.category_name}</div>
+              <ArrowDownIcon />
+            </>
+          ) : (
+            <Link to={`category/${item.id}`}>{item.category_name}</Link>
           )}
         </div>
       ),
@@ -141,18 +141,18 @@ const HeaderBase: FC = () => {
                 alt=""
               />
             </Link>
-              <div className=" mx-auto w-full flex justify-center">
-                <div className="inline-flex items-center bg-white rounded-[35px] p-[6px] pl-4 w-[90%]">
-                  <input
-                    placeholder="Tìm tên thuốc, bệnh lý, thực phẩm chức năng..."
-                    className="w-full text-ellipsis bg-transparent outline-none placeholder:text-text-tertiary placeholder-shown:text-ellipsis h-[40px] text-body1 placeholder:text-label1"
-                    type="text"
-                  />
-                  <button className="shrink-0 rounded-full bg-layer-blue-1,5 w-[40px] h-[40px] p-[10px] ml-3 bg-[#c1d0f6] flex items-center justify-center">
-                    <SearchIcon />
-                  </button>
-                </div>
+            <div className=" mx-auto w-full flex justify-center">
+              <div className="inline-flex items-center bg-white rounded-[35px] p-[6px] pl-4 w-[90%]">
+                <input
+                  placeholder="Tìm tên thuốc, bệnh lý, thực phẩm chức năng..."
+                  className="w-full text-ellipsis bg-transparent outline-none placeholder:text-text-tertiary placeholder-shown:text-ellipsis h-[40px] text-body1 placeholder:text-label1"
+                  type="text"
+                />
+                <button className="shrink-0 rounded-full bg-layer-blue-1,5 w-[40px] h-[40px] p-[10px] ml-3 bg-[#c1d0f6] flex items-center justify-center">
+                  <SearchIcon />
+                </button>
               </div>
+            </div>
             <div className="flex h-full items-center justify-between">
               {!user ? (
                 <div className="flex items-center cursor-pointer justify-center">
@@ -178,11 +178,14 @@ const HeaderBase: FC = () => {
                 </Popover>
               )}
 
-              <div onClick={() => cart()} className="flex items-center bg-[#1250dc] relative shrink-0 md:ml-auto rounded-[42px] w-[134px] h-[48px] justify-center cursor-pointer">
+              <div
+                onClick={() => cart()}
+                className="flex items-center bg-[#1250dc] relative shrink-0 md:ml-auto rounded-[42px] w-[134px] h-[48px] justify-center cursor-pointer"
+              >
                 <div>
                   <ShoppingCartIcon />
                 </div>
-                <div className="text-white font-medium text-[16px] ml-2" >
+                <div className="text-white font-medium text-[16px] ml-2">
                   Giỏ hàng
                 </div>
               </div>

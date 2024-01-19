@@ -34,10 +34,7 @@ const EditProductAdmin: React.FC = () => {
       const res = await editProduct({
         ...values,
         id: id,
-        ingredient: {
-          vitaminC: values.ingredient,
-          vgranuleC: values.ingredient,
-        },
+        ingredient: {"vitaminC": values.ingredient,"vgranuleC": values.ingredient,},
         image:
           "https://cdn.nhathuoclongchau.com.vn/unsafe/373x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_08302_ba4462d00d.jpg",
       });
